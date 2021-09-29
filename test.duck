@@ -1,7 +1,5 @@
-#| Test program for BigDuck Programming language |#
 var global int;
 
-#| Returns the factorial for a given number|#
 proc factorial(n int) -> int {
     if n < 1 {
         return 1;
@@ -10,10 +8,15 @@ proc factorial(n int) -> int {
     }
 }
 
-#| Returns the first n primes |#
-proc getprimes(n int) -> [100]int
+proc getprimes(n int)
 var primes [100]int, k, i, prime_count int, is_prime bool;
 {
+    if n < 0 {
+        return;
+    } else if n > 100 {
+        n <- 100;
+    }
+
     primes[0] <- 2;
     primes[1] <- 3;
     prime_count <- 2;
@@ -34,34 +37,20 @@ var primes [100]int, k, i, prime_count int, is_prime bool;
         }
     }
 
-    return primes;
-}
+    print("The first", n, "primes are");
 
-proc average(v []float) -> float
-var i int, ans float
-{
-    ans <- 0;
-
-    for i <- 0; i < len(v); i <- i + 1 {
-        ans <- ans + v[i];
+    loop i <- 0; i < n; i <- i + 1 {
+        print(primes[i]);
     }
-
-    return ans / len(v);
 }
 
-#| Main procedure |#
 proc main()
-var primes [100], n, fact_n int;
+var primes [100]int, n, fact_n int;
 {
-#| Factorial example |#
     n <- 5;
     fact_n <- factorial(n);
-    print("The factorial of", n "is", fact_n);
+    print("The factorial of", n, "is", fact_n);
 
-#| Prime sieve example |#
     n <- 25;
     primes <- getprimes(n);
-
-    print("The first", n, "primes are");
-    print(primes);
 }

@@ -41,7 +41,7 @@ func main() {
     p.AddErrorListener(antlr.NewDiagnosticErrorListener(true))
     p.BuildParseTrees = true
 
-    tree := p.Programa()
+    tree := p.Program()
     antlr.ParseTreeWalkerDefault.Walk(&BigDuckListener{}, tree)
 
     if validInput {

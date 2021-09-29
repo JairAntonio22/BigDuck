@@ -9,7 +9,7 @@ IF      : 'if';
 ELSE    : 'else';
 LOOP    : 'loop';
 BREAK   : 'break';
-SKIP    : 'skip';
+SKIP_W  : 'skip';
 AND     : 'and';
 OR      : 'or';
 NOT     : 'not';
@@ -29,29 +29,109 @@ fragment SIGN   : [+-]?;
 CTE_INT     : SIGN DIGITS;
 CTE_FLOAT   : DIGITS ('.' DIGITS)? ([Ee] SIGN? DIGITS)?;
 CTE_STRING  : '"' ~('"')* '"';
-ID          : LETTER (LETTER | DIGIT)*;
+ID          : LETTER (LETTER | DIGIT | '_')*;
 WS          : [ \n\t\r] -> skip;
+//COMMENT     : '#|' ()*? '|#' -> skip;
 
 // Syntax
-program     : vars_decl procs_decl
+program     : vars_decl procs_decl;
 
 vars_decl   : var_decl vars_decl
             | ;
 
-var_decl    : VAR ID nextVar type nextTypes ';' nextVarDecl;
+var_decl    : VAR ID nextVar var_type nextTypes ';' nextVarDecl;
 nextVar     : ',' ID nextVar
             | ;
-nextTypes   : ',' ID nextVar type nextTypes
+nextTypes   : ',' ID nextVar var_type nextTypes
             | ;
 nextVarDecl : var_decl nextVarDecl
             | ;
 
-type        : scalar
-            | tensor;
+var_type    : scalar | tensor;
 
-scalar      : INT
-            | FLOAT
-            | BOOL;
+scalar      : INT | FLOAT | BOOL;
 
 tensor      : dim scalar;
-dim         : '[' num_expr ']';
+dim         : '[' num_expr ']' nextDim;
+nextDim     : dim nextDim
+            | ;
+
+procs_decl  : proc_decl (procs_decl | );
+
+proc_decl   : sign (ret_type | ) (var_decl | ) block;
+
+sign        : PROC ID args;
+
+args        : '(' (ID nextVar scalar nextTypes | ) ')';
+
+ret_type    : '->' scalar;
+
+bool_expr   : and_expr nextBool;
+nextBool    : OR bool_expr
+            | ;
+
+and_expr    : not_expr nextAnd;
+nextAnd     : AND not_expr
+            | ;
+
+not_expr    : (NOT | ) bool_term;
+bool_term   : '(' bool_expr ')'
+            | rel_expr
+            | TRUE
+            | FALSE
+            | ID (dim | )
+            | proc_call;
+
+rel_expr    : num_expr relOp num_expr;
+relOp       : '='
+            | '/='
+            | '<'
+            | '>'
+            | '>='
+            | '<=';
+
+num_expr    : prod_expr nextSum;
+nextSum     : ('+' | '-') num_expr
+            | ;
+
+prod_expr   : factor nextProd;
+nextProd    : ('*' | '/') prod_expr
+            | ;
+
+factor      : '(' num_expr ')'
+            | ID (dim | )
+            | CTE_INT
+            | CTE_FLOAT
+            | proc_call;
+
+proc_call   : ID '(' (param nextParam | ) ')';
+param       : bool_expr
+            | num_expr
+            | CTE_STRING;
+nextParam   : ',' param nextParam
+            | ;
+
+block       : '{' stmts '}';
+stmts       : stmt stmts
+            | ;
+
+stmt        : assignment ';'
+            | condition
+            | loop_stmt
+            | ctrl_flow ';'
+            | ret_stmt ';'
+            | proc_call ';';
+
+assignment  : ID (dim | ) '<-' (num_expr | bool_expr);
+
+condition   : IF bool_expr block (alter | );
+
+alter       : ELSE (condition | block);
+
+loop_stmt   : LOOP (forNotation | bool_expr | ) block;
+
+forNotation : (assignment | ) ';' bool_expr ';' assignment;
+
+ctrl_flow   : (BREAK | SKIP_W);
+
+ret_stmt    : RETURN (num_expr | bool_expr | proc_call | );
