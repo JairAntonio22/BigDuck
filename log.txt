@@ -1,14 +1,8 @@
 λ make test
 ./BigDuck test.duck
-line 28:20 reportAttemptingFullContext d=20 (param), input='k,'
-line 28:31 reportAttemptingFullContext d=20 (param), input='primes[i])'
-line 35:36 reportAttemptingFullContext d=25 (assignment), input='k;'
-line 40:24 reportAttemptingFullContext d=20 (param), input='n,'
-line 43:23 reportAttemptingFullContext d=20 (param), input='primes[i])'
-line 51:26 reportAttemptingFullContext d=25 (assignment), input='factorial(n);'
-line 51:25 reportAttemptingFullContext d=20 (param), input='n)'
-line 52:31 reportAttemptingFullContext d=20 (param), input='n,'
-line 52:45 reportAttemptingFullContext d=20 (param), input='fact_n)'
-line 55:26 reportAttemptingFullContext d=25 (assignment), input='getprimes(n);'
+line 55:26 reportAttemptingFullContext d=25 (assignment), input='factorial(n);'
 line 55:25 reportAttemptingFullContext d=20 (param), input='n)'
-accepted
+line 56:31 reportAttemptingFullContext d=20 (param), input='n,'
+line 56:45 reportAttemptingFullContext d=20 (param), input='fact_n)'
+line 59:26 reportAttemptingFullContext d=25 (assignment), input='getprimes(n);'
+line 59:25 reportAttemptingFullContext d=20 (param), input='n)'

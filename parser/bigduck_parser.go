@@ -16,7 +16,7 @@ var _ = reflect.Copy
 var _ = strconv.Itoa
 
 var parserATN = []uint16{
-	3, 24715, 42794, 33075, 47597, 16764, 15335, 30598, 22884, 3, 43, 348,
+	3, 24715, 42794, 33075, 47597, 16764, 15335, 30598, 22884, 3, 43, 350,
 	4, 2, 9, 2, 4, 3, 9, 3, 4, 4, 9, 4, 4, 5, 9, 5, 4, 6, 9, 6, 4, 7, 9, 7,
 	4, 8, 9, 8, 4, 9, 9, 9, 4, 10, 9, 10, 4, 11, 9, 11, 4, 12, 9, 12, 4, 13,
 	9, 13, 4, 14, 9, 14, 4, 15, 9, 15, 4, 16, 9, 16, 4, 17, 9, 17, 4, 18, 9,
@@ -26,145 +26,146 @@ var parserATN = []uint16{
 	9, 34, 4, 35, 9, 35, 4, 36, 9, 36, 4, 37, 9, 37, 4, 38, 9, 38, 4, 39, 9,
 	39, 4, 40, 9, 40, 4, 41, 9, 41, 4, 42, 9, 42, 4, 43, 9, 43, 3, 2, 3, 2,
 	3, 2, 3, 3, 3, 3, 3, 3, 3, 3, 5, 3, 94, 10, 3, 3, 4, 3, 4, 3, 4, 3, 4,
-	3, 4, 3, 4, 3, 4, 3, 4, 3, 5, 3, 5, 3, 5, 3, 5, 5, 5, 108, 10, 5, 3, 6,
-	3, 6, 3, 6, 3, 6, 3, 6, 3, 6, 3, 6, 5, 6, 117, 10, 6, 3, 7, 3, 7, 3, 7,
-	3, 7, 5, 7, 123, 10, 7, 3, 8, 3, 8, 5, 8, 127, 10, 8, 3, 9, 3, 9, 3, 10,
-	3, 10, 3, 10, 3, 11, 3, 11, 3, 11, 3, 11, 3, 11, 3, 12, 3, 12, 3, 12, 3,
-	12, 5, 12, 143, 10, 12, 3, 13, 3, 13, 3, 13, 5, 13, 148, 10, 13, 3, 14,
-	3, 14, 3, 14, 5, 14, 153, 10, 14, 3, 14, 3, 14, 5, 14, 157, 10, 14, 3,
-	14, 3, 14, 3, 15, 3, 15, 3, 15, 3, 15, 3, 16, 3, 16, 3, 16, 3, 16, 3, 16,
-	3, 16, 3, 16, 5, 16, 172, 10, 16, 3, 16, 3, 16, 3, 17, 3, 17, 3, 17, 3,
-	18, 3, 18, 3, 18, 3, 19, 3, 19, 3, 19, 5, 19, 185, 10, 19, 3, 20, 3, 20,
-	3, 20, 3, 21, 3, 21, 3, 21, 5, 21, 193, 10, 21, 3, 22, 3, 22, 5, 22, 197,
+	3, 4, 3, 4, 3, 4, 3, 5, 3, 5, 3, 5, 3, 5, 5, 5, 107, 10, 5, 3, 6, 3, 6,
+	3, 6, 3, 6, 5, 6, 113, 10, 6, 3, 7, 3, 7, 5, 7, 117, 10, 7, 3, 8, 3, 8,
+	3, 9, 3, 9, 3, 9, 3, 10, 3, 10, 3, 10, 3, 10, 3, 10, 3, 11, 3, 11, 3, 11,
+	3, 11, 5, 11, 133, 10, 11, 3, 12, 3, 12, 3, 12, 5, 12, 138, 10, 12, 3,
+	13, 3, 13, 3, 13, 5, 13, 143, 10, 13, 3, 13, 3, 13, 5, 13, 147, 10, 13,
+	3, 13, 3, 13, 3, 14, 3, 14, 3, 14, 3, 14, 3, 15, 3, 15, 3, 15, 3, 15, 3,
+	15, 3, 15, 3, 15, 5, 15, 162, 10, 15, 3, 15, 3, 15, 3, 16, 3, 16, 3, 16,
+	3, 16, 3, 16, 3, 16, 3, 16, 5, 16, 173, 10, 16, 3, 17, 3, 17, 3, 17, 3,
+	18, 3, 18, 3, 18, 3, 19, 3, 19, 3, 19, 5, 19, 184, 10, 19, 3, 20, 3, 20,
+	3, 20, 3, 21, 3, 21, 3, 21, 5, 21, 192, 10, 21, 3, 22, 3, 22, 5, 22, 196,
 	10, 22, 3, 22, 3, 22, 3, 23, 3, 23, 3, 23, 3, 23, 3, 23, 3, 23, 3, 23,
-	3, 23, 3, 23, 3, 23, 5, 23, 211, 10, 23, 3, 23, 5, 23, 214, 10, 23, 3,
+	3, 23, 3, 23, 3, 23, 5, 23, 210, 10, 23, 3, 23, 5, 23, 213, 10, 23, 3,
 	24, 3, 24, 3, 24, 3, 24, 3, 25, 3, 25, 3, 26, 3, 26, 3, 26, 3, 27, 3, 27,
-	3, 27, 5, 27, 228, 10, 27, 3, 28, 3, 28, 3, 28, 3, 29, 3, 29, 3, 29, 5,
-	29, 236, 10, 29, 3, 30, 3, 30, 3, 30, 3, 30, 3, 30, 3, 30, 3, 30, 5, 30,
-	245, 10, 30, 3, 30, 3, 30, 3, 30, 5, 30, 250, 10, 30, 3, 31, 3, 31, 3,
-	31, 3, 31, 3, 31, 3, 31, 5, 31, 258, 10, 31, 3, 31, 3, 31, 3, 32, 3, 32,
-	3, 32, 5, 32, 265, 10, 32, 3, 33, 3, 33, 3, 33, 3, 33, 3, 33, 5, 33, 272,
-	10, 33, 3, 34, 3, 34, 3, 34, 3, 34, 3, 35, 3, 35, 3, 35, 3, 35, 5, 35,
-	282, 10, 35, 3, 36, 3, 36, 3, 36, 3, 36, 3, 36, 3, 36, 3, 36, 3, 36, 3,
-	36, 3, 36, 3, 36, 3, 36, 3, 36, 3, 36, 5, 36, 298, 10, 36, 3, 37, 3, 37,
-	3, 37, 5, 37, 303, 10, 37, 3, 37, 3, 37, 3, 37, 5, 37, 308, 10, 37, 3,
-	38, 3, 38, 3, 38, 3, 38, 3, 38, 5, 38, 315, 10, 38, 3, 39, 3, 39, 3, 39,
-	5, 39, 320, 10, 39, 3, 40, 3, 40, 3, 40, 3, 40, 5, 40, 326, 10, 40, 3,
-	40, 3, 40, 3, 41, 3, 41, 5, 41, 332, 10, 41, 3, 41, 3, 41, 3, 41, 3, 41,
-	3, 41, 3, 42, 3, 42, 3, 43, 3, 43, 3, 43, 3, 43, 3, 43, 5, 43, 346, 10,
-	43, 3, 43, 2, 2, 44, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28,
-	30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64,
-	66, 68, 70, 72, 74, 76, 78, 80, 82, 84, 2, 7, 3, 2, 34, 36, 3, 2, 10, 15,
-	3, 2, 16, 17, 3, 2, 18, 19, 3, 2, 28, 29, 2, 351, 2, 86, 3, 2, 2, 2, 4,
-	93, 3, 2, 2, 2, 6, 95, 3, 2, 2, 2, 8, 107, 3, 2, 2, 2, 10, 116, 3, 2, 2,
-	2, 12, 122, 3, 2, 2, 2, 14, 126, 3, 2, 2, 2, 16, 128, 3, 2, 2, 2, 18, 130,
-	3, 2, 2, 2, 20, 133, 3, 2, 2, 2, 22, 142, 3, 2, 2, 2, 24, 144, 3, 2, 2,
-	2, 26, 149, 3, 2, 2, 2, 28, 160, 3, 2, 2, 2, 30, 164, 3, 2, 2, 2, 32, 175,
-	3, 2, 2, 2, 34, 178, 3, 2, 2, 2, 36, 184, 3, 2, 2, 2, 38, 186, 3, 2, 2,
-	2, 40, 192, 3, 2, 2, 2, 42, 196, 3, 2, 2, 2, 44, 213, 3, 2, 2, 2, 46, 215,
-	3, 2, 2, 2, 48, 219, 3, 2, 2, 2, 50, 221, 3, 2, 2, 2, 52, 227, 3, 2, 2,
-	2, 54, 229, 3, 2, 2, 2, 56, 235, 3, 2, 2, 2, 58, 249, 3, 2, 2, 2, 60, 251,
-	3, 2, 2, 2, 62, 264, 3, 2, 2, 2, 64, 271, 3, 2, 2, 2, 66, 273, 3, 2, 2,
-	2, 68, 281, 3, 2, 2, 2, 70, 297, 3, 2, 2, 2, 72, 299, 3, 2, 2, 2, 74, 309,
-	3, 2, 2, 2, 76, 316, 3, 2, 2, 2, 78, 321, 3, 2, 2, 2, 80, 331, 3, 2, 2,
-	2, 82, 338, 3, 2, 2, 2, 84, 340, 3, 2, 2, 2, 86, 87, 5, 4, 3, 2, 87, 88,
-	5, 24, 13, 2, 88, 3, 3, 2, 2, 2, 89, 90, 5, 6, 4, 2, 90, 91, 5, 4, 3, 2,
-	91, 94, 3, 2, 2, 2, 92, 94, 3, 2, 2, 2, 93, 89, 3, 2, 2, 2, 93, 92, 3,
-	2, 2, 2, 94, 5, 3, 2, 2, 2, 95, 96, 7, 33, 2, 2, 96, 97, 7, 42, 2, 2, 97,
-	98, 5, 8, 5, 2, 98, 99, 5, 14, 8, 2, 99, 100, 5, 10, 6, 2, 100, 101, 7,
-	3, 2, 2, 101, 102, 5, 12, 7, 2, 102, 7, 3, 2, 2, 2, 103, 104, 7, 4, 2,
-	2, 104, 105, 7, 42, 2, 2, 105, 108, 5, 8, 5, 2, 106, 108, 3, 2, 2, 2, 107,
-	103, 3, 2, 2, 2, 107, 106, 3, 2, 2, 2, 108, 9, 3, 2, 2, 2, 109, 110, 7,
-	4, 2, 2, 110, 111, 7, 42, 2, 2, 111, 112, 5, 8, 5, 2, 112, 113, 5, 14,
-	8, 2, 113, 114, 5, 10, 6, 2, 114, 117, 3, 2, 2, 2, 115, 117, 3, 2, 2, 2,
-	116, 109, 3, 2, 2, 2, 116, 115, 3, 2, 2, 2, 117, 11, 3, 2, 2, 2, 118, 119,
-	5, 6, 4, 2, 119, 120, 5, 12, 7, 2, 120, 123, 3, 2, 2, 2, 121, 123, 3, 2,
-	2, 2, 122, 118, 3, 2, 2, 2, 122, 121, 3, 2, 2, 2, 123, 13, 3, 2, 2, 2,
-	124, 127, 5, 16, 9, 2, 125, 127, 5, 18, 10, 2, 126, 124, 3, 2, 2, 2, 126,
-	125, 3, 2, 2, 2, 127, 15, 3, 2, 2, 2, 128, 129, 9, 2, 2, 2, 129, 17, 3,
-	2, 2, 2, 130, 131, 5, 20, 11, 2, 131, 132, 5, 16, 9, 2, 132, 19, 3, 2,
-	2, 2, 133, 134, 7, 5, 2, 2, 134, 135, 5, 50, 26, 2, 135, 136, 7, 6, 2,
-	2, 136, 137, 5, 22, 12, 2, 137, 21, 3, 2, 2, 2, 138, 139, 5, 20, 11, 2,
-	139, 140, 5, 22, 12, 2, 140, 143, 3, 2, 2, 2, 141, 143, 3, 2, 2, 2, 142,
-	138, 3, 2, 2, 2, 142, 141, 3, 2, 2, 2, 143, 23, 3, 2, 2, 2, 144, 147, 5,
-	26, 14, 2, 145, 148, 5, 24, 13, 2, 146, 148, 3, 2, 2, 2, 147, 145, 3, 2,
-	2, 2, 147, 146, 3, 2, 2, 2, 148, 25, 3, 2, 2, 2, 149, 152, 5, 28, 15, 2,
-	150, 153, 5, 32, 17, 2, 151, 153, 3, 2, 2, 2, 152, 150, 3, 2, 2, 2, 152,
-	151, 3, 2, 2, 2, 153, 156, 3, 2, 2, 2, 154, 157, 5, 6, 4, 2, 155, 157,
-	3, 2, 2, 2, 156, 154, 3, 2, 2, 2, 156, 155, 3, 2, 2, 2, 157, 158, 3, 2,
-	2, 2, 158, 159, 5, 66, 34, 2, 159, 27, 3, 2, 2, 2, 160, 161, 7, 23, 2,
-	2, 161, 162, 7, 42, 2, 2, 162, 163, 5, 30, 16, 2, 163, 29, 3, 2, 2, 2,
-	164, 171, 7, 7, 2, 2, 165, 166, 7, 42, 2, 2, 166, 167, 5, 8, 5, 2, 167,
-	168, 5, 16, 9, 2, 168, 169, 5, 10, 6, 2, 169, 172, 3, 2, 2, 2, 170, 172,
-	3, 2, 2, 2, 171, 165, 3, 2, 2, 2, 171, 170, 3, 2, 2, 2, 172, 173, 3, 2,
-	2, 2, 173, 174, 7, 8, 2, 2, 174, 31, 3, 2, 2, 2, 175, 176, 7, 9, 2, 2,
-	176, 177, 5, 16, 9, 2, 177, 33, 3, 2, 2, 2, 178, 179, 5, 38, 20, 2, 179,
-	180, 5, 36, 19, 2, 180, 35, 3, 2, 2, 2, 181, 182, 7, 31, 2, 2, 182, 185,
-	5, 34, 18, 2, 183, 185, 3, 2, 2, 2, 184, 181, 3, 2, 2, 2, 184, 183, 3,
-	2, 2, 2, 185, 37, 3, 2, 2, 2, 186, 187, 5, 42, 22, 2, 187, 188, 5, 40,
-	21, 2, 188, 39, 3, 2, 2, 2, 189, 190, 7, 30, 2, 2, 190, 193, 5, 42, 22,
-	2, 191, 193, 3, 2, 2, 2, 192, 189, 3, 2, 2, 2, 192, 191, 3, 2, 2, 2, 193,
-	41, 3, 2, 2, 2, 194, 197, 7, 32, 2, 2, 195, 197, 3, 2, 2, 2, 196, 194,
-	3, 2, 2, 2, 196, 195, 3, 2, 2, 2, 197, 198, 3, 2, 2, 2, 198, 199, 5, 44,
-	23, 2, 199, 43, 3, 2, 2, 2, 200, 201, 7, 7, 2, 2, 201, 202, 5, 34, 18,
-	2, 202, 203, 7, 8, 2, 2, 203, 214, 3, 2, 2, 2, 204, 214, 5, 46, 24, 2,
-	205, 214, 7, 37, 2, 2, 206, 214, 7, 38, 2, 2, 207, 210, 7, 42, 2, 2, 208,
-	211, 5, 20, 11, 2, 209, 211, 3, 2, 2, 2, 210, 208, 3, 2, 2, 2, 210, 209,
-	3, 2, 2, 2, 211, 214, 3, 2, 2, 2, 212, 214, 5, 60, 31, 2, 213, 200, 3,
-	2, 2, 2, 213, 204, 3, 2, 2, 2, 213, 205, 3, 2, 2, 2, 213, 206, 3, 2, 2,
-	2, 213, 207, 3, 2, 2, 2, 213, 212, 3, 2, 2, 2, 214, 45, 3, 2, 2, 2, 215,
-	216, 5, 50, 26, 2, 216, 217, 5, 48, 25, 2, 217, 218, 5, 50, 26, 2, 218,
-	47, 3, 2, 2, 2, 219, 220, 9, 3, 2, 2, 220, 49, 3, 2, 2, 2, 221, 222, 5,
-	54, 28, 2, 222, 223, 5, 52, 27, 2, 223, 51, 3, 2, 2, 2, 224, 225, 9, 4,
-	2, 2, 225, 228, 5, 50, 26, 2, 226, 228, 3, 2, 2, 2, 227, 224, 3, 2, 2,
-	2, 227, 226, 3, 2, 2, 2, 228, 53, 3, 2, 2, 2, 229, 230, 5, 58, 30, 2, 230,
-	231, 5, 56, 29, 2, 231, 55, 3, 2, 2, 2, 232, 233, 9, 5, 2, 2, 233, 236,
-	5, 54, 28, 2, 234, 236, 3, 2, 2, 2, 235, 232, 3, 2, 2, 2, 235, 234, 3,
-	2, 2, 2, 236, 57, 3, 2, 2, 2, 237, 238, 7, 7, 2, 2, 238, 239, 5, 50, 26,
-	2, 239, 240, 7, 8, 2, 2, 240, 250, 3, 2, 2, 2, 241, 244, 7, 42, 2, 2, 242,
-	245, 5, 20, 11, 2, 243, 245, 3, 2, 2, 2, 244, 242, 3, 2, 2, 2, 244, 243,
-	3, 2, 2, 2, 245, 250, 3, 2, 2, 2, 246, 250, 7, 39, 2, 2, 247, 250, 7, 40,
-	2, 2, 248, 250, 5, 60, 31, 2, 249, 237, 3, 2, 2, 2, 249, 241, 3, 2, 2,
-	2, 249, 246, 3, 2, 2, 2, 249, 247, 3, 2, 2, 2, 249, 248, 3, 2, 2, 2, 250,
-	59, 3, 2, 2, 2, 251, 252, 7, 42, 2, 2, 252, 257, 7, 7, 2, 2, 253, 254,
-	5, 62, 32, 2, 254, 255, 5, 64, 33, 2, 255, 258, 3, 2, 2, 2, 256, 258, 3,
-	2, 2, 2, 257, 253, 3, 2, 2, 2, 257, 256, 3, 2, 2, 2, 258, 259, 3, 2, 2,
-	2, 259, 260, 7, 8, 2, 2, 260, 61, 3, 2, 2, 2, 261, 265, 5, 34, 18, 2, 262,
-	265, 5, 50, 26, 2, 263, 265, 7, 41, 2, 2, 264, 261, 3, 2, 2, 2, 264, 262,
-	3, 2, 2, 2, 264, 263, 3, 2, 2, 2, 265, 63, 3, 2, 2, 2, 266, 267, 7, 4,
-	2, 2, 267, 268, 5, 62, 32, 2, 268, 269, 5, 64, 33, 2, 269, 272, 3, 2, 2,
-	2, 270, 272, 3, 2, 2, 2, 271, 266, 3, 2, 2, 2, 271, 270, 3, 2, 2, 2, 272,
-	65, 3, 2, 2, 2, 273, 274, 7, 20, 2, 2, 274, 275, 5, 68, 35, 2, 275, 276,
-	7, 21, 2, 2, 276, 67, 3, 2, 2, 2, 277, 278, 5, 70, 36, 2, 278, 279, 5,
-	68, 35, 2, 279, 282, 3, 2, 2, 2, 280, 282, 3, 2, 2, 2, 281, 277, 3, 2,
-	2, 2, 281, 280, 3, 2, 2, 2, 282, 69, 3, 2, 2, 2, 283, 284, 5, 72, 37, 2,
-	284, 285, 7, 3, 2, 2, 285, 298, 3, 2, 2, 2, 286, 298, 5, 74, 38, 2, 287,
-	298, 5, 78, 40, 2, 288, 289, 5, 82, 42, 2, 289, 290, 7, 3, 2, 2, 290, 298,
-	3, 2, 2, 2, 291, 292, 5, 84, 43, 2, 292, 293, 7, 3, 2, 2, 293, 298, 3,
-	2, 2, 2, 294, 295, 5, 60, 31, 2, 295, 296, 7, 3, 2, 2, 296, 298, 3, 2,
-	2, 2, 297, 283, 3, 2, 2, 2, 297, 286, 3, 2, 2, 2, 297, 287, 3, 2, 2, 2,
-	297, 288, 3, 2, 2, 2, 297, 291, 3, 2, 2, 2, 297, 294, 3, 2, 2, 2, 298,
-	71, 3, 2, 2, 2, 299, 302, 7, 42, 2, 2, 300, 303, 5, 20, 11, 2, 301, 303,
-	3, 2, 2, 2, 302, 300, 3, 2, 2, 2, 302, 301, 3, 2, 2, 2, 303, 304, 3, 2,
-	2, 2, 304, 307, 7, 22, 2, 2, 305, 308, 5, 50, 26, 2, 306, 308, 5, 34, 18,
-	2, 307, 305, 3, 2, 2, 2, 307, 306, 3, 2, 2, 2, 308, 73, 3, 2, 2, 2, 309,
-	310, 7, 25, 2, 2, 310, 311, 5, 34, 18, 2, 311, 314, 5, 66, 34, 2, 312,
-	315, 5, 76, 39, 2, 313, 315, 3, 2, 2, 2, 314, 312, 3, 2, 2, 2, 314, 313,
-	3, 2, 2, 2, 315, 75, 3, 2, 2, 2, 316, 319, 7, 26, 2, 2, 317, 320, 5, 74,
-	38, 2, 318, 320, 5, 66, 34, 2, 319, 317, 3, 2, 2, 2, 319, 318, 3, 2, 2,
-	2, 320, 77, 3, 2, 2, 2, 321, 325, 7, 27, 2, 2, 322, 326, 5, 80, 41, 2,
-	323, 326, 5, 34, 18, 2, 324, 326, 3, 2, 2, 2, 325, 322, 3, 2, 2, 2, 325,
-	323, 3, 2, 2, 2, 325, 324, 3, 2, 2, 2, 326, 327, 3, 2, 2, 2, 327, 328,
-	5, 66, 34, 2, 328, 79, 3, 2, 2, 2, 329, 332, 5, 72, 37, 2, 330, 332, 3,
-	2, 2, 2, 331, 329, 3, 2, 2, 2, 331, 330, 3, 2, 2, 2, 332, 333, 3, 2, 2,
-	2, 333, 334, 7, 3, 2, 2, 334, 335, 5, 34, 18, 2, 335, 336, 7, 3, 2, 2,
-	336, 337, 5, 72, 37, 2, 337, 81, 3, 2, 2, 2, 338, 339, 9, 6, 2, 2, 339,
-	83, 3, 2, 2, 2, 340, 345, 7, 24, 2, 2, 341, 346, 5, 50, 26, 2, 342, 346,
-	5, 34, 18, 2, 343, 346, 5, 60, 31, 2, 344, 346, 3, 2, 2, 2, 345, 341, 3,
-	2, 2, 2, 345, 342, 3, 2, 2, 2, 345, 343, 3, 2, 2, 2, 345, 344, 3, 2, 2,
-	2, 346, 85, 3, 2, 2, 2, 33, 93, 107, 116, 122, 126, 142, 147, 152, 156,
-	171, 184, 192, 196, 210, 213, 227, 235, 244, 249, 257, 264, 271, 281, 297,
-	302, 307, 314, 319, 325, 331, 345,
+	3, 27, 5, 27, 227, 10, 27, 3, 28, 3, 28, 3, 28, 3, 29, 3, 29, 3, 29, 5,
+	29, 235, 10, 29, 3, 30, 3, 30, 3, 30, 3, 30, 3, 30, 3, 30, 3, 30, 5, 30,
+	244, 10, 30, 3, 30, 3, 30, 3, 30, 5, 30, 249, 10, 30, 3, 31, 3, 31, 3,
+	31, 3, 31, 5, 31, 255, 10, 31, 3, 31, 3, 31, 3, 32, 3, 32, 3, 32, 3, 32,
+	3, 32, 3, 32, 3, 32, 3, 32, 5, 32, 267, 10, 32, 3, 33, 3, 33, 3, 33, 3,
+	33, 3, 33, 5, 33, 274, 10, 33, 3, 34, 3, 34, 3, 34, 3, 34, 3, 35, 3, 35,
+	3, 35, 3, 35, 5, 35, 284, 10, 35, 3, 36, 3, 36, 3, 36, 3, 36, 3, 36, 3,
+	36, 3, 36, 3, 36, 3, 36, 3, 36, 3, 36, 3, 36, 3, 36, 3, 36, 5, 36, 300,
+	10, 36, 3, 37, 3, 37, 3, 37, 5, 37, 305, 10, 37, 3, 37, 3, 37, 3, 37, 5,
+	37, 310, 10, 37, 3, 38, 3, 38, 3, 38, 3, 38, 3, 38, 5, 38, 317, 10, 38,
+	3, 39, 3, 39, 3, 39, 5, 39, 322, 10, 39, 3, 40, 3, 40, 3, 40, 3, 40, 5,
+	40, 328, 10, 40, 3, 40, 3, 40, 3, 41, 3, 41, 5, 41, 334, 10, 41, 3, 41,
+	3, 41, 3, 41, 3, 41, 3, 41, 3, 42, 3, 42, 3, 43, 3, 43, 3, 43, 3, 43, 3,
+	43, 5, 43, 348, 10, 43, 3, 43, 2, 2, 44, 2, 4, 6, 8, 10, 12, 14, 16, 18,
+	20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54,
+	56, 58, 60, 62, 64, 66, 68, 70, 72, 74, 76, 78, 80, 82, 84, 2, 7, 3, 2,
+	34, 36, 3, 2, 10, 15, 3, 2, 16, 17, 3, 2, 18, 19, 3, 2, 28, 29, 2, 353,
+	2, 86, 3, 2, 2, 2, 4, 93, 3, 2, 2, 2, 6, 95, 3, 2, 2, 2, 8, 106, 3, 2,
+	2, 2, 10, 112, 3, 2, 2, 2, 12, 116, 3, 2, 2, 2, 14, 118, 3, 2, 2, 2, 16,
+	120, 3, 2, 2, 2, 18, 123, 3, 2, 2, 2, 20, 132, 3, 2, 2, 2, 22, 134, 3,
+	2, 2, 2, 24, 139, 3, 2, 2, 2, 26, 150, 3, 2, 2, 2, 28, 154, 3, 2, 2, 2,
+	30, 172, 3, 2, 2, 2, 32, 174, 3, 2, 2, 2, 34, 177, 3, 2, 2, 2, 36, 183,
+	3, 2, 2, 2, 38, 185, 3, 2, 2, 2, 40, 191, 3, 2, 2, 2, 42, 195, 3, 2, 2,
+	2, 44, 212, 3, 2, 2, 2, 46, 214, 3, 2, 2, 2, 48, 218, 3, 2, 2, 2, 50, 220,
+	3, 2, 2, 2, 52, 226, 3, 2, 2, 2, 54, 228, 3, 2, 2, 2, 56, 234, 3, 2, 2,
+	2, 58, 248, 3, 2, 2, 2, 60, 250, 3, 2, 2, 2, 62, 266, 3, 2, 2, 2, 64, 273,
+	3, 2, 2, 2, 66, 275, 3, 2, 2, 2, 68, 283, 3, 2, 2, 2, 70, 299, 3, 2, 2,
+	2, 72, 301, 3, 2, 2, 2, 74, 311, 3, 2, 2, 2, 76, 318, 3, 2, 2, 2, 78, 323,
+	3, 2, 2, 2, 80, 333, 3, 2, 2, 2, 82, 340, 3, 2, 2, 2, 84, 342, 3, 2, 2,
+	2, 86, 87, 5, 4, 3, 2, 87, 88, 5, 22, 12, 2, 88, 3, 3, 2, 2, 2, 89, 90,
+	5, 6, 4, 2, 90, 91, 5, 4, 3, 2, 91, 94, 3, 2, 2, 2, 92, 94, 3, 2, 2, 2,
+	93, 89, 3, 2, 2, 2, 93, 92, 3, 2, 2, 2, 94, 5, 3, 2, 2, 2, 95, 96, 7, 33,
+	2, 2, 96, 97, 7, 42, 2, 2, 97, 98, 5, 8, 5, 2, 98, 99, 5, 12, 7, 2, 99,
+	100, 7, 3, 2, 2, 100, 101, 5, 10, 6, 2, 101, 7, 3, 2, 2, 2, 102, 103, 7,
+	4, 2, 2, 103, 104, 7, 42, 2, 2, 104, 107, 5, 8, 5, 2, 105, 107, 3, 2, 2,
+	2, 106, 102, 3, 2, 2, 2, 106, 105, 3, 2, 2, 2, 107, 9, 3, 2, 2, 2, 108,
+	109, 5, 6, 4, 2, 109, 110, 5, 10, 6, 2, 110, 113, 3, 2, 2, 2, 111, 113,
+	3, 2, 2, 2, 112, 108, 3, 2, 2, 2, 112, 111, 3, 2, 2, 2, 113, 11, 3, 2,
+	2, 2, 114, 117, 5, 14, 8, 2, 115, 117, 5, 16, 9, 2, 116, 114, 3, 2, 2,
+	2, 116, 115, 3, 2, 2, 2, 117, 13, 3, 2, 2, 2, 118, 119, 9, 2, 2, 2, 119,
+	15, 3, 2, 2, 2, 120, 121, 5, 18, 10, 2, 121, 122, 5, 14, 8, 2, 122, 17,
+	3, 2, 2, 2, 123, 124, 7, 5, 2, 2, 124, 125, 5, 50, 26, 2, 125, 126, 7,
+	6, 2, 2, 126, 127, 5, 20, 11, 2, 127, 19, 3, 2, 2, 2, 128, 129, 5, 18,
+	10, 2, 129, 130, 5, 20, 11, 2, 130, 133, 3, 2, 2, 2, 131, 133, 3, 2, 2,
+	2, 132, 128, 3, 2, 2, 2, 132, 131, 3, 2, 2, 2, 133, 21, 3, 2, 2, 2, 134,
+	137, 5, 24, 13, 2, 135, 138, 5, 22, 12, 2, 136, 138, 3, 2, 2, 2, 137, 135,
+	3, 2, 2, 2, 137, 136, 3, 2, 2, 2, 138, 23, 3, 2, 2, 2, 139, 142, 5, 26,
+	14, 2, 140, 143, 5, 32, 17, 2, 141, 143, 3, 2, 2, 2, 142, 140, 3, 2, 2,
+	2, 142, 141, 3, 2, 2, 2, 143, 146, 3, 2, 2, 2, 144, 147, 5, 6, 4, 2, 145,
+	147, 3, 2, 2, 2, 146, 144, 3, 2, 2, 2, 146, 145, 3, 2, 2, 2, 147, 148,
+	3, 2, 2, 2, 148, 149, 5, 66, 34, 2, 149, 25, 3, 2, 2, 2, 150, 151, 7, 23,
+	2, 2, 151, 152, 7, 42, 2, 2, 152, 153, 5, 28, 15, 2, 153, 27, 3, 2, 2,
+	2, 154, 161, 7, 7, 2, 2, 155, 156, 7, 42, 2, 2, 156, 157, 5, 8, 5, 2, 157,
+	158, 5, 14, 8, 2, 158, 159, 5, 30, 16, 2, 159, 162, 3, 2, 2, 2, 160, 162,
+	3, 2, 2, 2, 161, 155, 3, 2, 2, 2, 161, 160, 3, 2, 2, 2, 162, 163, 3, 2,
+	2, 2, 163, 164, 7, 8, 2, 2, 164, 29, 3, 2, 2, 2, 165, 166, 7, 4, 2, 2,
+	166, 167, 7, 42, 2, 2, 167, 168, 5, 8, 5, 2, 168, 169, 5, 12, 7, 2, 169,
+	170, 5, 30, 16, 2, 170, 173, 3, 2, 2, 2, 171, 173, 3, 2, 2, 2, 172, 165,
+	3, 2, 2, 2, 172, 171, 3, 2, 2, 2, 173, 31, 3, 2, 2, 2, 174, 175, 7, 9,
+	2, 2, 175, 176, 5, 14, 8, 2, 176, 33, 3, 2, 2, 2, 177, 178, 5, 38, 20,
+	2, 178, 179, 5, 36, 19, 2, 179, 35, 3, 2, 2, 2, 180, 181, 7, 31, 2, 2,
+	181, 184, 5, 34, 18, 2, 182, 184, 3, 2, 2, 2, 183, 180, 3, 2, 2, 2, 183,
+	182, 3, 2, 2, 2, 184, 37, 3, 2, 2, 2, 185, 186, 5, 42, 22, 2, 186, 187,
+	5, 40, 21, 2, 187, 39, 3, 2, 2, 2, 188, 189, 7, 30, 2, 2, 189, 192, 5,
+	42, 22, 2, 190, 192, 3, 2, 2, 2, 191, 188, 3, 2, 2, 2, 191, 190, 3, 2,
+	2, 2, 192, 41, 3, 2, 2, 2, 193, 196, 7, 32, 2, 2, 194, 196, 3, 2, 2, 2,
+	195, 193, 3, 2, 2, 2, 195, 194, 3, 2, 2, 2, 196, 197, 3, 2, 2, 2, 197,
+	198, 5, 44, 23, 2, 198, 43, 3, 2, 2, 2, 199, 200, 7, 7, 2, 2, 200, 201,
+	5, 34, 18, 2, 201, 202, 7, 8, 2, 2, 202, 213, 3, 2, 2, 2, 203, 213, 5,
+	46, 24, 2, 204, 213, 7, 37, 2, 2, 205, 213, 7, 38, 2, 2, 206, 209, 7, 42,
+	2, 2, 207, 210, 5, 18, 10, 2, 208, 210, 3, 2, 2, 2, 209, 207, 3, 2, 2,
+	2, 209, 208, 3, 2, 2, 2, 210, 213, 3, 2, 2, 2, 211, 213, 5, 60, 31, 2,
+	212, 199, 3, 2, 2, 2, 212, 203, 3, 2, 2, 2, 212, 204, 3, 2, 2, 2, 212,
+	205, 3, 2, 2, 2, 212, 206, 3, 2, 2, 2, 212, 211, 3, 2, 2, 2, 213, 45, 3,
+	2, 2, 2, 214, 215, 5, 50, 26, 2, 215, 216, 5, 48, 25, 2, 216, 217, 5, 50,
+	26, 2, 217, 47, 3, 2, 2, 2, 218, 219, 9, 3, 2, 2, 219, 49, 3, 2, 2, 2,
+	220, 221, 5, 54, 28, 2, 221, 222, 5, 52, 27, 2, 222, 51, 3, 2, 2, 2, 223,
+	224, 9, 4, 2, 2, 224, 227, 5, 50, 26, 2, 225, 227, 3, 2, 2, 2, 226, 223,
+	3, 2, 2, 2, 226, 225, 3, 2, 2, 2, 227, 53, 3, 2, 2, 2, 228, 229, 5, 58,
+	30, 2, 229, 230, 5, 56, 29, 2, 230, 55, 3, 2, 2, 2, 231, 232, 9, 5, 2,
+	2, 232, 235, 5, 54, 28, 2, 233, 235, 3, 2, 2, 2, 234, 231, 3, 2, 2, 2,
+	234, 233, 3, 2, 2, 2, 235, 57, 3, 2, 2, 2, 236, 237, 7, 7, 2, 2, 237, 238,
+	5, 50, 26, 2, 238, 239, 7, 8, 2, 2, 239, 249, 3, 2, 2, 2, 240, 243, 7,
+	42, 2, 2, 241, 244, 5, 18, 10, 2, 242, 244, 3, 2, 2, 2, 243, 241, 3, 2,
+	2, 2, 243, 242, 3, 2, 2, 2, 244, 249, 3, 2, 2, 2, 245, 249, 7, 39, 2, 2,
+	246, 249, 7, 40, 2, 2, 247, 249, 5, 60, 31, 2, 248, 236, 3, 2, 2, 2, 248,
+	240, 3, 2, 2, 2, 248, 245, 3, 2, 2, 2, 248, 246, 3, 2, 2, 2, 248, 247,
+	3, 2, 2, 2, 249, 59, 3, 2, 2, 2, 250, 251, 7, 42, 2, 2, 251, 254, 7, 7,
+	2, 2, 252, 255, 5, 62, 32, 2, 253, 255, 3, 2, 2, 2, 254, 252, 3, 2, 2,
+	2, 254, 253, 3, 2, 2, 2, 255, 256, 3, 2, 2, 2, 256, 257, 7, 8, 2, 2, 257,
+	61, 3, 2, 2, 2, 258, 259, 5, 34, 18, 2, 259, 260, 5, 64, 33, 2, 260, 267,
+	3, 2, 2, 2, 261, 262, 5, 50, 26, 2, 262, 263, 5, 64, 33, 2, 263, 267, 3,
+	2, 2, 2, 264, 265, 7, 41, 2, 2, 265, 267, 5, 64, 33, 2, 266, 258, 3, 2,
+	2, 2, 266, 261, 3, 2, 2, 2, 266, 264, 3, 2, 2, 2, 267, 63, 3, 2, 2, 2,
+	268, 269, 7, 4, 2, 2, 269, 270, 5, 62, 32, 2, 270, 271, 5, 64, 33, 2, 271,
+	274, 3, 2, 2, 2, 272, 274, 3, 2, 2, 2, 273, 268, 3, 2, 2, 2, 273, 272,
+	3, 2, 2, 2, 274, 65, 3, 2, 2, 2, 275, 276, 7, 20, 2, 2, 276, 277, 5, 68,
+	35, 2, 277, 278, 7, 21, 2, 2, 278, 67, 3, 2, 2, 2, 279, 280, 5, 70, 36,
+	2, 280, 281, 5, 68, 35, 2, 281, 284, 3, 2, 2, 2, 282, 284, 3, 2, 2, 2,
+	283, 279, 3, 2, 2, 2, 283, 282, 3, 2, 2, 2, 284, 69, 3, 2, 2, 2, 285, 286,
+	5, 72, 37, 2, 286, 287, 7, 3, 2, 2, 287, 300, 3, 2, 2, 2, 288, 300, 5,
+	74, 38, 2, 289, 300, 5, 78, 40, 2, 290, 291, 5, 82, 42, 2, 291, 292, 7,
+	3, 2, 2, 292, 300, 3, 2, 2, 2, 293, 294, 5, 84, 43, 2, 294, 295, 7, 3,
+	2, 2, 295, 300, 3, 2, 2, 2, 296, 297, 5, 60, 31, 2, 297, 298, 7, 3, 2,
+	2, 298, 300, 3, 2, 2, 2, 299, 285, 3, 2, 2, 2, 299, 288, 3, 2, 2, 2, 299,
+	289, 3, 2, 2, 2, 299, 290, 3, 2, 2, 2, 299, 293, 3, 2, 2, 2, 299, 296,
+	3, 2, 2, 2, 300, 71, 3, 2, 2, 2, 301, 304, 7, 42, 2, 2, 302, 305, 5, 18,
+	10, 2, 303, 305, 3, 2, 2, 2, 304, 302, 3, 2, 2, 2, 304, 303, 3, 2, 2, 2,
+	305, 306, 3, 2, 2, 2, 306, 309, 7, 22, 2, 2, 307, 310, 5, 50, 26, 2, 308,
+	310, 5, 34, 18, 2, 309, 307, 3, 2, 2, 2, 309, 308, 3, 2, 2, 2, 310, 73,
+	3, 2, 2, 2, 311, 312, 7, 25, 2, 2, 312, 313, 5, 34, 18, 2, 313, 316, 5,
+	66, 34, 2, 314, 317, 5, 76, 39, 2, 315, 317, 3, 2, 2, 2, 316, 314, 3, 2,
+	2, 2, 316, 315, 3, 2, 2, 2, 317, 75, 3, 2, 2, 2, 318, 321, 7, 26, 2, 2,
+	319, 322, 5, 74, 38, 2, 320, 322, 5, 66, 34, 2, 321, 319, 3, 2, 2, 2, 321,
+	320, 3, 2, 2, 2, 322, 77, 3, 2, 2, 2, 323, 327, 7, 27, 2, 2, 324, 328,
+	5, 80, 41, 2, 325, 328, 5, 34, 18, 2, 326, 328, 3, 2, 2, 2, 327, 324, 3,
+	2, 2, 2, 327, 325, 3, 2, 2, 2, 327, 326, 3, 2, 2, 2, 328, 329, 3, 2, 2,
+	2, 329, 330, 5, 66, 34, 2, 330, 79, 3, 2, 2, 2, 331, 334, 5, 72, 37, 2,
+	332, 334, 3, 2, 2, 2, 333, 331, 3, 2, 2, 2, 333, 332, 3, 2, 2, 2, 334,
+	335, 3, 2, 2, 2, 335, 336, 7, 3, 2, 2, 336, 337, 5, 34, 18, 2, 337, 338,
+	7, 3, 2, 2, 338, 339, 5, 72, 37, 2, 339, 81, 3, 2, 2, 2, 340, 341, 9, 6,
+	2, 2, 341, 83, 3, 2, 2, 2, 342, 347, 7, 24, 2, 2, 343, 348, 5, 50, 26,
+	2, 344, 348, 5, 34, 18, 2, 345, 348, 5, 60, 31, 2, 346, 348, 3, 2, 2, 2,
+	347, 343, 3, 2, 2, 2, 347, 344, 3, 2, 2, 2, 347, 345, 3, 2, 2, 2, 347,
+	346, 3, 2, 2, 2, 348, 85, 3, 2, 2, 2, 33, 93, 106, 112, 116, 132, 137,
+	142, 146, 161, 172, 183, 191, 195, 209, 212, 226, 234, 243, 248, 254, 266,
+	273, 283, 299, 304, 309, 316, 321, 327, 333, 347,
 }
 var literalNames = []string{
 	"", "';'", "','", "'['", "']'", "'('", "')'", "'->'", "'='", "'/='", "'<'",
@@ -181,9 +182,9 @@ var symbolicNames = []string{
 }
 
 var ruleNames = []string{
-	"program", "vars_decl", "var_decl", "nextVar", "nextTypes", "nextVarDecl",
-	"var_type", "scalar", "tensor", "dim", "nextDim", "procs_decl", "proc_decl",
-	"sign", "args", "ret_type", "bool_expr", "nextBool", "and_expr", "nextAnd",
+	"program", "vars_decl", "var_decl", "nextVar", "nextVarDecl", "var_type",
+	"scalar", "tensor", "dim", "nextDim", "procs_decl", "proc_decl", "sign",
+	"args", "nextTypes", "ret_type", "bool_expr", "nextBool", "and_expr", "nextAnd",
 	"not_expr", "bool_term", "rel_expr", "relOp", "num_expr", "nextSum", "prod_expr",
 	"nextProd", "factor", "proc_call", "param", "nextParam", "block", "stmts",
 	"stmt", "assignment", "condition", "alter", "loop_stmt", "forNotation",
@@ -271,17 +272,17 @@ const (
 	BigDuckParserRULE_vars_decl   = 1
 	BigDuckParserRULE_var_decl    = 2
 	BigDuckParserRULE_nextVar     = 3
-	BigDuckParserRULE_nextTypes   = 4
-	BigDuckParserRULE_nextVarDecl = 5
-	BigDuckParserRULE_var_type    = 6
-	BigDuckParserRULE_scalar      = 7
-	BigDuckParserRULE_tensor      = 8
-	BigDuckParserRULE_dim         = 9
-	BigDuckParserRULE_nextDim     = 10
-	BigDuckParserRULE_procs_decl  = 11
-	BigDuckParserRULE_proc_decl   = 12
-	BigDuckParserRULE_sign        = 13
-	BigDuckParserRULE_args        = 14
+	BigDuckParserRULE_nextVarDecl = 4
+	BigDuckParserRULE_var_type    = 5
+	BigDuckParserRULE_scalar      = 6
+	BigDuckParserRULE_tensor      = 7
+	BigDuckParserRULE_dim         = 8
+	BigDuckParserRULE_nextDim     = 9
+	BigDuckParserRULE_procs_decl  = 10
+	BigDuckParserRULE_proc_decl   = 11
+	BigDuckParserRULE_sign        = 12
+	BigDuckParserRULE_args        = 13
+	BigDuckParserRULE_nextTypes   = 14
 	BigDuckParserRULE_ret_type    = 15
 	BigDuckParserRULE_bool_expr   = 16
 	BigDuckParserRULE_nextBool    = 17
@@ -611,16 +612,6 @@ func (s *Var_declContext) Var_type() IVar_typeContext {
 	return t.(IVar_typeContext)
 }
 
-func (s *Var_declContext) NextTypes() INextTypesContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*INextTypesContext)(nil)).Elem(), 0)
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(INextTypesContext)
-}
-
 func (s *Var_declContext) NextVarDecl() INextVarDeclContext {
 	var t = s.GetTypedRuleContext(reflect.TypeOf((*INextVarDeclContext)(nil)).Elem(), 0)
 
@@ -690,14 +681,10 @@ func (p *BigDuckParser) Var_decl() (localctx IVar_declContext) {
 	}
 	{
 		p.SetState(97)
-		p.NextTypes()
-	}
-	{
-		p.SetState(98)
 		p.Match(BigDuckParserT__0)
 	}
 	{
-		p.SetState(99)
+		p.SetState(98)
 		p.NextVarDecl()
 	}
 
@@ -796,175 +783,26 @@ func (p *BigDuckParser) NextVar() (localctx INextVarContext) {
 		}
 	}()
 
-	p.SetState(105)
+	p.SetState(104)
 	p.GetErrorHandler().Sync(p)
 
 	switch p.GetTokenStream().LA(1) {
 	case BigDuckParserT__1:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(101)
+			p.SetState(100)
 			p.Match(BigDuckParserT__1)
 		}
 		{
-			p.SetState(102)
+			p.SetState(101)
 			p.Match(BigDuckParserID)
 		}
 		{
-			p.SetState(103)
+			p.SetState(102)
 			p.NextVar()
 		}
 
 	case BigDuckParserT__2, BigDuckParserINT, BigDuckParserFLOAT, BigDuckParserBOOL:
-		p.EnterOuterAlt(localctx, 2)
-
-	default:
-		panic(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
-	}
-
-	return localctx
-}
-
-// INextTypesContext is an interface to support dynamic dispatch.
-type INextTypesContext interface {
-	antlr.ParserRuleContext
-
-	// GetParser returns the parser.
-	GetParser() antlr.Parser
-
-	// IsNextTypesContext differentiates from other interfaces.
-	IsNextTypesContext()
-}
-
-type NextTypesContext struct {
-	*antlr.BaseParserRuleContext
-	parser antlr.Parser
-}
-
-func NewEmptyNextTypesContext() *NextTypesContext {
-	var p = new(NextTypesContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
-	p.RuleIndex = BigDuckParserRULE_nextTypes
-	return p
-}
-
-func (*NextTypesContext) IsNextTypesContext() {}
-
-func NewNextTypesContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *NextTypesContext {
-	var p = new(NextTypesContext)
-
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
-
-	p.parser = parser
-	p.RuleIndex = BigDuckParserRULE_nextTypes
-
-	return p
-}
-
-func (s *NextTypesContext) GetParser() antlr.Parser { return s.parser }
-
-func (s *NextTypesContext) ID() antlr.TerminalNode {
-	return s.GetToken(BigDuckParserID, 0)
-}
-
-func (s *NextTypesContext) NextVar() INextVarContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*INextVarContext)(nil)).Elem(), 0)
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(INextVarContext)
-}
-
-func (s *NextTypesContext) Var_type() IVar_typeContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*IVar_typeContext)(nil)).Elem(), 0)
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IVar_typeContext)
-}
-
-func (s *NextTypesContext) NextTypes() INextTypesContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*INextTypesContext)(nil)).Elem(), 0)
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(INextTypesContext)
-}
-
-func (s *NextTypesContext) GetRuleContext() antlr.RuleContext {
-	return s
-}
-
-func (s *NextTypesContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
-	return antlr.TreesStringTree(s, ruleNames, recog)
-}
-
-func (s *NextTypesContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(BigDuckListener); ok {
-		listenerT.EnterNextTypes(s)
-	}
-}
-
-func (s *NextTypesContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(BigDuckListener); ok {
-		listenerT.ExitNextTypes(s)
-	}
-}
-
-func (p *BigDuckParser) NextTypes() (localctx INextTypesContext) {
-	localctx = NewNextTypesContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 8, BigDuckParserRULE_nextTypes)
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
-
-	p.SetState(114)
-	p.GetErrorHandler().Sync(p)
-
-	switch p.GetTokenStream().LA(1) {
-	case BigDuckParserT__1:
-		p.EnterOuterAlt(localctx, 1)
-		{
-			p.SetState(107)
-			p.Match(BigDuckParserT__1)
-		}
-		{
-			p.SetState(108)
-			p.Match(BigDuckParserID)
-		}
-		{
-			p.SetState(109)
-			p.NextVar()
-		}
-		{
-			p.SetState(110)
-			p.Var_type()
-		}
-		{
-			p.SetState(111)
-			p.NextTypes()
-		}
-
-	case BigDuckParserT__0, BigDuckParserT__5:
 		p.EnterOuterAlt(localctx, 2)
 
 	default:
@@ -1054,7 +892,7 @@ func (s *NextVarDeclContext) ExitRule(listener antlr.ParseTreeListener) {
 
 func (p *BigDuckParser) NextVarDecl() (localctx INextVarDeclContext) {
 	localctx = NewNextVarDeclContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 10, BigDuckParserRULE_nextVarDecl)
+	p.EnterRule(localctx, 8, BigDuckParserRULE_nextVarDecl)
 
 	defer func() {
 		p.ExitRule()
@@ -1072,17 +910,17 @@ func (p *BigDuckParser) NextVarDecl() (localctx INextVarDeclContext) {
 		}
 	}()
 
-	p.SetState(120)
+	p.SetState(110)
 	p.GetErrorHandler().Sync(p)
-	switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 3, p.GetParserRuleContext()) {
+	switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 2, p.GetParserRuleContext()) {
 	case 1:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(116)
+			p.SetState(106)
 			p.Var_decl()
 		}
 		{
-			p.SetState(117)
+			p.SetState(107)
 			p.NextVarDecl()
 		}
 
@@ -1174,7 +1012,7 @@ func (s *Var_typeContext) ExitRule(listener antlr.ParseTreeListener) {
 
 func (p *BigDuckParser) Var_type() (localctx IVar_typeContext) {
 	localctx = NewVar_typeContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 12, BigDuckParserRULE_var_type)
+	p.EnterRule(localctx, 10, BigDuckParserRULE_var_type)
 
 	defer func() {
 		p.ExitRule()
@@ -1192,21 +1030,21 @@ func (p *BigDuckParser) Var_type() (localctx IVar_typeContext) {
 		}
 	}()
 
-	p.SetState(124)
+	p.SetState(114)
 	p.GetErrorHandler().Sync(p)
 
 	switch p.GetTokenStream().LA(1) {
 	case BigDuckParserINT, BigDuckParserFLOAT, BigDuckParserBOOL:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(122)
+			p.SetState(112)
 			p.Scalar()
 		}
 
 	case BigDuckParserT__2:
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(123)
+			p.SetState(113)
 			p.Tensor()
 		}
 
@@ -1289,7 +1127,7 @@ func (s *ScalarContext) ExitRule(listener antlr.ParseTreeListener) {
 
 func (p *BigDuckParser) Scalar() (localctx IScalarContext) {
 	localctx = NewScalarContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 14, BigDuckParserRULE_scalar)
+	p.EnterRule(localctx, 12, BigDuckParserRULE_scalar)
 	var _la int
 
 	defer func() {
@@ -1310,7 +1148,7 @@ func (p *BigDuckParser) Scalar() (localctx IScalarContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(126)
+		p.SetState(116)
 		_la = p.GetTokenStream().LA(1)
 
 		if !(((_la-32)&-(0x1f+1)) == 0 && ((1<<uint((_la-32)))&((1<<(BigDuckParserINT-32))|(1<<(BigDuckParserFLOAT-32))|(1<<(BigDuckParserBOOL-32)))) != 0) {
@@ -1404,7 +1242,7 @@ func (s *TensorContext) ExitRule(listener antlr.ParseTreeListener) {
 
 func (p *BigDuckParser) Tensor() (localctx ITensorContext) {
 	localctx = NewTensorContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 16, BigDuckParserRULE_tensor)
+	p.EnterRule(localctx, 14, BigDuckParserRULE_tensor)
 
 	defer func() {
 		p.ExitRule()
@@ -1424,11 +1262,11 @@ func (p *BigDuckParser) Tensor() (localctx ITensorContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(128)
+		p.SetState(118)
 		p.Dim()
 	}
 	{
-		p.SetState(129)
+		p.SetState(119)
 		p.Scalar()
 	}
 
@@ -1515,7 +1353,7 @@ func (s *DimContext) ExitRule(listener antlr.ParseTreeListener) {
 
 func (p *BigDuckParser) Dim() (localctx IDimContext) {
 	localctx = NewDimContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 18, BigDuckParserRULE_dim)
+	p.EnterRule(localctx, 16, BigDuckParserRULE_dim)
 
 	defer func() {
 		p.ExitRule()
@@ -1535,19 +1373,19 @@ func (p *BigDuckParser) Dim() (localctx IDimContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(131)
+		p.SetState(121)
 		p.Match(BigDuckParserT__2)
 	}
 	{
-		p.SetState(132)
+		p.SetState(122)
 		p.Num_expr()
 	}
 	{
-		p.SetState(133)
+		p.SetState(123)
 		p.Match(BigDuckParserT__3)
 	}
 	{
-		p.SetState(134)
+		p.SetState(124)
 		p.NextDim()
 	}
 
@@ -1634,7 +1472,7 @@ func (s *NextDimContext) ExitRule(listener antlr.ParseTreeListener) {
 
 func (p *BigDuckParser) NextDim() (localctx INextDimContext) {
 	localctx = NewNextDimContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 20, BigDuckParserRULE_nextDim)
+	p.EnterRule(localctx, 18, BigDuckParserRULE_nextDim)
 
 	defer func() {
 		p.ExitRule()
@@ -1652,17 +1490,17 @@ func (p *BigDuckParser) NextDim() (localctx INextDimContext) {
 		}
 	}()
 
-	p.SetState(140)
+	p.SetState(130)
 	p.GetErrorHandler().Sync(p)
-	switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 5, p.GetParserRuleContext()) {
+	switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 4, p.GetParserRuleContext()) {
 	case 1:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(136)
+			p.SetState(126)
 			p.Dim()
 		}
 		{
-			p.SetState(137)
+			p.SetState(127)
 			p.NextDim()
 		}
 
@@ -1754,7 +1592,7 @@ func (s *Procs_declContext) ExitRule(listener antlr.ParseTreeListener) {
 
 func (p *BigDuckParser) Procs_decl() (localctx IProcs_declContext) {
 	localctx = NewProcs_declContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 22, BigDuckParserRULE_procs_decl)
+	p.EnterRule(localctx, 20, BigDuckParserRULE_procs_decl)
 
 	defer func() {
 		p.ExitRule()
@@ -1774,16 +1612,16 @@ func (p *BigDuckParser) Procs_decl() (localctx IProcs_declContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(142)
+		p.SetState(132)
 		p.Proc_decl()
 	}
-	p.SetState(145)
+	p.SetState(135)
 	p.GetErrorHandler().Sync(p)
 
 	switch p.GetTokenStream().LA(1) {
 	case BigDuckParserPROC:
 		{
-			p.SetState(143)
+			p.SetState(133)
 			p.Procs_decl()
 		}
 
@@ -1896,7 +1734,7 @@ func (s *Proc_declContext) ExitRule(listener antlr.ParseTreeListener) {
 
 func (p *BigDuckParser) Proc_decl() (localctx IProc_declContext) {
 	localctx = NewProc_declContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 24, BigDuckParserRULE_proc_decl)
+	p.EnterRule(localctx, 22, BigDuckParserRULE_proc_decl)
 
 	defer func() {
 		p.ExitRule()
@@ -1916,16 +1754,16 @@ func (p *BigDuckParser) Proc_decl() (localctx IProc_declContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(147)
+		p.SetState(137)
 		p.Sign()
 	}
-	p.SetState(150)
+	p.SetState(140)
 	p.GetErrorHandler().Sync(p)
 
 	switch p.GetTokenStream().LA(1) {
 	case BigDuckParserT__6:
 		{
-			p.SetState(148)
+			p.SetState(138)
 			p.Ret_type()
 		}
 
@@ -1934,13 +1772,13 @@ func (p *BigDuckParser) Proc_decl() (localctx IProc_declContext) {
 	default:
 		panic(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
 	}
-	p.SetState(154)
+	p.SetState(144)
 	p.GetErrorHandler().Sync(p)
 
 	switch p.GetTokenStream().LA(1) {
 	case BigDuckParserVAR:
 		{
-			p.SetState(152)
+			p.SetState(142)
 			p.Var_decl()
 		}
 
@@ -1950,7 +1788,7 @@ func (p *BigDuckParser) Proc_decl() (localctx IProc_declContext) {
 		panic(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
 	}
 	{
-		p.SetState(156)
+		p.SetState(146)
 		p.Block()
 	}
 
@@ -2035,7 +1873,7 @@ func (s *SignContext) ExitRule(listener antlr.ParseTreeListener) {
 
 func (p *BigDuckParser) Sign() (localctx ISignContext) {
 	localctx = NewSignContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 26, BigDuckParserRULE_sign)
+	p.EnterRule(localctx, 24, BigDuckParserRULE_sign)
 
 	defer func() {
 		p.ExitRule()
@@ -2055,15 +1893,15 @@ func (p *BigDuckParser) Sign() (localctx ISignContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(158)
+		p.SetState(148)
 		p.Match(BigDuckParserPROC)
 	}
 	{
-		p.SetState(159)
+		p.SetState(149)
 		p.Match(BigDuckParserID)
 	}
 	{
-		p.SetState(160)
+		p.SetState(150)
 		p.Args()
 	}
 
@@ -2164,7 +2002,7 @@ func (s *ArgsContext) ExitRule(listener antlr.ParseTreeListener) {
 
 func (p *BigDuckParser) Args() (localctx IArgsContext) {
 	localctx = NewArgsContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 28, BigDuckParserRULE_args)
+	p.EnterRule(localctx, 26, BigDuckParserRULE_args)
 
 	defer func() {
 		p.ExitRule()
@@ -2184,28 +2022,28 @@ func (p *BigDuckParser) Args() (localctx IArgsContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(162)
+		p.SetState(152)
 		p.Match(BigDuckParserT__4)
 	}
-	p.SetState(169)
+	p.SetState(159)
 	p.GetErrorHandler().Sync(p)
 
 	switch p.GetTokenStream().LA(1) {
 	case BigDuckParserID:
 		{
-			p.SetState(163)
+			p.SetState(153)
 			p.Match(BigDuckParserID)
 		}
 		{
-			p.SetState(164)
+			p.SetState(154)
 			p.NextVar()
 		}
 		{
-			p.SetState(165)
+			p.SetState(155)
 			p.Scalar()
 		}
 		{
-			p.SetState(166)
+			p.SetState(156)
 			p.NextTypes()
 		}
 
@@ -2215,8 +2053,157 @@ func (p *BigDuckParser) Args() (localctx IArgsContext) {
 		panic(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
 	}
 	{
-		p.SetState(171)
+		p.SetState(161)
 		p.Match(BigDuckParserT__5)
+	}
+
+	return localctx
+}
+
+// INextTypesContext is an interface to support dynamic dispatch.
+type INextTypesContext interface {
+	antlr.ParserRuleContext
+
+	// GetParser returns the parser.
+	GetParser() antlr.Parser
+
+	// IsNextTypesContext differentiates from other interfaces.
+	IsNextTypesContext()
+}
+
+type NextTypesContext struct {
+	*antlr.BaseParserRuleContext
+	parser antlr.Parser
+}
+
+func NewEmptyNextTypesContext() *NextTypesContext {
+	var p = new(NextTypesContext)
+	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	p.RuleIndex = BigDuckParserRULE_nextTypes
+	return p
+}
+
+func (*NextTypesContext) IsNextTypesContext() {}
+
+func NewNextTypesContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *NextTypesContext {
+	var p = new(NextTypesContext)
+
+	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+
+	p.parser = parser
+	p.RuleIndex = BigDuckParserRULE_nextTypes
+
+	return p
+}
+
+func (s *NextTypesContext) GetParser() antlr.Parser { return s.parser }
+
+func (s *NextTypesContext) ID() antlr.TerminalNode {
+	return s.GetToken(BigDuckParserID, 0)
+}
+
+func (s *NextTypesContext) NextVar() INextVarContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*INextVarContext)(nil)).Elem(), 0)
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(INextVarContext)
+}
+
+func (s *NextTypesContext) Var_type() IVar_typeContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*IVar_typeContext)(nil)).Elem(), 0)
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IVar_typeContext)
+}
+
+func (s *NextTypesContext) NextTypes() INextTypesContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*INextTypesContext)(nil)).Elem(), 0)
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(INextTypesContext)
+}
+
+func (s *NextTypesContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *NextTypesContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
+	return antlr.TreesStringTree(s, ruleNames, recog)
+}
+
+func (s *NextTypesContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(BigDuckListener); ok {
+		listenerT.EnterNextTypes(s)
+	}
+}
+
+func (s *NextTypesContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(BigDuckListener); ok {
+		listenerT.ExitNextTypes(s)
+	}
+}
+
+func (p *BigDuckParser) NextTypes() (localctx INextTypesContext) {
+	localctx = NewNextTypesContext(p, p.GetParserRuleContext(), p.GetState())
+	p.EnterRule(localctx, 28, BigDuckParserRULE_nextTypes)
+
+	defer func() {
+		p.ExitRule()
+	}()
+
+	defer func() {
+		if err := recover(); err != nil {
+			if v, ok := err.(antlr.RecognitionException); ok {
+				localctx.SetException(v)
+				p.GetErrorHandler().ReportError(p, v)
+				p.GetErrorHandler().Recover(p, v)
+			} else {
+				panic(err)
+			}
+		}
+	}()
+
+	p.SetState(170)
+	p.GetErrorHandler().Sync(p)
+
+	switch p.GetTokenStream().LA(1) {
+	case BigDuckParserT__1:
+		p.EnterOuterAlt(localctx, 1)
+		{
+			p.SetState(163)
+			p.Match(BigDuckParserT__1)
+		}
+		{
+			p.SetState(164)
+			p.Match(BigDuckParserID)
+		}
+		{
+			p.SetState(165)
+			p.NextVar()
+		}
+		{
+			p.SetState(166)
+			p.Var_type()
+		}
+		{
+			p.SetState(167)
+			p.NextTypes()
+		}
+
+	case BigDuckParserT__5:
+		p.EnterOuterAlt(localctx, 2)
+
+	default:
+		panic(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
 	}
 
 	return localctx
@@ -2312,11 +2299,11 @@ func (p *BigDuckParser) Ret_type() (localctx IRet_typeContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(173)
+		p.SetState(172)
 		p.Match(BigDuckParserT__6)
 	}
 	{
-		p.SetState(174)
+		p.SetState(173)
 		p.Scalar()
 	}
 
@@ -2423,11 +2410,11 @@ func (p *BigDuckParser) Bool_expr() (localctx IBool_exprContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(176)
+		p.SetState(175)
 		p.And_expr()
 	}
 	{
-		p.SetState(177)
+		p.SetState(176)
 		p.NextBool()
 	}
 
@@ -2526,18 +2513,18 @@ func (p *BigDuckParser) NextBool() (localctx INextBoolContext) {
 		}
 	}()
 
-	p.SetState(182)
+	p.SetState(181)
 	p.GetErrorHandler().Sync(p)
 
 	switch p.GetTokenStream().LA(1) {
 	case BigDuckParserOR:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(179)
+			p.SetState(178)
 			p.Match(BigDuckParserOR)
 		}
 		{
-			p.SetState(180)
+			p.SetState(179)
 			p.Bool_expr()
 		}
 
@@ -2651,11 +2638,11 @@ func (p *BigDuckParser) And_expr() (localctx IAnd_exprContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(184)
+		p.SetState(183)
 		p.Not_expr()
 	}
 	{
-		p.SetState(185)
+		p.SetState(184)
 		p.NextAnd()
 	}
 
@@ -2754,18 +2741,18 @@ func (p *BigDuckParser) NextAnd() (localctx INextAndContext) {
 		}
 	}()
 
-	p.SetState(190)
+	p.SetState(189)
 	p.GetErrorHandler().Sync(p)
 
 	switch p.GetTokenStream().LA(1) {
 	case BigDuckParserAND:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(187)
+			p.SetState(186)
 			p.Match(BigDuckParserAND)
 		}
 		{
-			p.SetState(188)
+			p.SetState(187)
 			p.Not_expr()
 		}
 
@@ -2872,13 +2859,13 @@ func (p *BigDuckParser) Not_expr() (localctx INot_exprContext) {
 	}()
 
 	p.EnterOuterAlt(localctx, 1)
-	p.SetState(194)
+	p.SetState(193)
 	p.GetErrorHandler().Sync(p)
 
 	switch p.GetTokenStream().LA(1) {
 	case BigDuckParserNOT:
 		{
-			p.SetState(192)
+			p.SetState(191)
 			p.Match(BigDuckParserNOT)
 		}
 
@@ -2888,7 +2875,7 @@ func (p *BigDuckParser) Not_expr() (localctx INot_exprContext) {
 		panic(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
 	}
 	{
-		p.SetState(196)
+		p.SetState(195)
 		p.Bool_term()
 	}
 
@@ -3025,58 +3012,58 @@ func (p *BigDuckParser) Bool_term() (localctx IBool_termContext) {
 		}
 	}()
 
-	p.SetState(211)
+	p.SetState(210)
 	p.GetErrorHandler().Sync(p)
 	switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 14, p.GetParserRuleContext()) {
 	case 1:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(198)
+			p.SetState(197)
 			p.Match(BigDuckParserT__4)
 		}
 		{
-			p.SetState(199)
+			p.SetState(198)
 			p.Bool_expr()
 		}
 		{
-			p.SetState(200)
+			p.SetState(199)
 			p.Match(BigDuckParserT__5)
 		}
 
 	case 2:
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(202)
+			p.SetState(201)
 			p.Rel_expr()
 		}
 
 	case 3:
 		p.EnterOuterAlt(localctx, 3)
 		{
-			p.SetState(203)
+			p.SetState(202)
 			p.Match(BigDuckParserTRUE)
 		}
 
 	case 4:
 		p.EnterOuterAlt(localctx, 4)
 		{
-			p.SetState(204)
+			p.SetState(203)
 			p.Match(BigDuckParserFALSE)
 		}
 
 	case 5:
 		p.EnterOuterAlt(localctx, 5)
 		{
-			p.SetState(205)
+			p.SetState(204)
 			p.Match(BigDuckParserID)
 		}
-		p.SetState(208)
+		p.SetState(207)
 		p.GetErrorHandler().Sync(p)
 
 		switch p.GetTokenStream().LA(1) {
 		case BigDuckParserT__2:
 			{
-				p.SetState(206)
+				p.SetState(205)
 				p.Dim()
 			}
 
@@ -3089,7 +3076,7 @@ func (p *BigDuckParser) Bool_term() (localctx IBool_termContext) {
 	case 6:
 		p.EnterOuterAlt(localctx, 6)
 		{
-			p.SetState(210)
+			p.SetState(209)
 			p.Proc_call()
 		}
 
@@ -3211,15 +3198,15 @@ func (p *BigDuckParser) Rel_expr() (localctx IRel_exprContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(213)
+		p.SetState(212)
 		p.Num_expr()
 	}
 	{
-		p.SetState(214)
+		p.SetState(213)
 		p.RelOp()
 	}
 	{
-		p.SetState(215)
+		p.SetState(214)
 		p.Num_expr()
 	}
 
@@ -3306,7 +3293,7 @@ func (p *BigDuckParser) RelOp() (localctx IRelOpContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(217)
+		p.SetState(216)
 		_la = p.GetTokenStream().LA(1)
 
 		if !(((_la)&-(0x1f+1)) == 0 && ((1<<uint(_la))&((1<<BigDuckParserT__7)|(1<<BigDuckParserT__8)|(1<<BigDuckParserT__9)|(1<<BigDuckParserT__10)|(1<<BigDuckParserT__11)|(1<<BigDuckParserT__12))) != 0) {
@@ -3420,11 +3407,11 @@ func (p *BigDuckParser) Num_expr() (localctx INum_exprContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(219)
+		p.SetState(218)
 		p.Prod_expr()
 	}
 	{
-		p.SetState(220)
+		p.SetState(219)
 		p.NextSum()
 	}
 
@@ -3520,14 +3507,14 @@ func (p *BigDuckParser) NextSum() (localctx INextSumContext) {
 		}
 	}()
 
-	p.SetState(225)
+	p.SetState(224)
 	p.GetErrorHandler().Sync(p)
 
 	switch p.GetTokenStream().LA(1) {
 	case BigDuckParserT__13, BigDuckParserT__14:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(222)
+			p.SetState(221)
 			_la = p.GetTokenStream().LA(1)
 
 			if !(_la == BigDuckParserT__13 || _la == BigDuckParserT__14) {
@@ -3538,7 +3525,7 @@ func (p *BigDuckParser) NextSum() (localctx INextSumContext) {
 			}
 		}
 		{
-			p.SetState(223)
+			p.SetState(222)
 			p.Num_expr()
 		}
 
@@ -3652,11 +3639,11 @@ func (p *BigDuckParser) Prod_expr() (localctx IProd_exprContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(227)
+		p.SetState(226)
 		p.Factor()
 	}
 	{
-		p.SetState(228)
+		p.SetState(227)
 		p.NextProd()
 	}
 
@@ -3752,14 +3739,14 @@ func (p *BigDuckParser) NextProd() (localctx INextProdContext) {
 		}
 	}()
 
-	p.SetState(233)
+	p.SetState(232)
 	p.GetErrorHandler().Sync(p)
 
 	switch p.GetTokenStream().LA(1) {
 	case BigDuckParserT__15, BigDuckParserT__16:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(230)
+			p.SetState(229)
 			_la = p.GetTokenStream().LA(1)
 
 			if !(_la == BigDuckParserT__15 || _la == BigDuckParserT__16) {
@@ -3770,7 +3757,7 @@ func (p *BigDuckParser) NextProd() (localctx INextProdContext) {
 			}
 		}
 		{
-			p.SetState(231)
+			p.SetState(230)
 			p.Prod_expr()
 		}
 
@@ -3904,37 +3891,37 @@ func (p *BigDuckParser) Factor() (localctx IFactorContext) {
 		}
 	}()
 
-	p.SetState(247)
+	p.SetState(246)
 	p.GetErrorHandler().Sync(p)
 	switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 18, p.GetParserRuleContext()) {
 	case 1:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(235)
+			p.SetState(234)
 			p.Match(BigDuckParserT__4)
 		}
 		{
-			p.SetState(236)
+			p.SetState(235)
 			p.Num_expr()
 		}
 		{
-			p.SetState(237)
+			p.SetState(236)
 			p.Match(BigDuckParserT__5)
 		}
 
 	case 2:
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(239)
+			p.SetState(238)
 			p.Match(BigDuckParserID)
 		}
-		p.SetState(242)
+		p.SetState(241)
 		p.GetErrorHandler().Sync(p)
 
 		switch p.GetTokenStream().LA(1) {
 		case BigDuckParserT__2:
 			{
-				p.SetState(240)
+				p.SetState(239)
 				p.Dim()
 			}
 
@@ -3947,21 +3934,21 @@ func (p *BigDuckParser) Factor() (localctx IFactorContext) {
 	case 3:
 		p.EnterOuterAlt(localctx, 3)
 		{
-			p.SetState(244)
+			p.SetState(243)
 			p.Match(BigDuckParserCTE_INT)
 		}
 
 	case 4:
 		p.EnterOuterAlt(localctx, 4)
 		{
-			p.SetState(245)
+			p.SetState(244)
 			p.Match(BigDuckParserCTE_FLOAT)
 		}
 
 	case 5:
 		p.EnterOuterAlt(localctx, 5)
 		{
-			p.SetState(246)
+			p.SetState(245)
 			p.Proc_call()
 		}
 
@@ -4022,16 +4009,6 @@ func (s *Proc_callContext) Param() IParamContext {
 	return t.(IParamContext)
 }
 
-func (s *Proc_callContext) NextParam() INextParamContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*INextParamContext)(nil)).Elem(), 0)
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(INextParamContext)
-}
-
 func (s *Proc_callContext) GetRuleContext() antlr.RuleContext {
 	return s
 }
@@ -4074,25 +4051,21 @@ func (p *BigDuckParser) Proc_call() (localctx IProc_callContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(249)
+		p.SetState(248)
 		p.Match(BigDuckParserID)
 	}
 	{
-		p.SetState(250)
+		p.SetState(249)
 		p.Match(BigDuckParserT__4)
 	}
-	p.SetState(255)
+	p.SetState(252)
 	p.GetErrorHandler().Sync(p)
 
 	switch p.GetTokenStream().LA(1) {
 	case BigDuckParserT__4, BigDuckParserNOT, BigDuckParserTRUE, BigDuckParserFALSE, BigDuckParserCTE_INT, BigDuckParserCTE_FLOAT, BigDuckParserCTE_STRING, BigDuckParserID:
 		{
-			p.SetState(251)
+			p.SetState(250)
 			p.Param()
-		}
-		{
-			p.SetState(252)
-			p.NextParam()
 		}
 
 	case BigDuckParserT__5:
@@ -4101,7 +4074,7 @@ func (p *BigDuckParser) Proc_call() (localctx IProc_callContext) {
 		panic(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
 	}
 	{
-		p.SetState(257)
+		p.SetState(254)
 		p.Match(BigDuckParserT__5)
 	}
 
@@ -4154,6 +4127,16 @@ func (s *ParamContext) Bool_expr() IBool_exprContext {
 	}
 
 	return t.(IBool_exprContext)
+}
+
+func (s *ParamContext) NextParam() INextParamContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*INextParamContext)(nil)).Elem(), 0)
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(INextParamContext)
 }
 
 func (s *ParamContext) Num_expr() INum_exprContext {
@@ -4210,28 +4193,40 @@ func (p *BigDuckParser) Param() (localctx IParamContext) {
 		}
 	}()
 
-	p.SetState(262)
+	p.SetState(264)
 	p.GetErrorHandler().Sync(p)
 	switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 20, p.GetParserRuleContext()) {
 	case 1:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(259)
+			p.SetState(256)
 			p.Bool_expr()
+		}
+		{
+			p.SetState(257)
+			p.NextParam()
 		}
 
 	case 2:
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(260)
+			p.SetState(259)
 			p.Num_expr()
+		}
+		{
+			p.SetState(260)
+			p.NextParam()
 		}
 
 	case 3:
 		p.EnterOuterAlt(localctx, 3)
 		{
-			p.SetState(261)
+			p.SetState(262)
 			p.Match(BigDuckParserCTE_STRING)
+		}
+		{
+			p.SetState(263)
+			p.NextParam()
 		}
 
 	}
@@ -4337,30 +4332,27 @@ func (p *BigDuckParser) NextParam() (localctx INextParamContext) {
 		}
 	}()
 
-	p.SetState(269)
+	p.SetState(271)
 	p.GetErrorHandler().Sync(p)
-
-	switch p.GetTokenStream().LA(1) {
-	case BigDuckParserT__1:
+	switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 21, p.GetParserRuleContext()) {
+	case 1:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(264)
+			p.SetState(266)
 			p.Match(BigDuckParserT__1)
 		}
 		{
-			p.SetState(265)
+			p.SetState(267)
 			p.Param()
 		}
 		{
-			p.SetState(266)
+			p.SetState(268)
 			p.NextParam()
 		}
 
-	case BigDuckParserT__5:
+	case 2:
 		p.EnterOuterAlt(localctx, 2)
 
-	default:
-		panic(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
 	}
 
 	return localctx
@@ -4456,15 +4448,15 @@ func (p *BigDuckParser) Block() (localctx IBlockContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(271)
+		p.SetState(273)
 		p.Match(BigDuckParserT__17)
 	}
 	{
-		p.SetState(272)
+		p.SetState(274)
 		p.Stmts()
 	}
 	{
-		p.SetState(273)
+		p.SetState(275)
 		p.Match(BigDuckParserT__18)
 	}
 
@@ -4569,18 +4561,18 @@ func (p *BigDuckParser) Stmts() (localctx IStmtsContext) {
 		}
 	}()
 
-	p.SetState(279)
+	p.SetState(281)
 	p.GetErrorHandler().Sync(p)
 
 	switch p.GetTokenStream().LA(1) {
 	case BigDuckParserRETURN, BigDuckParserIF, BigDuckParserLOOP, BigDuckParserBREAK, BigDuckParserSKIP_W, BigDuckParserID:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(275)
+			p.SetState(277)
 			p.Stmt()
 		}
 		{
-			p.SetState(276)
+			p.SetState(278)
 			p.Stmts()
 		}
 
@@ -4732,64 +4724,64 @@ func (p *BigDuckParser) Stmt() (localctx IStmtContext) {
 		}
 	}()
 
-	p.SetState(295)
+	p.SetState(297)
 	p.GetErrorHandler().Sync(p)
 	switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 23, p.GetParserRuleContext()) {
 	case 1:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(281)
+			p.SetState(283)
 			p.Assignment()
 		}
 		{
-			p.SetState(282)
+			p.SetState(284)
 			p.Match(BigDuckParserT__0)
 		}
 
 	case 2:
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(284)
+			p.SetState(286)
 			p.Condition()
 		}
 
 	case 3:
 		p.EnterOuterAlt(localctx, 3)
 		{
-			p.SetState(285)
+			p.SetState(287)
 			p.Loop_stmt()
 		}
 
 	case 4:
 		p.EnterOuterAlt(localctx, 4)
 		{
-			p.SetState(286)
+			p.SetState(288)
 			p.Ctrl_flow()
 		}
 		{
-			p.SetState(287)
+			p.SetState(289)
 			p.Match(BigDuckParserT__0)
 		}
 
 	case 5:
 		p.EnterOuterAlt(localctx, 5)
 		{
-			p.SetState(289)
+			p.SetState(291)
 			p.Ret_stmt()
 		}
 		{
-			p.SetState(290)
+			p.SetState(292)
 			p.Match(BigDuckParserT__0)
 		}
 
 	case 6:
 		p.EnterOuterAlt(localctx, 6)
 		{
-			p.SetState(292)
+			p.SetState(294)
 			p.Proc_call()
 		}
 		{
-			p.SetState(293)
+			p.SetState(295)
 			p.Match(BigDuckParserT__0)
 		}
 
@@ -4912,16 +4904,16 @@ func (p *BigDuckParser) Assignment() (localctx IAssignmentContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(297)
+		p.SetState(299)
 		p.Match(BigDuckParserID)
 	}
-	p.SetState(300)
+	p.SetState(302)
 	p.GetErrorHandler().Sync(p)
 
 	switch p.GetTokenStream().LA(1) {
 	case BigDuckParserT__2:
 		{
-			p.SetState(298)
+			p.SetState(300)
 			p.Dim()
 		}
 
@@ -4931,21 +4923,21 @@ func (p *BigDuckParser) Assignment() (localctx IAssignmentContext) {
 		panic(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
 	}
 	{
-		p.SetState(302)
+		p.SetState(304)
 		p.Match(BigDuckParserT__19)
 	}
-	p.SetState(305)
+	p.SetState(307)
 	p.GetErrorHandler().Sync(p)
 	switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 25, p.GetParserRuleContext()) {
 	case 1:
 		{
-			p.SetState(303)
+			p.SetState(305)
 			p.Num_expr()
 		}
 
 	case 2:
 		{
-			p.SetState(304)
+			p.SetState(306)
 			p.Bool_expr()
 		}
 
@@ -5068,24 +5060,24 @@ func (p *BigDuckParser) Condition() (localctx IConditionContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(307)
+		p.SetState(309)
 		p.Match(BigDuckParserIF)
 	}
 	{
-		p.SetState(308)
+		p.SetState(310)
 		p.Bool_expr()
 	}
 	{
-		p.SetState(309)
+		p.SetState(311)
 		p.Block()
 	}
-	p.SetState(312)
+	p.SetState(314)
 	p.GetErrorHandler().Sync(p)
 
 	switch p.GetTokenStream().LA(1) {
 	case BigDuckParserELSE:
 		{
-			p.SetState(310)
+			p.SetState(312)
 			p.Alter()
 		}
 
@@ -5202,22 +5194,22 @@ func (p *BigDuckParser) Alter() (localctx IAlterContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(314)
+		p.SetState(316)
 		p.Match(BigDuckParserELSE)
 	}
-	p.SetState(317)
+	p.SetState(319)
 	p.GetErrorHandler().Sync(p)
 
 	switch p.GetTokenStream().LA(1) {
 	case BigDuckParserIF:
 		{
-			p.SetState(315)
+			p.SetState(317)
 			p.Condition()
 		}
 
 	case BigDuckParserT__17:
 		{
-			p.SetState(316)
+			p.SetState(318)
 			p.Block()
 		}
 
@@ -5342,21 +5334,21 @@ func (p *BigDuckParser) Loop_stmt() (localctx ILoop_stmtContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(319)
+		p.SetState(321)
 		p.Match(BigDuckParserLOOP)
 	}
-	p.SetState(323)
+	p.SetState(325)
 	p.GetErrorHandler().Sync(p)
 	switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 28, p.GetParserRuleContext()) {
 	case 1:
 		{
-			p.SetState(320)
+			p.SetState(322)
 			p.ForNotation()
 		}
 
 	case 2:
 		{
-			p.SetState(321)
+			p.SetState(323)
 			p.Bool_expr()
 		}
 
@@ -5364,7 +5356,7 @@ func (p *BigDuckParser) Loop_stmt() (localctx ILoop_stmtContext) {
 
 	}
 	{
-		p.SetState(325)
+		p.SetState(327)
 		p.Block()
 	}
 
@@ -5483,13 +5475,13 @@ func (p *BigDuckParser) ForNotation() (localctx IForNotationContext) {
 	}()
 
 	p.EnterOuterAlt(localctx, 1)
-	p.SetState(329)
+	p.SetState(331)
 	p.GetErrorHandler().Sync(p)
 
 	switch p.GetTokenStream().LA(1) {
 	case BigDuckParserID:
 		{
-			p.SetState(327)
+			p.SetState(329)
 			p.Assignment()
 		}
 
@@ -5499,19 +5491,19 @@ func (p *BigDuckParser) ForNotation() (localctx IForNotationContext) {
 		panic(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
 	}
 	{
-		p.SetState(331)
-		p.Match(BigDuckParserT__0)
-	}
-	{
-		p.SetState(332)
-		p.Bool_expr()
-	}
-	{
 		p.SetState(333)
 		p.Match(BigDuckParserT__0)
 	}
 	{
 		p.SetState(334)
+		p.Bool_expr()
+	}
+	{
+		p.SetState(335)
+		p.Match(BigDuckParserT__0)
+	}
+	{
+		p.SetState(336)
 		p.Assignment()
 	}
 
@@ -5607,7 +5599,7 @@ func (p *BigDuckParser) Ctrl_flow() (localctx ICtrl_flowContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(336)
+		p.SetState(338)
 		_la = p.GetTokenStream().LA(1)
 
 		if !(_la == BigDuckParserBREAK || _la == BigDuckParserSKIP_W) {
@@ -5735,27 +5727,27 @@ func (p *BigDuckParser) Ret_stmt() (localctx IRet_stmtContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(338)
+		p.SetState(340)
 		p.Match(BigDuckParserRETURN)
 	}
-	p.SetState(343)
+	p.SetState(345)
 	p.GetErrorHandler().Sync(p)
 	switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 30, p.GetParserRuleContext()) {
 	case 1:
 		{
-			p.SetState(339)
+			p.SetState(341)
 			p.Num_expr()
 		}
 
 	case 2:
 		{
-			p.SetState(340)
+			p.SetState(342)
 			p.Bool_expr()
 		}
 
 	case 3:
 		{
-			p.SetState(341)
+			p.SetState(343)
 			p.Proc_call()
 		}
 

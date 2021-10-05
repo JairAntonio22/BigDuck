@@ -31,7 +31,7 @@ CTE_FLOAT   : DIGITS ('.' DIGITS)? ([Ee] SIGN? DIGITS)?;
 CTE_STRING  : '"' ~('"')* '"';
 ID          : LETTER (LETTER | DIGIT | '_')*;
 WS          : [ \n\t\r] -> skip;
-//COMMENT     : '#|' ()*? '|#' -> skip;
+//COMMENT     : '#|' ~('|' '#')* '|#' -> skip;
 
 // Syntax
 program     : vars_decl procs_decl;
@@ -39,10 +39,8 @@ program     : vars_decl procs_decl;
 vars_decl   : var_decl vars_decl
             | ;
 
-var_decl    : VAR ID nextVar var_type nextTypes ';' nextVarDecl;
+var_decl    : VAR ID nextVar var_type ';' nextVarDecl;
 nextVar     : ',' ID nextVar
-            | ;
-nextTypes   : ',' ID nextVar var_type nextTypes
             | ;
 nextVarDecl : var_decl nextVarDecl
             | ;
@@ -63,6 +61,8 @@ proc_decl   : sign (ret_type | ) (var_decl | ) block;
 sign        : PROC ID args;
 
 args        : '(' (ID nextVar scalar nextTypes | ) ')';
+nextTypes   : ',' ID nextVar var_type nextTypes
+            | ;
 
 ret_type    : '->' scalar;
 
@@ -104,17 +104,16 @@ factor      : '(' num_expr ')'
             | CTE_FLOAT
             | proc_call;
 
-proc_call   : ID '(' (param nextParam | ) ')';
-param       : bool_expr
-            | num_expr
-            | CTE_STRING;
+proc_call   : ID '(' (param | ) ')';
+param       : bool_expr nextParam
+            | num_expr nextParam
+            | CTE_STRING nextParam;
 nextParam   : ',' param nextParam
             | ;
 
 block       : '{' stmts '}';
 stmts       : stmt stmts
             | ;
-
 stmt        : assignment ';'
             | condition
             | loop_stmt

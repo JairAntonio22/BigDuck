@@ -20,9 +20,6 @@ type BigDuckListener interface {
 	// EnterNextVar is called when entering the nextVar production.
 	EnterNextVar(c *NextVarContext)
 
-	// EnterNextTypes is called when entering the nextTypes production.
-	EnterNextTypes(c *NextTypesContext)
-
 	// EnterNextVarDecl is called when entering the nextVarDecl production.
 	EnterNextVarDecl(c *NextVarDeclContext)
 
@@ -52,6 +49,9 @@ type BigDuckListener interface {
 
 	// EnterArgs is called when entering the args production.
 	EnterArgs(c *ArgsContext)
+
+	// EnterNextTypes is called when entering the nextTypes production.
+	EnterNextTypes(c *NextTypesContext)
 
 	// EnterRet_type is called when entering the ret_type production.
 	EnterRet_type(c *Ret_typeContext)
@@ -146,9 +146,6 @@ type BigDuckListener interface {
 	// ExitNextVar is called when exiting the nextVar production.
 	ExitNextVar(c *NextVarContext)
 
-	// ExitNextTypes is called when exiting the nextTypes production.
-	ExitNextTypes(c *NextTypesContext)
-
 	// ExitNextVarDecl is called when exiting the nextVarDecl production.
 	ExitNextVarDecl(c *NextVarDeclContext)
 
@@ -178,6 +175,9 @@ type BigDuckListener interface {
 
 	// ExitArgs is called when exiting the args production.
 	ExitArgs(c *ArgsContext)
+
+	// ExitNextTypes is called when exiting the nextTypes production.
+	ExitNextTypes(c *NextTypesContext)
 
 	// ExitRet_type is called when exiting the ret_type production.
 	ExitRet_type(c *Ret_typeContext)

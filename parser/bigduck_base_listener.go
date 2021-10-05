@@ -45,12 +45,6 @@ func (s *BaseBigDuckListener) EnterNextVar(ctx *NextVarContext) {}
 // ExitNextVar is called when production nextVar is exited.
 func (s *BaseBigDuckListener) ExitNextVar(ctx *NextVarContext) {}
 
-// EnterNextTypes is called when production nextTypes is entered.
-func (s *BaseBigDuckListener) EnterNextTypes(ctx *NextTypesContext) {}
-
-// ExitNextTypes is called when production nextTypes is exited.
-func (s *BaseBigDuckListener) ExitNextTypes(ctx *NextTypesContext) {}
-
 // EnterNextVarDecl is called when production nextVarDecl is entered.
 func (s *BaseBigDuckListener) EnterNextVarDecl(ctx *NextVarDeclContext) {}
 
@@ -110,6 +104,12 @@ func (s *BaseBigDuckListener) EnterArgs(ctx *ArgsContext) {}
 
 // ExitArgs is called when production args is exited.
 func (s *BaseBigDuckListener) ExitArgs(ctx *ArgsContext) {}
+
+// EnterNextTypes is called when production nextTypes is entered.
+func (s *BaseBigDuckListener) EnterNextTypes(ctx *NextTypesContext) {}
+
+// ExitNextTypes is called when production nextTypes is exited.
+func (s *BaseBigDuckListener) ExitNextTypes(ctx *NextTypesContext) {}
 
 // EnterRet_type is called when production ret_type is entered.
 func (s *BaseBigDuckListener) EnterRet_type(ctx *Ret_typeContext) {}
