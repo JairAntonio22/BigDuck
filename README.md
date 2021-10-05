@@ -43,5 +43,4 @@ var is_prime bool;
         print(primes[i]);
     }
 }
-
 ```
