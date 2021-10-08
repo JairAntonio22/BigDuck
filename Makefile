@@ -7,7 +7,7 @@ test: BigDuck
 	clear
 	./BigDuck test.duck
 
-BigDuck: *.go structs/*.go parser
+BigDuck: parser structs *.go
 	go build -o BigDuck *.go
 
 parser: BigDuck.g4

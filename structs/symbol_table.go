@@ -9,22 +9,20 @@ import "fmt"
 
 // type enumeration to keep track of symbol types
 
-type TypeEnum int
-
 const (
-    Int_t TypeEnum = iota
+    Int_t = iota
     Float_t
     Bool_t
     Tensor_t
     Proc_t
 )
 
-func (t TypeEnum) String() string {
+func TypeToString(t int) string {
     return []string {"int", "float", "bool", "tensor", "proc"}[t]
 }
 
-func TypeFromString(s string) TypeEnum {
-    return map[string]TypeEnum {
+func TypeFromString(s string) int {
+    return map[string]int {
         "int": Int_t,
         "float": Float_t,
         "bool": Bool_t,
@@ -33,85 +31,75 @@ func TypeFromString(s string) TypeEnum {
     }[s]
 }
 
-var ttoa = map[TypeEnum]string {
+// scope enumeration to keep track of symbol scope
+
+const (
+    Local = iota
+    Global
+    scopeEnumCount
+)
+
+func ScopeToString(t int) string {
+    return []string {"local", "global"}[t]
 }
 
 // symbol table implementation
 
-type symbolRegistry struct {
-    stype   TypeEnum
-    local   map[string]symbolRegistry
+type Symbol struct {
+    Stype       int
+
+    // for vars
+    Dim         []int
+
+    // for procs
+    NumArgs     int
+    TypeArgs    []int
+    RetType     int
 }
 
-func (s *symbolRegistry) print() {
-    fmt.Printf("%10s ", s.stype.String())
+type SymTable struct {
+    table       [2]map[string]Symbol
+}
 
-    if s.local == nil {
-        return
-
-    } else {
-        fmt.Printf("\n")
-
-        for key, registry := range s.local {
-            fmt.Printf("\t%20s ", key)
-            registry.print()
-            fmt.Printf("\n")
-        }
+func NewSymTable() SymTable {
+    return SymTable{
+        table: [2]map[string]Symbol{
+            make(map[string]Symbol),
+            make(map[string]Symbol),
+        },
     }
 }
 
-type SymbolTable struct {
-    data    map[string]symbolRegistry
-}
+func (s SymTable) Print() {
+    for scope := 0; scope < scopeEnumCount; scope++ {
+        fmt.Printf("=== %s ===\n", ScopeToString(scope))
 
-func NewSymbolTable() SymbolTable {
-    return SymbolTable{data: make(map[string]symbolRegistry)}
-}
+        for symbol, _ := range s.table[scope] {
+            fmt.Println(symbol)
+        }
 
-func (s *SymbolTable) Print() {
-    for key, registry := range s.data {
-        fmt.Printf("%20s ", key)
-        registry.print()
-        fmt.Printf("\n")
+        fmt.Println()
     }
 }
 
-func (s *SymbolTable) Insert(scope, name string, stype TypeEnum) bool {
-    var exists bool
+func (s *SymTable) Insert(scope int, name string, sym Symbol) {
+    s.table[scope][name] = sym
+}
 
-    if scope == "global" {
-        _, exists := s.data[name]
+func (s *SymTable) Lookup(name string) (scope int, sym Symbol, exists bool) {
+    for scope = 0; scope < scopeEnumCount; scope++ {
+        sym, exists = s.table[scope][name]
 
-        if !exists {
-            if stype == Proc_t {
-                s.data[name] = symbolRegistry{
-                    stype: stype,
-                    local: make(map[string]symbolRegistry),
-                }
-            } else {
-                s.data[name] = symbolRegistry{stype: stype}
-            }
-        }
-
-    } else {
-        _, exists := s.data[scope].local[name]
-
-        if !exists {
-            s.data[scope].local[name] = symbolRegistry{stype: stype}
+        if exists {
+            break
         }
     }
 
-    return exists
+    return
 }
 
-func (s *SymbolTable) Exists(scope, name string) bool {
-    var exists bool
-
-    if scope == "global" {
-        _, exists = s.data[name]
-    } else {
-        _, exists = s.data[scope].local[name]
+func (s *SymTable) ClearLocalScope() {
+    for key, _ := range s.table[0] {
+        delete(s.table[0], key)
     }
-
-    return exists
 }
