@@ -60,8 +60,10 @@ proc_decl   : sign (ret_type | ) (var_decl | ) block;
 
 sign        : PROC ID args;
 
-args        : '(' (ID nextVar scalar nextTypes | ) ')';
-nextTypes   : ',' ID nextVar var_type nextTypes
+args        : '(' (ID nextArg scalar nextTypes | ) ')';
+nextTypes   : ';' ID nextArg var_type nextTypes
+            | ;
+nextArg     : ',' ID nextArg
             | ;
 
 ret_type    : '->' scalar;

@@ -15,19 +15,20 @@ const (
     Bool_t
     Tensor_t
     Proc_t
+    Void_t
 )
 
 func TypeToString(t int) string {
-    return []string {"int", "float", "bool", "tensor", "proc"}[t]
+    return []string {"int", "float", "bool", "tensor", "proc", "void"}[t]
 }
 
 func TypeFromString(s string) int {
     return map[string]int {
-        "int": Int_t,
-        "float": Float_t,
-        "bool": Bool_t,
+        "int"   : Int_t,
+        "float" : Float_t,
+        "bool"  : Bool_t,
         "tensor": Tensor_t,
-        "proc": Proc_t,
+        "proc"  : Proc_t,
     }[s]
 }
 
@@ -65,20 +66,21 @@ func NewSymTable() SymTable {
     return SymTable{
         table: [2]map[string]Symbol{
             make(map[string]Symbol),
-            make(map[string]Symbol),
-        },
-    }
+            make(map[string]Symbol)}}
 }
 
 func (s SymTable) Print() {
+    fmt.Println("===== SymbolTable =====")
+
     for scope := 0; scope < scopeEnumCount; scope++ {
-        fmt.Printf("=== %s ===\n", ScopeToString(scope))
-
-        for symbol, _ := range s.table[scope] {
-            fmt.Println(symbol)
+        for name, _ := range s.table[scope] {
+            fmt.Printf(
+                "%8s %16s %8s %v\n",
+                ScopeToString(scope),
+                name,
+                TypeToString(s.table[scope][name].Stype),
+                s.table[scope][name])
         }
-
-        fmt.Println()
     }
 }
 
@@ -86,16 +88,26 @@ func (s *SymTable) Insert(scope int, name string, sym Symbol) {
     s.table[scope][name] = sym
 }
 
-func (s *SymTable) Lookup(name string) (scope int, sym Symbol, exists bool) {
-    for scope = 0; scope < scopeEnumCount; scope++ {
-        sym, exists = s.table[scope][name]
+func (s *SymTable) Lookup(name string) (int, Symbol, bool) {
+    for scope := 0; scope < scopeEnumCount; scope++ {
+        sym, exists := s.table[scope][name]
 
         if exists {
-            break
+            return scope, sym, exists
         }
     }
 
-    return
+    return 0, Symbol{}, false
+}
+
+func (s *SymTable) Update(name string, sym Symbol) {
+    for scope := 0; scope < scopeEnumCount; scope++ {
+        _, exists := s.table[scope][name]
+
+        if exists {
+            s.table[scope][name] = sym
+        }
+    }
 }
 
 func (s *SymTable) ClearLocalScope() {

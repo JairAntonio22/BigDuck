@@ -46,6 +46,21 @@ var k, i, prime_count int;
     }
 }
 
+proc fibonacci(n int) -> int
+var f0, f1, tmp, i int;
+{
+    f0 <- 0; 
+    f1 <- 1; 
+
+    loop i <- 0; i < n; i <- i + 1 {
+        tmp <- f1;
+        f1 <- f0 + f1;
+        f0 <- tmp;
+    }
+
+    return f0;
+}
+
 proc main()
 var primes [100]int;
 var n, fact_n int;
