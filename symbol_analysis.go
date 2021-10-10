@@ -18,8 +18,11 @@ import (
 var symtable = structs.NewSymTable()
 var scope = structs.Global
 var symqueue structs.Queue
-var dim structs.Queue
+
 var var_decl bool
+var dim structs.Queue
+var args bool
+var typequeue structs.Queue
 var argc int
 var ret_type = structs.Void_t
 var curr_proc string
@@ -50,12 +53,6 @@ func (this *BigDuckListener) EnterNextVar(c *parser.NextVarContext) {
     if c.ID() != nil {
         symqueue.Push(c.ID().GetText())
     }
-}
-
-// type declaration listener
-
-func (this *BigDuckListener) EnterVar_type(c *parser.Var_typeContext) {
-    //fmt.Println(c.GetText())
 }
 
 func (this *BigDuckListener) EnterDim(c *parser.DimContext) {
@@ -103,12 +100,18 @@ func (this *BigDuckListener) EnterScalar(c *parser.ScalarContext) {
                 c.GetStart().GetLine(), c.GetStart().GetColumn(), name)
 
         } else {
+            stype := structs.TypeFromString(c.GetText())
+
             symtable.Insert(
                 scope,
                 name,
                 structs.Symbol {
-                    Stype: structs.TypeFromString(c.GetText()),
+                    Stype: stype,
                     Dim: var_dim})
+
+            if args {
+                typequeue.Push(stype)
+            }
         }
     }
 
@@ -123,13 +126,22 @@ func (this *BigDuckListener) EnterSign(c *parser.SignContext) {
 }
 
 func (this *BigDuckListener) ExitProc_decl(c *parser.Proc_declContext) {
+    var typeArgs []int
+
+    for !typequeue.Empty() {
+        item, _ := typequeue.Pop()
+        stype, _ := item.(int)
+
+        typeArgs = append(typeArgs, stype)
+    }
+
     symtable.Update(
         curr_proc,
         structs.Symbol{
             Stype: structs.Proc_t,
             Dim: []int{1},
             NumArgs: argc,
-            TypeArgs: []int{},
+            TypeArgs: typeArgs,
             RetType: ret_type},)
 
     argc = 0
@@ -143,10 +155,16 @@ func (this *BigDuckListener) ExitProc_decl(c *parser.Proc_declContext) {
 
 func (this *BigDuckListener) EnterArgs(c *parser.ArgsContext) {
     if c.ID() != nil {
-        var_decl = true
         symqueue.Push(c.ID().GetText())
+        var_decl = true
+        args = true
         argc++
     }
+}
+
+func (this *BigDuckListener) ExitArgs(c *parser.ArgsContext) {
+    var_decl = false
+    args = false
 }
 
 func (this *BigDuckListener) EnterNextTypes(c *parser.NextTypesContext) {
@@ -161,10 +179,6 @@ func (this *BigDuckListener) EnterNextArg(c *parser.NextArgContext) {
         symqueue.Push(c.ID().GetText())
         argc++
     }
-}
-
-func (this *BigDuckListener) ExitArgs(c *parser.ArgsContext) {
-    var_decl = false
 }
 
 // procedure arguments declaration listener

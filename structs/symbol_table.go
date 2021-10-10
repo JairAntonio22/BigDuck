@@ -10,20 +10,26 @@ import "fmt"
 // type enumeration to keep track of symbol types
 
 const (
-    Int_t = iota
+    Void_t = iota
+    Error_t = iota
+    Int_t
     Float_t
     Bool_t
     Tensor_t
     Proc_t
-    Void_t
+    typeEnumCount
 )
 
 func TypeToString(t int) string {
-    return []string {"int", "float", "bool", "tensor", "proc", "void"}[t]
+    return []string {
+        "error", "void", "int", "float", "bool", "tensor", "proc",
+    }[t]
 }
 
 func TypeFromString(s string) int {
     return map[string]int {
+        "error" : Error_t,
+        "void"  : Void_t,
         "int"   : Int_t,
         "float" : Float_t,
         "bool"  : Bool_t,

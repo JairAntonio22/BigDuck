@@ -96,7 +96,7 @@ num_expr    : prod_expr nextSum;
 nextSum     : ('+' | '-') num_expr
             | ;
 
-prod_expr   : factor nextProd;
+prod_expr   : ('-' | ) factor nextProd;
 nextProd    : ('*' | '/') prod_expr
             | ;
 

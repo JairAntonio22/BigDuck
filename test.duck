@@ -46,19 +46,24 @@ var k, i, prime_count int;
     }
 }
 
-proc fibonacci(n int) -> int
-var f0, f1, tmp, i int;
-{
-    f0 <- 0; 
-    f1 <- 1; 
-
-    loop i <- 0; i < n; i <- i + 1 {
-        tmp <- f1;
-        f1 <- f0 + f1;
-        f0 <- tmp;
+proc aux(i, f0, f1 int) -> int {
+    if i = 0 {
+        return f0;
+    } else {
+        return aux(i - 1, f1, f0 + f1);
     }
+}
 
-    return f0;
+proc fibonacci(n int) -> int {
+    return aux(n, 0, 1);
+}
+
+proc abs(x float) -> float {
+    if x < 0 {
+        return -x;
+    } else {
+        return x;
+    }
 }
 
 proc main()
