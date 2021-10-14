@@ -1,0 +1,5 @@
+proc main()
+var e, f, g, h float;
+{
+    e <- f - a * g + h;
+}

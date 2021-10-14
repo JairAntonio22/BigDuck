@@ -1,8 +1,0 @@
-λ make test
-./BigDuck test.duck
-line 55:26 reportAttemptingFullContext d=25 (assignment), input='factorial(n);'
-line 55:25 reportAttemptingFullContext d=20 (param), input='n)'
-line 56:31 reportAttemptingFullContext d=20 (param), input='n,'
-line 56:45 reportAttemptingFullContext d=20 (param), input='fact_n)'
-line 59:26 reportAttemptingFullContext d=25 (assignment), input='getprimes(n);'
-line 59:25 reportAttemptingFullContext d=20 (param), input='n)'

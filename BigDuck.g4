@@ -69,11 +69,11 @@ nextArg     : ',' ID nextArg
 ret_type    : '->' scalar;
 
 bool_expr   : and_expr nextBool;
-nextBool    : OR bool_expr
+nextBool    : OR bool_expr nextBool
             | ;
 
 and_expr    : not_expr nextAnd;
-nextAnd     : AND not_expr
+nextAnd     : AND not_expr nextAnd
             | ;
 
 not_expr    : (NOT | ) bool_term;

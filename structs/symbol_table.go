@@ -7,49 +7,6 @@ package structs
 
 import "fmt"
 
-// type enumeration to keep track of symbol types
-
-const (
-    Void_t = iota
-    Error_t = iota
-    Int_t
-    Float_t
-    Bool_t
-    Tensor_t
-    Proc_t
-    typeEnumCount
-)
-
-func TypeToString(t int) string {
-    return []string {
-        "error", "void", "int", "float", "bool", "tensor", "proc",
-    }[t]
-}
-
-func TypeFromString(s string) int {
-    return map[string]int {
-        "error" : Error_t,
-        "void"  : Void_t,
-        "int"   : Int_t,
-        "float" : Float_t,
-        "bool"  : Bool_t,
-        "tensor": Tensor_t,
-        "proc"  : Proc_t,
-    }[s]
-}
-
-// scope enumeration to keep track of symbol scope
-
-const (
-    Local = iota
-    Global
-    scopeEnumCount
-)
-
-func ScopeToString(t int) string {
-    return []string {"local", "global"}[t]
-}
-
 // symbol table implementation
 
 type Symbol struct {
@@ -81,7 +38,7 @@ func (s SymTable) Print() {
     for scope := 0; scope < scopeEnumCount; scope++ {
         for name, _ := range s.table[scope] {
             fmt.Printf(
-                "%8s %16s %8s %v\n",
+                "%s\t%16s %8s %+v\n",
                 ScopeToString(scope),
                 name,
                 TypeToString(s.table[scope][name].Stype),

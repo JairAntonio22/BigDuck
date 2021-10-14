@@ -5,7 +5,7 @@ all: BigDuck
 
 test: BigDuck
 	clear
-	./BigDuck test.duck
+	./BigDuck test_expr.duck
 
 BigDuck: parser structs *.go
 	go build -o BigDuck *.go

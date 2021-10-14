@@ -24,15 +24,13 @@ func main() {
 
     parser.AddErrorListener(antlr.NewDiagnosticErrorListener(true))
     parser.BuildParseTrees = true
-
     antlr.ParseTreeWalkerDefault.Walk(listener, tree)
 
-    fmt.Println("")
+    fmt.Printf("Program is ")
 
     if listener.valid {
-        fmt.Println("accepted")
-
+        fmt.Println("valid")
     } else {
-        fmt.Println("rejected")
+        fmt.Println("not valid")
     }
 }

@@ -1,23 +1,5 @@
 package structs
 
-const (
-    ASG = iota  // assignment
-    ADD         // addition
-    SUB         // substraction
-    MUL         // multiplication
-    DIV         // division
-    AND         // logical and
-    OR          // logical or
-    NOT         // logical not
-    EQ          // equal
-    NEQ         // not equal
-    LES         // less than
-    GRE         // greater than
-    LEQ         // less or equal
-    GEQ         // greater or equal
-    operatorEnumCount
-)
-
 var cube [operatorEnumCount][typeEnumCount][typeEnumCount]int
 
 func InitCube() {
