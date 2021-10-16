@@ -17,7 +17,7 @@ type Tac struct {
 func (t Tac) Print() {
     fmt.Printf(
         "%s\t%s\t%s\t%s\n",
-        OperatorToString(t.Op),
+        OpToString[t.Op],
         t.Arg1,
         t.Arg2,
         t.Target)

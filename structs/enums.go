@@ -17,22 +17,18 @@ const (
     typeEnumCount
 )
 
-func TypeToString(t int) string {
-    return []string {
-        "error", "void", "int", "float", "bool", "tensor", "proc",
-    }[t]
+var TypeToString [typeEnumCount]string = [typeEnumCount]string {
+    "error", "void", "int", "float", "bool", "tensor", "proc",
 }
 
-func TypeFromString(s string) int {
-    return map[string]int {
-        "error" : Error_t,
-        "void"  : Void_t,
-        "int"   : Int_t,
-        "float" : Float_t,
-        "bool"  : Bool_t,
-        "tensor": Tensor_t,
-        "proc"  : Proc_t,
-    }[s]
+var TypeFromString map[string]int = map[string]int {
+    "error" : Error_t,
+    "void"  : Void_t,
+    "int"   : Int_t,
+    "float" : Float_t,
+    "bool"  : Bool_t,
+    "tensor": Tensor_t,
+    "proc"  : Proc_t,
 }
 
 // scope enumeration to keep track of symbol scope
@@ -43,8 +39,8 @@ const (
     scopeEnumCount
 )
 
-func ScopeToString(t int) string {
-    return []string {"local", "global"}[t]
+var ScopeToString [scopeEnumCount]string = [scopeEnumCount]string {
+    "local", "global",
 }
 
 /* 
@@ -62,6 +58,7 @@ const (
 
     EQ          // equal
     NEQ         // not equal
+
     LES         // less than
     GRE         // greater than
     LEQ         // less or equal
@@ -72,66 +69,44 @@ const (
     DIV         // division
     MUL         // multiplication
 
-    operatorEnumCount
+    LPAREN      // left parenthesis
+    RPAREN      // right parenthesis
+
+    JMP         // unconditional jump
+    JMT         // jump on true
+    JMF         // jump on false
+
+    opEnumCount
 )
 
-func OperatorToString(op int) string {
-    return []string {
-	"ASG",
-	"OR", "AND", "NOT",
-	"EQ", "NEQ", "LES", "GRE", "LEQ", "GEQ",
-	"SUB", "ADD", "DIV", "MUL",
-    }[op]
+var OpToString [opEnumCount]string = [opEnumCount]string{
+    "ASG",
+    "OR", "AND", "NOT",
+    "EQ", "NEQ",
+    "LES", "GRE", "LEQ", "GEQ",
+    "SUB", "ADD", "DIV", "MUL",
+    "LPA", "RPA",
+    "JMP", "JMT", "JMF",
 }
 
-func OperatorFromString(s string) int {
-    return map[string]int {
-        "<-"	: ASG,
-        "or"    : OR,
-        "and"   : AND,
-        "not"   : NOT,
-        "="     : EQ,
-        "/="    : NEQ,
-        "<"     : LES,
-        ">"     : GRE,
-        "<="    : LEQ,
-        ">="    : GEQ,
-        "-"     : SUB,
-        "+"     : ADD,
-        "/"     : DIV,
-        "*"     : MUL,
-    }[s]
-}
-
-/* 
-    operator arity enumeration
-*/
-
-const (
-    Unary = iota    // assignment
-    Binary          // logical or
-)
-
-func OperatorPriority(o int) int {
-    return map[int]int {
-        ASG : 0,
-
-        OR  : 1,
-
-        AND : 2,
-        NOT : 3,
-
-        EQ  : 4,
-        NEQ : 4,
-
-        LES : 5,
-        GRE : 5,
-        LEQ : 5,
-        GEQ : 5,
-
-        SUB : 6,
-        ADD : 6,
-        DIV : 7,
-        MUL : 7,
-    }[o]
+var OpFromString map[string]int = map[string]int {
+    "<-"    : ASG,
+    "or"    : OR,
+    "and"   : AND,
+    "not"   : NOT,
+    "="     : EQ,
+    "/="    : NEQ,
+    "<"     : LES,
+    ">"     : GRE,
+    "<="    : LEQ,
+    ">="    : GEQ,
+    "-"     : SUB,
+    "+"     : ADD,
+    "/"     : DIV,
+    "*"     : MUL,
+    "LPA"   : LPAREN,
+    "RPA"   : RPAREN,
+    "JMP"   : JMP,
+    "JMT"   : JMT,
+    "JMF"   : JMF,
 }

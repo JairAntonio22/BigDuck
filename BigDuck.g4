@@ -69,11 +69,11 @@ nextArg     : ',' ID nextArg
 ret_type    : '->' scalar;
 
 bool_expr   : and_expr nextBool;
-nextBool    : OR bool_expr nextBool
+nextBool    : OR bool_expr
             | ;
 
 and_expr    : not_expr nextAnd;
-nextAnd     : AND not_expr nextAnd
+nextAnd     : AND and_expr
             | ;
 
 not_expr    : (NOT | ) bool_term;
@@ -84,7 +84,8 @@ bool_term   : '(' bool_expr ')'
             | ID (dim | )
             | proc_call;
 
-rel_expr    : num_expr relOp num_expr;
+rel_expr    : num_expr opRel;
+opRel       : relOp num_expr;
 relOp       : '='
             | '/='
             | '<'
@@ -125,7 +126,8 @@ stmt        : assignment ';'
 
 assignment  : ID (dim | ) '<-' (num_expr | bool_expr);
 
-condition   : IF bool_expr block (alter | );
+condition   : IF bool_expr bodyCond;
+bodyCond    : block (alter | );
 
 alter       : ELSE (condition | block);
 

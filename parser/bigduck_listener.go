@@ -80,6 +80,9 @@ type BigDuckListener interface {
 	// EnterRel_expr is called when entering the rel_expr production.
 	EnterRel_expr(c *Rel_exprContext)
 
+	// EnterOpRel is called when entering the opRel production.
+	EnterOpRel(c *OpRelContext)
+
 	// EnterRelOp is called when entering the relOp production.
 	EnterRelOp(c *RelOpContext)
 
@@ -121,6 +124,9 @@ type BigDuckListener interface {
 
 	// EnterCondition is called when entering the condition production.
 	EnterCondition(c *ConditionContext)
+
+	// EnterBodyCond is called when entering the bodyCond production.
+	EnterBodyCond(c *BodyCondContext)
 
 	// EnterAlter is called when entering the alter production.
 	EnterAlter(c *AlterContext)
@@ -209,6 +215,9 @@ type BigDuckListener interface {
 	// ExitRel_expr is called when exiting the rel_expr production.
 	ExitRel_expr(c *Rel_exprContext)
 
+	// ExitOpRel is called when exiting the opRel production.
+	ExitOpRel(c *OpRelContext)
+
 	// ExitRelOp is called when exiting the relOp production.
 	ExitRelOp(c *RelOpContext)
 
@@ -250,6 +259,9 @@ type BigDuckListener interface {
 
 	// ExitCondition is called when exiting the condition production.
 	ExitCondition(c *ConditionContext)
+
+	// ExitBodyCond is called when exiting the bodyCond production.
+	ExitBodyCond(c *BodyCondContext)
 
 	// ExitAlter is called when exiting the alter production.
 	ExitAlter(c *AlterContext)

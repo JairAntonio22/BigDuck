@@ -165,6 +165,12 @@ func (s *BaseBigDuckListener) EnterRel_expr(ctx *Rel_exprContext) {}
 // ExitRel_expr is called when production rel_expr is exited.
 func (s *BaseBigDuckListener) ExitRel_expr(ctx *Rel_exprContext) {}
 
+// EnterOpRel is called when production opRel is entered.
+func (s *BaseBigDuckListener) EnterOpRel(ctx *OpRelContext) {}
+
+// ExitOpRel is called when production opRel is exited.
+func (s *BaseBigDuckListener) ExitOpRel(ctx *OpRelContext) {}
+
 // EnterRelOp is called when production relOp is entered.
 func (s *BaseBigDuckListener) EnterRelOp(ctx *RelOpContext) {}
 
@@ -248,6 +254,12 @@ func (s *BaseBigDuckListener) EnterCondition(ctx *ConditionContext) {}
 
 // ExitCondition is called when production condition is exited.
 func (s *BaseBigDuckListener) ExitCondition(ctx *ConditionContext) {}
+
+// EnterBodyCond is called when production bodyCond is entered.
+func (s *BaseBigDuckListener) EnterBodyCond(ctx *BodyCondContext) {}
+
+// ExitBodyCond is called when production bodyCond is exited.
+func (s *BaseBigDuckListener) ExitBodyCond(ctx *BodyCondContext) {}
 
 // EnterAlter is called when production alter is entered.
 func (s *BaseBigDuckListener) EnterAlter(ctx *AlterContext) {}

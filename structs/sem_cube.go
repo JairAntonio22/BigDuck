@@ -1,6 +1,6 @@
 package structs
 
-var cube [operatorEnumCount][typeEnumCount][typeEnumCount]int
+var cube [opEnumCount][typeEnumCount][typeEnumCount]int
 
 func InitCube() {
     cube[ASG][Int_t][Int_t]         = Int_t

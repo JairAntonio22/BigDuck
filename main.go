@@ -8,6 +8,13 @@ import (
     "github.com/antlr/antlr4/runtime/Go/antlr"
 )
 
+func checkError(err error) {
+    if err != nil {
+        fmt.Println(err)
+        os.Exit(0)
+    }
+}
+
 func main() {
     if len(os.Args) != 2 {
         checkError(errors.New("Usage: duck <namefile>"))
@@ -19,18 +26,20 @@ func main() {
     lexer := parser.NewBigDuckLexer(input)
     stream := antlr.NewCommonTokenStream(lexer, antlr.TokenDefaultChannel)
     parser := parser.NewBigDuckParser(stream)
-    listener := &BigDuckListener{valid: true}
+    listener := &BigDuckListener{valid: true, debug: true}
     tree := parser.Program()
 
     parser.AddErrorListener(antlr.NewDiagnosticErrorListener(true))
     parser.BuildParseTrees = true
     antlr.ParseTreeWalkerDefault.Walk(listener, tree)
 
-    fmt.Printf("Program is ")
+    if listener.debug {
+        fmt.Printf("Program is ")
 
-    if listener.valid {
-        fmt.Println("valid")
-    } else {
-        fmt.Println("not valid")
+        if listener.valid {
+            fmt.Println("valid")
+        } else {
+            fmt.Println("not valid")
+        }
     }
 }

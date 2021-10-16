@@ -39,9 +39,9 @@ func (s SymTable) Print() {
         for name, _ := range s.table[scope] {
             fmt.Printf(
                 "%s\t%16s %8s %+v\n",
-                ScopeToString(scope),
+                ScopeToString[scope],
                 name,
-                TypeToString(s.table[scope][name].Stype),
+                TypeToString[s.table[scope][name].Stype],
                 s.table[scope][name])
         }
     }
