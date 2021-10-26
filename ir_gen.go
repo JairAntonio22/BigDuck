@@ -10,15 +10,23 @@ import (
 //  generation listeners
 
 func (l *BigDuckListener) TopOp() int {
-    item := l.opstack.Top()
-    top, _ := item.(int)
-    return top
+    if l.opstack.Empty() {
+        return structs.NOP
+    } else {
+        item := l.opstack.Top()
+        top, _ := item.(int)
+        return top
+    }
 }
 
 func (l *BigDuckListener) PopOp() int {
-    item, _ := l.opstack.Pop()
-    op, _ := item.(int)
-    return op
+    if l.opstack.Empty() {
+        return structs.NOP
+    } else {
+        item, _ := l.opstack.Pop()
+        top, _ := item.(int)
+        return top
+    }
 }
 
 func (l *BigDuckListener) PushOp(op int) {
@@ -40,7 +48,7 @@ func (l *BigDuckListener) PushOp(op int) {
     }
 }
 
-func (l *BigDuckListener) generateTAC() {
+func (l *BigDuckListener) GenerateOpTAC() {
     var args [2]string
     var target string
     var i int
@@ -74,15 +82,35 @@ func (l *BigDuckListener) generateTAC() {
     l.pc++
 }
 
+func (l *BigDuckListener) GenerateJmpTAC(jmptype int) {
+    if jmptype == structs.JMP {
+        l.ir_code = append(l.ir_code, structs.Tac{Op: jmptype})
+        l.pc++
+    } else {
+        item, _ := l.argstack.Pop()
+        cond, _ := item.(string)
+
+        l.ir_code = append(l.ir_code, structs.Tac{Op: jmptype, Arg1: cond})
+        l.pc++
+    }
+}
+
+func (l *BigDuckListener) FillJmpTAC(index, target int) {
+    l.ir_code[index].Target = strconv.Itoa(target)
+}
+
 // IR generation listeners
 
 func (l *BigDuckListener) ExitProgram(c *parser.ProgramContext) {
-    for index, code := range l.ir_code {
-        fmt.Printf("%d\t", index);
-        code.Print()
-    }
+    l.ir_code = append(l.ir_code, structs.Tac{Op: structs.NOP})
+    if l.debug {
+        for index, code := range l.ir_code {
+            fmt.Printf("%3d ", index);
+            code.Print()
+        }
 
-    fmt.Println()
+        fmt.Println()
+    }
 }
 
 // Assignments
@@ -93,7 +121,7 @@ func (l *BigDuckListener) EnterAssignment(c *parser.AssignmentContext) {
 }
 
 func (l *BigDuckListener) ExitAssignment(c *parser.AssignmentContext) {
-    l.generateTAC()
+    l.GenerateOpTAC()
 }
 
 // Bool exprs
@@ -114,7 +142,7 @@ func (l *BigDuckListener) EnterNextAnd(c *parser.NextAndContext) {
 
 func (l *BigDuckListener) ExitAnd_expr(c *parser.And_exprContext) {
     if l.TopOp() == structs.OR {
-        l.generateTAC()
+        l.GenerateOpTAC()
     }
 }
 
@@ -128,7 +156,7 @@ func (l *BigDuckListener) EnterNot_expr(c *parser.Not_exprContext) {
 
 func (l *BigDuckListener) ExitNot_expr(c *parser.Not_exprContext) {
     if c.NOT() != nil {
-        l.generateTAC()
+        l.GenerateOpTAC()
     }
 }
 
@@ -159,7 +187,7 @@ func (l *BigDuckListener) ExitBool_term(c *parser.Bool_termContext) {
     top := l.TopOp()
 
     if top == structs.AND {
-        l.generateTAC()
+        l.GenerateOpTAC()
     }
 }
 
@@ -170,7 +198,7 @@ func (l *BigDuckListener) EnterOpRel(c *parser.OpRelContext) {
 }
 
 func (l *BigDuckListener) ExitRel_expr(c *parser.Rel_exprContext) {
-    l.generateTAC()
+    l.GenerateOpTAC()
 }
 
 // Sum exprs
@@ -201,7 +229,7 @@ func (l *BigDuckListener) EnterNextProd(c *parser.NextProdContext) {
 
 func (l *BigDuckListener) ExitProd_expr(c *parser.Prod_exprContext) {
     if l.TopOp() == structs.ADD || l.TopOp() == structs.SUB {
-        l.generateTAC()
+        l.GenerateOpTAC()
     }
 }
 
@@ -232,17 +260,57 @@ func (l *BigDuckListener) ExitFactor(c *parser.FactorContext) {
     top := l.TopOp()
 
     if top == structs.MUL || top == structs.DIV {
-        l.generateTAC()
+        l.GenerateOpTAC()
     }
 }
 
 // if statements
 
 func (l *BigDuckListener) EnterBodyCond(c *parser.BodyCondContext) {
-    /*
-    l.ir_code = append(
-        l.ir_code,
-        structs.Tac{Op: op, Arg1: args[0], Arg2: args[1], Target: target})
-    l.jmpstack.Push(l.pc - 1)
-    */
+    l.jmpstack.Push(l.pc)
+    l.GenerateJmpTAC(structs.JMF)
+}
+
+func (l *BigDuckListener) EnterEndIfBlock(c *parser.EndIfBlockContext) {
+    item, _ := l.jmpstack.Pop()
+    index, _ := item.(int)
+
+    if c.Alter() == nil {
+        l.FillJmpTAC(index, l.pc)
+    } else {
+        l.FillJmpTAC(index, l.pc + 1)
+    }
+}
+
+func (l *BigDuckListener) EnterAlter(c *parser.AlterContext) {
+    l.jmpstack.Push(l.pc)
+    l.GenerateJmpTAC(structs.JMP)
+}
+
+func (l *BigDuckListener) ExitAlter(c *parser.AlterContext) {
+    item, _ := l.jmpstack.Pop()
+    index, _ := item.(int)
+    l.FillJmpTAC(index, l.pc)
+}
+
+// loops
+
+func (l *BigDuckListener) EnterInfLoop(c *parser.InfLoopContext) {
+    l.jmpstack.Push(l.pc)
+}
+
+func (l *BigDuckListener) EnterWhileStyle(c *parser.WhileStyleContext) {
+    l.jmpstack.Push(l.pc)
+}
+
+func (l *BigDuckListener) ExitWhileStyle(c *parser.WhileStyleContext) {
+    l.jmpstack.Push(l.pc)
+    l.GenerateJmpTAC(structs.JMF)
+}
+
+func (l *BigDuckListener) ExitLoop_stmt(c *parser.Loop_stmtContext) {
+    l.GenerateJmpTAC(structs.JMP)
+    item, _ := l.jmpstack.Pop()
+    target, _ := item.(int)
+    l.FillJmpTAC(l.pc - 1, target)
 }

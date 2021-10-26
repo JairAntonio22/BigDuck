@@ -128,14 +128,23 @@ type BigDuckListener interface {
 	// EnterBodyCond is called when entering the bodyCond production.
 	EnterBodyCond(c *BodyCondContext)
 
+	// EnterEndIfBlock is called when entering the endIfBlock production.
+	EnterEndIfBlock(c *EndIfBlockContext)
+
 	// EnterAlter is called when entering the alter production.
 	EnterAlter(c *AlterContext)
 
 	// EnterLoop_stmt is called when entering the loop_stmt production.
 	EnterLoop_stmt(c *Loop_stmtContext)
 
-	// EnterForNotation is called when entering the forNotation production.
-	EnterForNotation(c *ForNotationContext)
+	// EnterForStyle is called when entering the forStyle production.
+	EnterForStyle(c *ForStyleContext)
+
+	// EnterWhileStyle is called when entering the whileStyle production.
+	EnterWhileStyle(c *WhileStyleContext)
+
+	// EnterInfLoop is called when entering the infLoop production.
+	EnterInfLoop(c *InfLoopContext)
 
 	// EnterCtrl_flow is called when entering the ctrl_flow production.
 	EnterCtrl_flow(c *Ctrl_flowContext)
@@ -263,14 +272,23 @@ type BigDuckListener interface {
 	// ExitBodyCond is called when exiting the bodyCond production.
 	ExitBodyCond(c *BodyCondContext)
 
+	// ExitEndIfBlock is called when exiting the endIfBlock production.
+	ExitEndIfBlock(c *EndIfBlockContext)
+
 	// ExitAlter is called when exiting the alter production.
 	ExitAlter(c *AlterContext)
 
 	// ExitLoop_stmt is called when exiting the loop_stmt production.
 	ExitLoop_stmt(c *Loop_stmtContext)
 
-	// ExitForNotation is called when exiting the forNotation production.
-	ExitForNotation(c *ForNotationContext)
+	// ExitForStyle is called when exiting the forStyle production.
+	ExitForStyle(c *ForStyleContext)
+
+	// ExitWhileStyle is called when exiting the whileStyle production.
+	ExitWhileStyle(c *WhileStyleContext)
+
+	// ExitInfLoop is called when exiting the infLoop production.
+	ExitInfLoop(c *InfLoopContext)
 
 	// ExitCtrl_flow is called when exiting the ctrl_flow production.
 	ExitCtrl_flow(c *Ctrl_flowContext)

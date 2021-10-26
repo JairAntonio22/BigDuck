@@ -127,13 +127,18 @@ stmt        : assignment ';'
 assignment  : ID (dim | ) '<-' (num_expr | bool_expr);
 
 condition   : IF bool_expr bodyCond;
-bodyCond    : block (alter | );
+bodyCond    : block endIfBlock;
+endIfBlock  : (alter | );
 
 alter       : ELSE (condition | block);
 
-loop_stmt   : LOOP (forNotation | bool_expr | ) block;
+loop_stmt   : LOOP (forStyle | whileStyle | infLoop) block;
 
-forNotation : (assignment | ) ';' bool_expr ';' assignment;
+forStyle    : (assignment | ) ';' bool_expr ';' assignment;
+
+whileStyle  : bool_expr;
+
+infLoop     : ;
 
 ctrl_flow   : (BREAK | SKIP_W);
 

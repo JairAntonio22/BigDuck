@@ -1,14 +1,17 @@
-proc main()
-var a, b, c, d int;
-var e, f, g, h float;
-var i, j, k, l bool;
-{
-    i <- true and j and (k or a < b) and not l;
 
-    if i or k {
-        b <- 100 + c;
+proc main()
+    var jmp bool;
+    var k int;
+{
+    k <- 0;
+
+    if jmp {
+        k <- 0;
     } else {
-        c <- d + h;
-        d <- a + b;
+        k <- 1;
+    }
+
+    loop {
+        k <- k + 1;
     }
 }

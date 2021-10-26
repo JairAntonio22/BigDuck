@@ -261,6 +261,12 @@ func (s *BaseBigDuckListener) EnterBodyCond(ctx *BodyCondContext) {}
 // ExitBodyCond is called when production bodyCond is exited.
 func (s *BaseBigDuckListener) ExitBodyCond(ctx *BodyCondContext) {}
 
+// EnterEndIfBlock is called when production endIfBlock is entered.
+func (s *BaseBigDuckListener) EnterEndIfBlock(ctx *EndIfBlockContext) {}
+
+// ExitEndIfBlock is called when production endIfBlock is exited.
+func (s *BaseBigDuckListener) ExitEndIfBlock(ctx *EndIfBlockContext) {}
+
 // EnterAlter is called when production alter is entered.
 func (s *BaseBigDuckListener) EnterAlter(ctx *AlterContext) {}
 
@@ -273,11 +279,23 @@ func (s *BaseBigDuckListener) EnterLoop_stmt(ctx *Loop_stmtContext) {}
 // ExitLoop_stmt is called when production loop_stmt is exited.
 func (s *BaseBigDuckListener) ExitLoop_stmt(ctx *Loop_stmtContext) {}
 
-// EnterForNotation is called when production forNotation is entered.
-func (s *BaseBigDuckListener) EnterForNotation(ctx *ForNotationContext) {}
+// EnterForStyle is called when production forStyle is entered.
+func (s *BaseBigDuckListener) EnterForStyle(ctx *ForStyleContext) {}
 
-// ExitForNotation is called when production forNotation is exited.
-func (s *BaseBigDuckListener) ExitForNotation(ctx *ForNotationContext) {}
+// ExitForStyle is called when production forStyle is exited.
+func (s *BaseBigDuckListener) ExitForStyle(ctx *ForStyleContext) {}
+
+// EnterWhileStyle is called when production whileStyle is entered.
+func (s *BaseBigDuckListener) EnterWhileStyle(ctx *WhileStyleContext) {}
+
+// ExitWhileStyle is called when production whileStyle is exited.
+func (s *BaseBigDuckListener) ExitWhileStyle(ctx *WhileStyleContext) {}
+
+// EnterInfLoop is called when production infLoop is entered.
+func (s *BaseBigDuckListener) EnterInfLoop(ctx *InfLoopContext) {}
+
+// ExitInfLoop is called when production infLoop is exited.
+func (s *BaseBigDuckListener) ExitInfLoop(ctx *InfLoopContext) {}
 
 // EnterCtrl_flow is called when production ctrl_flow is entered.
 func (s *BaseBigDuckListener) EnterCtrl_flow(ctx *Ctrl_flowContext) {}

@@ -9,9 +9,9 @@ proc factorial(n int) -> int {
 }
 
 proc getprimes(n int)
-var primes [100]int;
-var is_prime bool;
-var k, i, prime_count int;
+    var primes [100]int;
+    var is_prime bool;
+    var k, i, prime_count int;
 {
     if n < 0 {
         return;
@@ -67,8 +67,8 @@ proc abs(x float) -> float {
 }
 
 proc main()
-var primes [100]int;
-var n, fact_n int;
+    var primes [100]int;
+    var n, fact_n int;
 {
     n <- 5;
     fact_n <- factorial(n);

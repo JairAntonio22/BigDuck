@@ -50,7 +50,9 @@ var ScopeToString [scopeEnumCount]string = [scopeEnumCount]string {
 
 
 const (
-    ASG = iota  // assignment
+    NOP = iota  // No operation
+
+    ASG         // assignment
 
     OR          // logical or
     AND         // logical and
@@ -80,6 +82,7 @@ const (
 )
 
 var OpToString [opEnumCount]string = [opEnumCount]string{
+    "NOP",
     "ASG",
     "OR", "AND", "NOT",
     "EQ", "NEQ",

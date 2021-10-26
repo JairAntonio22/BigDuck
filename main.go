@@ -34,12 +34,10 @@ func main() {
     antlr.ParseTreeWalkerDefault.Walk(listener, tree)
 
     if listener.debug {
-        fmt.Printf("Program is ")
-
         if listener.valid {
-            fmt.Println("valid")
+            fmt.Println("Program is valid")
         } else {
-            fmt.Println("not valid")
+            fmt.Println("Program is not valid")
         }
     }
 }
