@@ -13,9 +13,9 @@ Science fields.
 ```
 #| Prime sieve algorithm |#
 proc main()
-var primes [100]int;
-var k, i, prime_count int;
-var is_prime bool;
+    var primes [100]int;
+    var k, i, prime_count int;
+    var is_prime bool;
 {
     primes[0] <- 2;
     primes[1] <- 3;
