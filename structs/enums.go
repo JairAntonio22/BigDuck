@@ -113,3 +113,11 @@ var OpFromString map[string]int = map[string]int {
     "JMT"   : JMT,
     "JMF"   : JMF,
 }
+
+//enumeration to keep track of loop style
+
+const (
+    InfStyle = iota
+    ForStyle
+    WhileStyle
+)

@@ -45,4 +45,5 @@ type BigDuckListener struct {
 
     pc          int
     tmpc        int
+    loopstyle   int
 }

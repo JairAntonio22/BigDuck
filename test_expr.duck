@@ -1,17 +1,12 @@
 
 proc main()
-    var jmp bool;
-    var k int;
+    var i, a int;
 {
-    k <- 0;
-
-    if jmp {
-        k <- 0;
-    } else {
-        k <- 1;
-    }
-
-    loop {
-        k <- k + 1;
+    loop i <- 0; i < 10; i <- i + 1 {
+        if mod(i, 2) = 0 {
+            a <- a + 1;
+        } else {
+            a <- a - 1;
+        }
     }
 }
