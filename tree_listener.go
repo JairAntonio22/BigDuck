@@ -42,6 +42,8 @@ type BigDuckListener struct {
     opstack     structs.Stack
     argstack    structs.Stack
     jmpstack    structs.Stack
+    skipqueue   structs.Queue
+    breakqueue  structs.Queue
 
     pc          int
     tmpc        int

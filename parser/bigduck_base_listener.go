@@ -291,11 +291,11 @@ func (s *BaseBigDuckListener) EnterForCond(ctx *ForCondContext) {}
 // ExitForCond is called when production forCond is exited.
 func (s *BaseBigDuckListener) ExitForCond(ctx *ForCondContext) {}
 
-// EnterCntrl_var is called when production cntrl_var is entered.
-func (s *BaseBigDuckListener) EnterCntrl_var(ctx *Cntrl_varContext) {}
+// EnterCtrl_var is called when production ctrl_var is entered.
+func (s *BaseBigDuckListener) EnterCtrl_var(ctx *Ctrl_varContext) {}
 
-// ExitCntrl_var is called when production cntrl_var is exited.
-func (s *BaseBigDuckListener) ExitCntrl_var(ctx *Cntrl_varContext) {}
+// ExitCtrl_var is called when production ctrl_var is exited.
+func (s *BaseBigDuckListener) ExitCtrl_var(ctx *Ctrl_varContext) {}
 
 // EnterWhileStyle is called when production whileStyle is entered.
 func (s *BaseBigDuckListener) EnterWhileStyle(ctx *WhileStyleContext) {}

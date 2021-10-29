@@ -325,69 +325,86 @@ func (l *BigDuckListener) ExitForCond(c *parser.ForCondContext) {
     l.GenerateJmpTAC(structs.JMP)
 }
 
-func (l *BigDuckListener) EnterCntrl_var(c *parser.Cntrl_varContext) {
+func (l *BigDuckListener) EnterCtrl_var(c *parser.Ctrl_varContext) {
     l.jmpstack.Push(l.pc)
 }
 
-func (l *BigDuckListener) ExitCntrl_var(c *parser.Cntrl_varContext) {
+func (l *BigDuckListener) ExitCtrl_var(c *parser.Ctrl_varContext) {
     l.GenerateJmpTAC(structs.JMP)
 
     var tmpstack structs.Stack
+    var index, target int
+    var item interface{}
 
     for i := 0; i < 3; i ++ {
-        item, _ := l.jmpstack.Pop()
+        item, _ = l.jmpstack.Pop()
         tmpstack.Push(item)
     }
 
-    item, _ := l.jmpstack.Pop()
-    target, _ := item.(int)
+    item, _ = l.jmpstack.Pop()
+    target, _ = item.(int)
     l.FillJmpTAC(l.pc - 1, target)
 
     item, _ = tmpstack.Pop()
-    index, _ := item.(int)
-    fmt.Println(index)
+    index, _ = item.(int)
     l.FillJmpTAC(index, l.pc)
 
-    for i := 0; i < 2; i++ {
-        item, _ := tmpstack.Pop()
+    for !tmpstack.Empty() {
+        item, _ = tmpstack.Pop()
         l.jmpstack.Push(item)
     }
-
-    l.jmpstack.Print()
 }
 
 func (l *BigDuckListener) ExitLoop_stmt(c *parser.Loop_stmtContext) {
+    var index, target int
+    var item interface{}
+
+    l.GenerateJmpTAC(structs.JMP)
+
     switch l.loopstyle {
     case structs.InfStyle:
-        l.GenerateJmpTAC(structs.JMP)
-        item, _ := l.jmpstack.Pop()
-        target, _ := item.(int)
+        item, _ = l.jmpstack.Pop()
+        target, _ = item.(int)
         l.FillJmpTAC(l.pc - 1, target)
 
     case structs.WhileStyle:
-        fmt.Println("hello")
-        l.GenerateJmpTAC(structs.JMP)
-
-        // test exit conidition
-        item, _ := l.jmpstack.Pop()
-        index, _ := item.(int)
-        fmt.Println(index, l.pc)
+        item, _ = l.jmpstack.Pop()
+        index, _ = item.(int)
         l.FillJmpTAC(index, l.pc)
 
-        // return to condition
         item, _ = l.jmpstack.Pop()
-        target, _ := item.(int)
+        target, _ = item.(int)
         l.FillJmpTAC(l.pc - 1, target)
 
     case structs.ForStyle:
-        l.GenerateJmpTAC(structs.JMP)
-
-        item, _ := l.jmpstack.Pop()
-        target, _ := item.(int)
+        item, _ = l.jmpstack.Pop()
+        target, _ = item.(int)
         l.FillJmpTAC(l.pc - 1, target)
 
         item, _ = l.jmpstack.Pop()
-        index, _ := item.(int)
+        index, _ = item.(int)
         l.FillJmpTAC(index, l.pc)
+    }
+
+    for !l.skipqueue.Empty() {
+        item, _ = l.skipqueue.Pop()
+        index, _ = item.(int)
+        l.FillJmpTAC(index, target)
+    }
+
+    for !l.breakqueue.Empty() {
+        item, _ = l.breakqueue.Pop()
+        index, _ = item.(int)
+        l.FillJmpTAC(index, l.pc)
+    }
+}
+
+func (l *BigDuckListener) EnterCtrl_flow(c *parser.Ctrl_flowContext) {
+    if c.BREAK() != nil {
+        l.breakqueue.Push(l.pc)
+        l.GenerateJmpTAC(structs.JMP)
+    } else if c.SKIP_W() != nil {
+        l.skipqueue.Push(l.pc)
+        l.GenerateJmpTAC(structs.JMP)
     }
 }

@@ -203,7 +203,7 @@ var ruleNames = []string{
 	"nextAnd", "not_expr", "bool_term", "rel_expr", "opRel", "relOp", "num_expr",
 	"nextSum", "prod_expr", "nextProd", "factor", "proc_call", "param", "nextParam",
 	"block", "stmts", "stmt", "assignment", "condition", "bodyCond", "endIfBlock",
-	"alter", "loop_stmt", "forStyle", "forCond", "cntrl_var", "whileStyle",
+	"alter", "loop_stmt", "forStyle", "forCond", "ctrl_var", "whileStyle",
 	"infLoop", "ctrl_flow", "ret_stmt",
 }
 
@@ -329,7 +329,7 @@ const (
 	BigDuckParserRULE_loop_stmt   = 42
 	BigDuckParserRULE_forStyle    = 43
 	BigDuckParserRULE_forCond     = 44
-	BigDuckParserRULE_cntrl_var   = 45
+	BigDuckParserRULE_ctrl_var    = 45
 	BigDuckParserRULE_whileStyle  = 46
 	BigDuckParserRULE_infLoop     = 47
 	BigDuckParserRULE_ctrl_flow   = 48
@@ -5873,14 +5873,14 @@ func (s *ForStyleContext) ForCond() IForCondContext {
 	return t.(IForCondContext)
 }
 
-func (s *ForStyleContext) Cntrl_var() ICntrl_varContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*ICntrl_varContext)(nil)).Elem(), 0)
+func (s *ForStyleContext) Ctrl_var() ICtrl_varContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*ICtrl_varContext)(nil)).Elem(), 0)
 
 	if t == nil {
 		return nil
 	}
 
-	return t.(ICntrl_varContext)
+	return t.(ICtrl_varContext)
 }
 
 func (s *ForStyleContext) Assignment() IAssignmentContext {
@@ -5963,7 +5963,7 @@ func (p *BigDuckParser) ForStyle() (localctx IForStyleContext) {
 	}
 	{
 		p.SetState(368)
-		p.Cntrl_var()
+		p.Ctrl_var()
 	}
 
 	return localctx
@@ -6066,45 +6066,45 @@ func (p *BigDuckParser) ForCond() (localctx IForCondContext) {
 	return localctx
 }
 
-// ICntrl_varContext is an interface to support dynamic dispatch.
-type ICntrl_varContext interface {
+// ICtrl_varContext is an interface to support dynamic dispatch.
+type ICtrl_varContext interface {
 	antlr.ParserRuleContext
 
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
-	// IsCntrl_varContext differentiates from other interfaces.
-	IsCntrl_varContext()
+	// IsCtrl_varContext differentiates from other interfaces.
+	IsCtrl_varContext()
 }
 
-type Cntrl_varContext struct {
+type Ctrl_varContext struct {
 	*antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
-func NewEmptyCntrl_varContext() *Cntrl_varContext {
-	var p = new(Cntrl_varContext)
+func NewEmptyCtrl_varContext() *Ctrl_varContext {
+	var p = new(Ctrl_varContext)
 	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
-	p.RuleIndex = BigDuckParserRULE_cntrl_var
+	p.RuleIndex = BigDuckParserRULE_ctrl_var
 	return p
 }
 
-func (*Cntrl_varContext) IsCntrl_varContext() {}
+func (*Ctrl_varContext) IsCtrl_varContext() {}
 
-func NewCntrl_varContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *Cntrl_varContext {
-	var p = new(Cntrl_varContext)
+func NewCtrl_varContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *Ctrl_varContext {
+	var p = new(Ctrl_varContext)
 
 	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
 
 	p.parser = parser
-	p.RuleIndex = BigDuckParserRULE_cntrl_var
+	p.RuleIndex = BigDuckParserRULE_ctrl_var
 
 	return p
 }
 
-func (s *Cntrl_varContext) GetParser() antlr.Parser { return s.parser }
+func (s *Ctrl_varContext) GetParser() antlr.Parser { return s.parser }
 
-func (s *Cntrl_varContext) Assignment() IAssignmentContext {
+func (s *Ctrl_varContext) Assignment() IAssignmentContext {
 	var t = s.GetTypedRuleContext(reflect.TypeOf((*IAssignmentContext)(nil)).Elem(), 0)
 
 	if t == nil {
@@ -6114,29 +6114,29 @@ func (s *Cntrl_varContext) Assignment() IAssignmentContext {
 	return t.(IAssignmentContext)
 }
 
-func (s *Cntrl_varContext) GetRuleContext() antlr.RuleContext {
+func (s *Ctrl_varContext) GetRuleContext() antlr.RuleContext {
 	return s
 }
 
-func (s *Cntrl_varContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
+func (s *Ctrl_varContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
 	return antlr.TreesStringTree(s, ruleNames, recog)
 }
 
-func (s *Cntrl_varContext) EnterRule(listener antlr.ParseTreeListener) {
+func (s *Ctrl_varContext) EnterRule(listener antlr.ParseTreeListener) {
 	if listenerT, ok := listener.(BigDuckListener); ok {
-		listenerT.EnterCntrl_var(s)
+		listenerT.EnterCtrl_var(s)
 	}
 }
 
-func (s *Cntrl_varContext) ExitRule(listener antlr.ParseTreeListener) {
+func (s *Ctrl_varContext) ExitRule(listener antlr.ParseTreeListener) {
 	if listenerT, ok := listener.(BigDuckListener); ok {
-		listenerT.ExitCntrl_var(s)
+		listenerT.ExitCtrl_var(s)
 	}
 }
 
-func (p *BigDuckParser) Cntrl_var() (localctx ICntrl_varContext) {
-	localctx = NewCntrl_varContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 90, BigDuckParserRULE_cntrl_var)
+func (p *BigDuckParser) Ctrl_var() (localctx ICtrl_varContext) {
+	localctx = NewCtrl_varContext(p, p.GetParserRuleContext(), p.GetState())
+	p.EnterRule(localctx, 90, BigDuckParserRULE_ctrl_var)
 
 	defer func() {
 		p.ExitRule()

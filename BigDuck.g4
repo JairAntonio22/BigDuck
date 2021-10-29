@@ -134,9 +134,9 @@ alter       : ELSE (condition | block);
 
 loop_stmt   : LOOP (forStyle | whileStyle | infLoop) block;
 
-forStyle    : (assignment | ) ';' forCond ';' cntrl_var;
+forStyle    : (assignment | ) ';' forCond ';' ctrl_var;
 forCond     : bool_expr;
-cntrl_var   : assignment;
+ctrl_var    : assignment;
 
 whileStyle  : bool_expr;
 

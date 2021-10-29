@@ -143,8 +143,8 @@ type BigDuckListener interface {
 	// EnterForCond is called when entering the forCond production.
 	EnterForCond(c *ForCondContext)
 
-	// EnterCntrl_var is called when entering the cntrl_var production.
-	EnterCntrl_var(c *Cntrl_varContext)
+	// EnterCtrl_var is called when entering the ctrl_var production.
+	EnterCtrl_var(c *Ctrl_varContext)
 
 	// EnterWhileStyle is called when entering the whileStyle production.
 	EnterWhileStyle(c *WhileStyleContext)
@@ -293,8 +293,8 @@ type BigDuckListener interface {
 	// ExitForCond is called when exiting the forCond production.
 	ExitForCond(c *ForCondContext)
 
-	// ExitCntrl_var is called when exiting the cntrl_var production.
-	ExitCntrl_var(c *Cntrl_varContext)
+	// ExitCtrl_var is called when exiting the ctrl_var production.
+	ExitCtrl_var(c *Ctrl_varContext)
 
 	// ExitWhileStyle is called when exiting the whileStyle production.
 	ExitWhileStyle(c *WhileStyleContext)

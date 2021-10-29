@@ -132,7 +132,7 @@ alter
 loop_stmt
 forStyle
 forCond
-cntrl_var
+ctrl_var
 whileStyle
 infLoop
 ctrl_flow

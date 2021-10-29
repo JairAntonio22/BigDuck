@@ -1,12 +1,13 @@
 
-proc main()
-    var i, a int;
+proc main() 
+    var f0, f1, tmp, i int;
 {
-    loop i <- 0; i < 10; i <- i + 1 {
-        if mod(i, 2) = 0 {
-            a <- a + 1;
-        } else {
-            a <- a - 1;
-        }
+    f0 <- 0;
+    f1 <- 1;
+
+    loop i <- 0; i < 100; i <- i + 1 {
+        tmp <- f1;
+        f1 <- f0 + f1;
+        f0 <- tmp;
     }
 }
