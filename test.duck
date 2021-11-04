@@ -60,7 +60,7 @@ proc fibonacci(n int) -> int {
 
 proc abs(x float) -> float {
     if x < 0 {
-        return -x;
+        return -1 * x;
     } else {
         return x;
     }

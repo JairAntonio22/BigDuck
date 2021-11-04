@@ -1,13 +1,26 @@
-
-proc main() 
-    var f0, f1, tmp, i int;
-{
-    f0 <- 0;
-    f1 <- 1;
-
-    loop i <- 0; i < 100; i <- i + 1 {
-        tmp <- f1;
-        f1 <- f0 + f1;
-        f0 <- tmp;
+#| example program for testing TAC generation |#
+proc mod(k, n int) -> int {
+    loop k < n {
+        k <- k - n;
     }
+
+    return k;
 }
+
+#| main function |#
+proc main() 
+    var f1, f2, i, tmp, sum int;
+{
+    f1 <- 1;
+    f2 <- 2;
+
+    loop f1 < 4000000 {
+        if mod(f1, 2) = 0 {
+            sum <- sum + f1;
+        }
+
+        tmp <- f2;
+        f2 <- f1 + f2;
+        f1 <- tmp;
+    }
+ }

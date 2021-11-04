@@ -44,8 +44,8 @@ var ScopeToString [scopeEnumCount]string = [scopeEnumCount]string {
 }
 
 /* 
-    operator enumeration to define operators, they are ordered by evaluation
-    priority
+    instructions enumeration to define operators and instructions used by
+    virtual machine
 */
 
 
@@ -78,6 +78,11 @@ const (
     JMT         // jump on true
     JMF         // jump on false
 
+    GOPROC      // go to procedure
+    ERA         // indicates the size of local memory to be used
+    PARAM       // assigns value to parameter passed to procedure
+    ENDPROC     // clears procedure call and local memory
+
     opEnumCount
 )
 
@@ -88,8 +93,9 @@ var OpToString [opEnumCount]string = [opEnumCount]string{
     "EQ", "NEQ",
     "LES", "GRE", "LEQ", "GEQ",
     "SUB", "ADD", "DIV", "MUL",
-    "LPA", "RPA",
+    "LPAREN", "RPAREN",
     "JMP", "JMT", "JMF",
+    "GOPROC", "ERA", "PARAM", "ENDPROC",
 }
 
 var OpFromString map[string]int = map[string]int {

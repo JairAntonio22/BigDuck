@@ -31,7 +31,7 @@ CTE_FLOAT   : DIGITS ('.' DIGITS)? ([Ee] SIGN? DIGITS)?;
 CTE_STRING  : '"' ~('"')* '"';
 ID          : LETTER (LETTER | DIGIT | '_')*;
 WS          : [ \n\t\r] -> skip;
-//COMMENT     : '#|' ~('|' '#')* '|#' -> skip;
+COMMENT     : '#|' .*? '|#' -> skip;
 
 // Syntax
 program     : vars_decl procs_decl;
@@ -97,7 +97,7 @@ num_expr    : prod_expr nextSum;
 nextSum     : ('+' | '-') num_expr
             | ;
 
-prod_expr   : ('-' | ) factor nextProd;
+prod_expr   : factor nextProd;
 nextProd    : ('*' | '/') prod_expr
             | ;
 
