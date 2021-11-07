@@ -1,26 +1,14 @@
-#| example program for testing TAC generation |#
-proc mod(k, n int) -> int {
-    loop k < n {
-        k <- k - n;
-    }
 
-    return k;
+proc fib(n int) -> int {
+    if n <= 0 {
+        return 0;
+    } else if n = 1 {
+        return 1;
+    } else {
+        return fib(n - 1) + fib(n - 2);
+    }
 }
 
-#| main function |#
-proc main() 
-    var f1, f2, i, tmp, sum int;
-{
-    f1 <- 1;
-    f2 <- 2;
-
-    loop f1 < 4000000 {
-        if mod(f1, 2) = 0 {
-            sum <- sum + f1;
-        }
-
-        tmp <- f2;
-        f2 <- f1 + f2;
-        f1 <- tmp;
-    }
- }
+proc main() {
+    fact(10);
+}

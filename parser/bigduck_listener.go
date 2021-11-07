@@ -107,6 +107,9 @@ type BigDuckListener interface {
 	// EnterParam is called when entering the param production.
 	EnterParam(c *ParamContext)
 
+	// EnterParamTerm is called when entering the paramTerm production.
+	EnterParamTerm(c *ParamTermContext)
+
 	// EnterNextParam is called when entering the nextParam production.
 	EnterNextParam(c *NextParamContext)
 
@@ -256,6 +259,9 @@ type BigDuckListener interface {
 
 	// ExitParam is called when exiting the param production.
 	ExitParam(c *ParamContext)
+
+	// ExitParamTerm is called when exiting the paramTerm production.
+	ExitParamTerm(c *ParamTermContext)
 
 	// ExitNextParam is called when exiting the nextParam production.
 	ExitNextParam(c *NextParamContext)

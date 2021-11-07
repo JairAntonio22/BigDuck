@@ -108,10 +108,11 @@ factor      : '(' num_expr ')'
             | proc_call;
 
 proc_call   : ID '(' (param | ) ')';
-param       : bool_expr nextParam
-            | num_expr nextParam
-            | CTE_STRING nextParam;
-nextParam   : ',' param nextParam
+param       : paramTerm nextParam;
+paramTerm   : bool_expr
+            | num_expr
+            | CTE_STRING;
+nextParam   : ',' param
             | ;
 
 block       : '{' stmts '}';

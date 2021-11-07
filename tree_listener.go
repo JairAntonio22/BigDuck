@@ -1,8 +1,3 @@
-/*
-    symbol_analysis.go uses BigDuckListener and a symbol table to perform the
-    static analysis for declared symbols
-*/
-
 package main
 
 import (
@@ -17,7 +12,7 @@ import (
 
 type BigDuckListener struct {
     *parser.BaseBigDuckListener
-    // flag to know whether the input is well formed or not
+
     valid       bool
     debug       bool
 
@@ -37,7 +32,7 @@ type BigDuckListener struct {
     ret_type    int
     curr_proc   string
 
-    // variables to generarte IR code
+    // variables to generarte intermidiate representation code
     ir_code     []structs.Tac
 
     opstack     structs.Stack
@@ -49,7 +44,9 @@ type BigDuckListener struct {
 
     pc          int
     tmpc        int
+    paramc      int
     loopstyle   int
+    startpoint  int
 }
 
 func (l *BigDuckListener) VisitErrorNode(node antlr.ErrorNode) {
@@ -63,10 +60,12 @@ func (l *BigDuckListener) EnterProgram(c *parser.ProgramContext) {
     l.scope = structs.Global
     l.valid = true
     structs.InitCube()
+    l.GenerateJmpTAC(structs.JMP)
  }
 
 func (l *BigDuckListener) ExitProgram(c *parser.ProgramContext) {
-    l.ir_code = append(l.ir_code, structs.Tac{Op: structs.NOP})
+    l.FillJmpTAC(0, l.startpoint)
+
     if l.valid && l.debug {
         for index, code := range l.ir_code {
             fmt.Printf("%3d ", index);
@@ -97,7 +96,9 @@ func (l *BigDuckListener) EnterNextVar(c *parser.NextVarContext) {
 }
 
 // nextVarDecl 
+
 // var_type    
+
 // scalar      
 func (l *BigDuckListener) EnterScalar(c *parser.ScalarContext) {
     var var_dim []int
@@ -142,6 +143,7 @@ func (l *BigDuckListener) EnterScalar(c *parser.ScalarContext) {
 }
 
 // tensor      
+
 // dim         
 func (l *BigDuckListener) EnterDim(c *parser.DimContext) {
     if l.in_decl {
@@ -159,9 +161,14 @@ func (l *BigDuckListener) EnterDim(c *parser.DimContext) {
 }
 
 // nextDim     
+
 // procs_decl  
+
 // proc_decl   
 func (l *BigDuckListener) ExitProc_decl(c *parser.Proc_declContext) {
+    l.ir_code = append(l.ir_code, structs.Tac{Op: structs.ENDPROC})
+    l.pc++
+
     var typeArgs []int
 
     for !l.typequeue.Empty() {
@@ -179,19 +186,28 @@ func (l *BigDuckListener) ExitProc_decl(c *parser.Proc_declContext) {
             TypeArgs: typeArgs,
             RetType: l.ret_type},)
 
+    if l.ret_type != structs.Void_t {
+        l.symtable.Insert(
+            structs.Global,
+            "__" + l.curr_proc,
+            structs.Symbol{Stype: l.ret_type, Dim: []int{1}})
+    }
+
     if l.valid && l.debug {
-        l.symtable.Print()
-        fmt.Println()
+        //l.symtable.Print()
+        //fmt.Println()
     }
 
     l.symtable.ClearLocalScope()
     l.scope = structs.Global
     l.ret_type = structs.Void_t
     l.argc = 0
+    l.tmpc = 0
 }
 
 // sign        
 func (l *BigDuckListener) EnterSign(c *parser.SignContext) {
+    l.startpoint = l.pc
     _, _, exists := l.symtable.Lookup(c.ID().GetText())
 
     if exists {
@@ -239,11 +255,11 @@ func (l *BigDuckListener) EnterNextArg(c *parser.NextArgContext) {
 
 // ret_type    
 func (l *BigDuckListener) EnterRet_type(c *parser.Ret_typeContext) {
-    l.in_decl = true
     l.ret_type = structs.TypeFromString[c.Scalar().GetText()]
 }
 
 // bool_expr   
+
 // nextBool    
 func (l *BigDuckListener) EnterNextBool(c *parser.NextBoolContext) {
     if c.GetText() != "" {
@@ -409,11 +425,42 @@ func (l *BigDuckListener) ExitFactor(c *parser.FactorContext) {
 }
 
 // proc_call   
-// param       
-// nextParam   
+func (l *BigDuckListener) EnterProc_call(c *parser.Proc_callContext) {
+    l.paramc = 0
+
+    l.ir_code = append(l.ir_code, structs.Tac{
+        Op: structs.ERA, Target: c.ID().GetText()})
+    l.pc++
+}
+
+func (l *BigDuckListener) ExitProc_call(c *parser.Proc_callContext) {
+    _, sym, _ := l.symtable.Lookup(c.ID().GetText())
+
+    if sym.RetType != structs.Void_t {
+        l.GenerateProcCallRetTAC(c.ID().GetText())
+    }
+}
+
+// param 
+
+// paramTerm
+func (l *BigDuckListener) EnterParamTerm(c *parser.ParamTermContext) {
+    l.PushOp(structs.LPAREN)
+}
+
+func (l *BigDuckListener) ExitParamTerm(c *parser.ParamTermContext) {
+    l.GenerateParamTAC()
+    l.PushOp(structs.RPAREN)
+}
+
+// nextParam 
+
 // block       
+
 // stmts       
+
 // stmt        
+
 // assignment  
 func (l *BigDuckListener) EnterAssignment(c *parser.AssignmentContext) {
     l.argstack.Push(c.ID().GetText())
@@ -436,11 +483,13 @@ func (l *BigDuckListener) ExitAssignment(c *parser.AssignmentContext) {
 }
 
 // condition   
+
 // bodyCond    
 func (l *BigDuckListener) EnterBodyCond(c *parser.BodyCondContext) {
     l.jmpstack.Push(l.pc)
     l.GenerateJmpTAC(structs.JMF)
 }
+
 // endIfBlock  
 func (l *BigDuckListener) EnterEndIfBlock(c *parser.EndIfBlockContext) {
     item, _ := l.jmpstack.Pop()
@@ -519,7 +568,9 @@ func (l *BigDuckListener) EnterCtrl_flow(c *parser.Ctrl_flowContext) {
         l.GenerateJmpTAC(structs.JMP)
     }
 }
+
 // forStyle    
+
 // forCond     
 func (l *BigDuckListener) EnterForCond(c *parser.ForCondContext) {
     l.jmpstack.Push(l.pc)
@@ -582,5 +633,8 @@ func (l *BigDuckListener) EnterInfLoop(c *parser.InfLoopContext) {
 }
 
 // ctrl_flow   
-// ret_stmt    
 
+// ret_stmt    
+func (l *BigDuckListener) ExitRet_stmt(c * parser.Ret_stmtContext) {
+    l.GenerateReturnTAC()
+}

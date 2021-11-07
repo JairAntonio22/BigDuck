@@ -219,6 +219,12 @@ func (s *BaseBigDuckListener) EnterParam(ctx *ParamContext) {}
 // ExitParam is called when production param is exited.
 func (s *BaseBigDuckListener) ExitParam(ctx *ParamContext) {}
 
+// EnterParamTerm is called when production paramTerm is entered.
+func (s *BaseBigDuckListener) EnterParamTerm(ctx *ParamTermContext) {}
+
+// ExitParamTerm is called when production paramTerm is exited.
+func (s *BaseBigDuckListener) ExitParamTerm(ctx *ParamTermContext) {}
+
 // EnterNextParam is called when production nextParam is entered.
 func (s *BaseBigDuckListener) EnterNextParam(ctx *NextParamContext) {}
 

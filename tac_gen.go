@@ -93,3 +93,50 @@ func (l *BigDuckListener) GenerateJmpTAC(jmptype int) {
 func (l *BigDuckListener) FillJmpTAC(index, target int) {
     l.ir_code[index].Target = strconv.Itoa(target)
 }
+
+func (l *BigDuckListener) GenerateParamTAC() {
+    item, _ := l.argstack.Pop()
+    param, _ := item.(string)
+
+    target := "p" + strconv.Itoa(l.paramc)
+    l.paramc++
+
+    l.ir_code = append(
+        l.ir_code,
+        structs.Tac{Op: structs.PARAM, Arg1: param, Target: target})
+    l.pc++
+}
+
+func (l *BigDuckListener) GenerateReturnTAC() {
+    if l.ret_type == structs.Void_t {
+        l.ir_code = append(
+            l.ir_code,
+            structs.Tac{Op: structs.RETURN})
+        l.pc++
+
+    } else {
+        item, _ := l.argstack.Pop()
+        result, _ := item.(string)
+
+        l.ir_code = append(
+            l.ir_code,
+            structs.Tac{Op: structs.RETURN, Target: result})
+        l.pc++
+    }
+}
+
+func (l *BigDuckListener) GenerateProcCallRetTAC(procname string) {
+    l.ir_code = append(l.ir_code, structs.Tac{
+        Op: structs.GOPROC, Target: procname})
+    l.pc++
+
+    tmp := "t" + strconv.Itoa(l.tmpc)
+    l.argstack.Push(tmp)
+    l.tmpc++
+
+    l.argstack.Push("__" + procname)
+    l.PushOp(structs.OpFromString["<-"])
+    l.GenerateOpTAC()
+
+    l.argstack.Push(tmp)
+}

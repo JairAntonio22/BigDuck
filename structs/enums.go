@@ -78,9 +78,11 @@ const (
     JMT         // jump on true
     JMF         // jump on false
 
+    PROC        // indicates proc id, no. args, startpoint
     GOPROC      // go to procedure
     ERA         // indicates the size of local memory to be used
     PARAM       // assigns value to parameter passed to procedure
+    RETURN      // returns value from procedures
     ENDPROC     // clears procedure call and local memory
 
     opEnumCount
@@ -95,7 +97,7 @@ var OpToString [opEnumCount]string = [opEnumCount]string{
     "SUB", "ADD", "DIV", "MUL",
     "LPAREN", "RPAREN",
     "JMP", "JMT", "JMF",
-    "GOPROC", "ERA", "PARAM", "ENDPROC",
+    "PROC", "GOPROC", "ERA", "PARAM", "RETURN", "ENDPROC",
 }
 
 var OpFromString map[string]int = map[string]int {
