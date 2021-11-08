@@ -38,6 +38,7 @@ type BigDuckListener struct {
     opstack     structs.Stack
     argstack    structs.Stack
     typestack   structs.Stack
+
     jmpstack    structs.Stack
     skipqueue   structs.Queue
     breakqueue  structs.Queue
@@ -118,7 +119,7 @@ func (l *BigDuckListener) EnterScalar(c *parser.ScalarContext) {
     for !l.symqueue.Empty() {
         item, _ := l.symqueue.Pop()
         name, _ := item.(string)
-        _, _, exists := l.symtable.Lookup(name)
+        _, exists := l.symtable.Lookup(name)
 
         if exists {
             l.valid = false
@@ -194,8 +195,8 @@ func (l *BigDuckListener) ExitProc_decl(c *parser.Proc_declContext) {
     }
 
     if l.valid && l.debug {
-        //l.symtable.Print()
-        //fmt.Println()
+        l.symtable.Print()
+        fmt.Println()
     }
 
     l.symtable.ClearLocalScope()
@@ -208,7 +209,7 @@ func (l *BigDuckListener) ExitProc_decl(c *parser.Proc_declContext) {
 // sign        
 func (l *BigDuckListener) EnterSign(c *parser.SignContext) {
     l.startpoint = l.pc
-    _, _, exists := l.symtable.Lookup(c.ID().GetText())
+    _, exists := l.symtable.Lookup(c.ID().GetText())
 
     if exists {
         l.valid = false
@@ -306,9 +307,7 @@ func (l *BigDuckListener) ExitBool_term(c *parser.Bool_termContext) {
         l.typestack.Push(structs.Bool_t)
 
         if c.ID() != nil {
-            l.argstack.Push(c.ID().GetText())
-
-            _, _, exists := l.symtable.Lookup(c.ID().GetText())
+            sym, exists := l.symtable.Lookup(c.ID().GetText())
 
             if !exists {
                 l.valid = false
@@ -319,12 +318,16 @@ func (l *BigDuckListener) ExitBool_term(c *parser.Bool_termContext) {
                     c.ID().GetText())
             }
 
+            l.argstack.Push(c.ID().GetText())
+            l.typestack.Push(sym.Stype)
 
         } else if c.TRUE() != nil {
             l.argstack.Push("#t")
+            l.typestack.Push(structs.Bool_t)
 
         } else if c.FALSE() != nil {
             l.argstack.Push("#f")
+            l.typestack.Push(structs.Bool_t)
         }
 
     } else {
@@ -390,12 +393,8 @@ func (l *BigDuckListener) EnterFactor(c *parser.FactorContext) {
 
 func (l *BigDuckListener) ExitFactor(c *parser.FactorContext) {
     if c.Num_expr() == nil {
-        l.typestack.Push(structs.Int_t)
-
         if c.ID() != nil {
-            l.argstack.Push(c.ID().GetText())
-
-            _, _, exists := l.symtable.Lookup(c.ID().GetText())
+            sym, exists := l.symtable.Lookup(c.ID().GetText())
 
             if !exists {
                 l.valid = false
@@ -406,11 +405,16 @@ func (l *BigDuckListener) ExitFactor(c *parser.FactorContext) {
                     c.ID().GetText())
             }
 
+            l.argstack.Push(c.ID().GetText())
+            l.typestack.Push(sym.Stype)
+
         } else if c.CTE_INT() != nil {
             l.argstack.Push(c.CTE_INT().GetText())
+            l.typestack.Push(structs.Int_t)
 
         } else if c.CTE_FLOAT() != nil {
             l.argstack.Push(c.CTE_FLOAT().GetText())
+            l.typestack.Push(structs.Float_t)
         }
 
     } else {
@@ -434,7 +438,7 @@ func (l *BigDuckListener) EnterProc_call(c *parser.Proc_callContext) {
 }
 
 func (l *BigDuckListener) ExitProc_call(c *parser.Proc_callContext) {
-    _, sym, _ := l.symtable.Lookup(c.ID().GetText())
+    sym, _ := l.symtable.Lookup(c.ID().GetText())
 
     if sym.RetType != structs.Void_t {
         l.GenerateProcCallRetTAC(c.ID().GetText())
@@ -463,10 +467,9 @@ func (l *BigDuckListener) ExitParamTerm(c *parser.ParamTermContext) {
 
 // assignment  
 func (l *BigDuckListener) EnterAssignment(c *parser.AssignmentContext) {
-    l.argstack.Push(c.ID().GetText())
     l.PushOp(structs.OpFromString["<-"])
 
-    _, _, exists := l.symtable.Lookup(c.ID().GetText())
+    sym, exists := l.symtable.Lookup(c.ID().GetText())
 
     if !exists {
         l.valid = false
@@ -476,6 +479,9 @@ func (l *BigDuckListener) EnterAssignment(c *parser.AssignmentContext) {
             c.GetStart().GetColumn(),
             c.ID().GetText())
     }
+
+    l.argstack.Push(c.ID().GetText())
+    l.typestack.Push(sym.Stype)
 }
 
 func (l *BigDuckListener) ExitAssignment(c *parser.AssignmentContext) {

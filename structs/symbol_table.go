@@ -51,16 +51,16 @@ func (s *SymTable) Insert(scope int, name string, sym Symbol) {
     s.table[scope][name] = sym
 }
 
-func (s *SymTable) Lookup(name string) (int, Symbol, bool) {
+func (s *SymTable) Lookup(name string) (Symbol, bool) {
     for scope := 0; scope < scopeEnumCount; scope++ {
         sym, exists := s.table[scope][name]
 
         if exists {
-            return scope, sym, exists
+            return sym, exists
         }
     }
 
-    return 0, Symbol{}, false
+    return Symbol{}, false
 }
 
 func (s *SymTable) Update(name string, sym Symbol) {

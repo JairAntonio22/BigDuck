@@ -1,6 +1,7 @@
 package main
 
 import (
+    "fmt"
     "strconv"
     "./structs"
 )
@@ -46,20 +47,32 @@ func (l *BigDuckListener) PushOp(op int) {
 
 func (l *BigDuckListener) GenerateOpTAC() {
     var args [2]string
+    var types [2]int
     var target string
-    var i int
+    var i, j int
 
     op := l.PopOp()
 
     if op == structs.NOT {
         i = 0
+        j = 0
     } else {
         i = 1
+        j = 1
     }
 
     for ; i >= 0; i-- {
         item, _ := l.argstack.Pop()
         args[i], _ = item.(string)
+        item, _ = l.typestack.Pop()
+        types[i], _ = item.(int)
+    }
+
+    if structs.Cube[op][types[0]][types[j]] == structs.Error_t {
+        l.valid = false;
+        fmt.Println("Type error mismatch")
+    } else {
+        l.typestack.Push(structs.Cube[op][types[0]][types[j]])
     }
 
     if op == structs.ASG {
