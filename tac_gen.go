@@ -70,7 +70,7 @@ func (l *BigDuckListener) GenerateOpTAC() {
 
     if structs.Cube[op][types[0]][types[j]] == structs.Error_t {
         l.valid = false;
-        fmt.Println("Type error mismatch")
+        fmt.Printf("line %d:%d type error mismatch\n", l.curr_line, l.curr_col)
     } else {
         l.typestack.Push(structs.Cube[op][types[0]][types[j]])
     }
@@ -110,6 +110,8 @@ func (l *BigDuckListener) FillJmpTAC(index, target int) {
 func (l *BigDuckListener) GenerateParamTAC() {
     item, _ := l.argstack.Pop()
     param, _ := item.(string)
+    item, _ = l.typestack.Pop()
+    //ptype, _ := item.(string)
 
     target := "p" + strconv.Itoa(l.paramc)
     l.paramc++
@@ -130,6 +132,16 @@ func (l *BigDuckListener) GenerateReturnTAC() {
     } else {
         item, _ := l.argstack.Pop()
         result, _ := item.(string)
+        item, _ = l.typestack.Pop()
+        rtype, _ := item.(int)
+
+        if rtype != l.ret_type {
+            l.valid = false
+            fmt.Printf(
+                "line %d:%d return type different from procedure sign\n",
+                l.curr_line,
+                l.curr_col)
+        }
 
         l.ir_code = append(
             l.ir_code,
@@ -152,4 +164,8 @@ func (l *BigDuckListener) GenerateProcCallRetTAC(procname string) {
     l.GenerateOpTAC()
 
     l.argstack.Push(tmp)
+
+    sym, _ := l.symtable.Lookup(procname)
+
+    l.typestack.Push(sym.RetType)
 }

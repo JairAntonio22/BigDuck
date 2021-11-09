@@ -16,9 +16,12 @@ type Symbol struct {
     Dim         []int
 
     // for procs
-    NumArgs     int
+    Argc        int
     TypeArgs    []int
     RetType     int
+    Ic          int
+    Fc          int
+    Bc          int
 }
 
 type SymTable struct {

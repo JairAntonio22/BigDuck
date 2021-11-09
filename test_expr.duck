@@ -1,9 +1,0 @@
-
-#| Main function |#
-proc main() 
-    var i int;
-    var j bool;
-{
-    i <- i + 1 - (2 / 3);
-    j <- true or false and (not true);
-}
