@@ -51,6 +51,7 @@ type BigDuckListener struct {
 
     curr_line   int
     curr_col    int
+    curr_pcall  string
 }
 
 func (l *BigDuckListener) VisitErrorNode(node antlr.ErrorNode) {
@@ -136,7 +137,7 @@ func (l *BigDuckListener) EnterScalar(c *parser.ScalarContext) {
     for !l.symqueue.Empty() {
         item, _ := l.symqueue.Pop()
         name, _ := item.(string)
-        _, exists := l.symtable.Lookup(name)
+        _, _, exists := l.symtable.Lookup(name)
 
         if exists {
             l.valid = false
@@ -203,7 +204,7 @@ func (l *BigDuckListener) ExitProc_decl(c *parser.Proc_declContext) {
         typeArgs = append(typeArgs, stype)
     }
 
-    sym, _ := l.symtable.Lookup(l.curr_proc)
+    _, sym, _ := l.symtable.Lookup(l.curr_proc)
 
     for _, argtype := range typeArgs {
         switch argtype {
@@ -251,7 +252,7 @@ func (l *BigDuckListener) EnterSign(c *parser.SignContext) {
     }
 
     l.startpoint = l.pc
-    _, exists := l.symtable.Lookup(c.ID().GetText())
+    _, _, exists := l.symtable.Lookup(c.ID().GetText())
 
     if exists {
         l.valid = false
@@ -401,7 +402,7 @@ func (l *BigDuckListener) ExitBool_term(c *parser.Bool_termContext) {
         l.typestack.Push(structs.Bool_t)
 
         if c.ID() != nil {
-            sym, exists := l.symtable.Lookup(c.ID().GetText())
+            _, sym, exists := l.symtable.Lookup(c.ID().GetText())
 
             if !exists {
                 l.valid = false
@@ -522,7 +523,7 @@ func (l *BigDuckListener) ExitFactor(c *parser.FactorContext) {
 
     if c.Num_expr() == nil {
         if c.ID() != nil {
-            sym, exists := l.symtable.Lookup(c.ID().GetText())
+            _, sym, exists := l.symtable.Lookup(c.ID().GetText())
 
             if !exists {
                 l.valid = false
@@ -565,6 +566,7 @@ func (l *BigDuckListener) EnterProc_call(c *parser.Proc_callContext) {
     }
 
     l.paramc = 0
+    l.curr_pcall = c.ID().GetText()
 
     l.ir_code = append(
         l.ir_code,
@@ -577,19 +579,35 @@ func (l *BigDuckListener) ExitProc_call(c *parser.Proc_callContext) {
         return
     }
 
-    sym, _ := l.symtable.Lookup(c.ID().GetText())
+    _, sym, exists := l.symtable.Lookup(c.ID().GetText())
+
+    if !exists {
+        l.valid = false
+        fmt.Printf(
+            "line %d:%d procedure %s not declared\n",
+            c.GetStart().GetLine(), c.GetStart().GetColumn(), c.ID().GetText())
+        return
+    }
 
     if sym.RetType != structs.Void_t {
         l.curr_line = c.GetStart().GetLine()
         l.curr_col = c.GetStart().GetColumn()
         l.GenerateProcCallRetTAC(c.ID().GetText())
+    } else {
+        l.valid = false
+        fmt.Printf(
+            "line %d:%d void procedure used in expression\n",
+            l.curr_line,
+            l.curr_col)
+        return
     }
 
     if l.paramc != sym.Argc {
         l.valid = false
-        fmt.Printf("line %d:%d procedure %s expected %d arguments, given %d\n",
-            l.curr_line,
-            l.curr_col,
+        fmt.Printf(
+            "line %d:%d procedure %s expected %d arguments, given %d\n",
+            c.GetStart().GetLine(),
+            c.GetStart().GetColumn(),
             c.ID().GetText(),
             sym.Argc,
             l.paramc)
@@ -632,7 +650,7 @@ func (l *BigDuckListener) EnterAssignment(c *parser.AssignmentContext) {
 
     l.PushOp(structs.OpFromString["<-"])
 
-    sym, exists := l.symtable.Lookup(c.ID().GetText())
+    _, sym, exists := l.symtable.Lookup(c.ID().GetText())
 
     if !exists {
         l.valid = false

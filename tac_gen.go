@@ -9,8 +9,7 @@ import (
 func (l *BigDuckListener) TopOp() int {
     if l.opstack.Empty() {
         return structs.NOP
-    } else {
-        item := l.opstack.Top()
+    } else { item := l.opstack.Top()
         top, _ := item.(int)
         return top
     }
@@ -111,7 +110,21 @@ func (l *BigDuckListener) GenerateParamTAC() {
     item, _ := l.argstack.Pop()
     param, _ := item.(string)
     item, _ = l.typestack.Pop()
-    //ptype, _ := item.(string)
+    ptype, _ := item.(int)
+
+    _, sym, _ := l.symtable.Lookup(l.curr_pcall)
+    argtype := sym.TypeArgs[l.paramc]
+
+    if structs.Cube[structs.ASG][ptype][argtype] == structs.Error_t {
+        l.valid = false
+        fmt.Printf(
+            "line %d:%d parameter %d expected to be %s, given %s\n",
+            l.curr_line,
+            l.curr_col,
+            l.paramc + 1,
+            structs.TypeToString[argtype],
+            structs.TypeToString[ptype])
+    }
 
     target := "p" + strconv.Itoa(l.paramc)
     l.paramc++
@@ -128,7 +141,6 @@ func (l *BigDuckListener) GenerateReturnTAC() {
             l.ir_code,
             structs.Tac{Op: structs.RETURN})
         l.pc++
-
     } else {
         item, _ := l.argstack.Pop()
         result, _ := item.(string)
@@ -139,8 +151,7 @@ func (l *BigDuckListener) GenerateReturnTAC() {
             l.valid = false
             fmt.Printf(
                 "line %d:%d return type different from procedure sign\n",
-                l.curr_line,
-                l.curr_col)
+                l.curr_line, l.curr_col)
         }
 
         l.ir_code = append(
@@ -151,8 +162,9 @@ func (l *BigDuckListener) GenerateReturnTAC() {
 }
 
 func (l *BigDuckListener) GenerateProcCallRetTAC(procname string) {
-    l.ir_code = append(l.ir_code, structs.Tac{
-        Op: structs.GOPROC, Target: procname})
+    l.ir_code = append(
+        l.ir_code,
+        structs.Tac{Op: structs.GOPROC, Target: procname})
     l.pc++
 
     tmp := "t" + strconv.Itoa(l.tmpc)
@@ -165,7 +177,7 @@ func (l *BigDuckListener) GenerateProcCallRetTAC(procname string) {
 
     l.argstack.Push(tmp)
 
-    sym, _ := l.symtable.Lookup(procname)
+    _, sym, _ := l.symtable.Lookup(procname)
 
     l.typestack.Push(sym.RetType)
 }

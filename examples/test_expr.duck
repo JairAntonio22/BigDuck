@@ -1,3 +1,4 @@
+var g1 int;
 
 #| returns absolute value of a number |#
 proc mod(k, n int) -> int {
@@ -8,7 +9,8 @@ proc mod(k, n int) -> int {
     return k + 1;
 }
 
-proc test(k bool; n int) -> bool {
+proc test(k bool; n int) -> int {
+    k <- not k;
     return 1;
 }
 
@@ -21,7 +23,7 @@ proc main()
     sum <- 0;
 
     loop f0 < 4000000 {
-        if test(1, 2) {
+        if mod(f0, 2) {
             sum <- sum + f0;
         }
 

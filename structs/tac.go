@@ -22,4 +22,3 @@ func (t Tac) Print() {
         t.Arg2,
         t.Target)
 }
-

@@ -1,27 +1,26 @@
 
 ANTLR=/usr/local/lib/antlr-4.9-complete.jar
 
-DCC_FILES=\
-	  compiler.go\
-	  tree_listener.go\
-	  tac_gen.go
-
+DCC_FILES=compiler.go tree_listener.go tac_gen.go
 DRUN_FILES=vmachine.go
 
-all: dcc
+TARGET_CC=ducc
+TARGET_VM=drun
 
-test: dcc
+all: $(TARGET_CC)
+
+test: $(TARGET_CC)
 	clear
-	./dcc examples/test_expr.duck
+	./$(TARGET_CC) examples/test_expr.duck
 
-drun: $(DRUN_FILES)
-	go build -o drun $(DRUN_FILES)
+$(TARGET_VM): $(DRUN_FILES)
+	go build -o $(TARGET_VM) $(DRUN_FILES)
 
-dcc: parser structs $(DCC_FILES)
-	go build -o dcc $(DCC_FILES)
+$(TARGET_CC): parser structs $(DCC_FILES)
+	go build -o $(TARGET_CC) $(DCC_FILES)
 
 parser: BigDuck.g4
 	java -jar $(ANTLR) BigDuck.g4 -Dlanguage=Go -o parser
 
 clean:
-	rm -fr parser dcc
+	rm -fr parser ducc
