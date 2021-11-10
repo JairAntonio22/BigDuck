@@ -70,7 +70,7 @@ func (l *BigDuckListener) GenerateOpTAC() {
     if structs.Cube[op][types[0]][types[j]] == structs.Error_t {
         l.valid = false;
         fmt.Printf("line %d:%d type error mismatch\n", l.curr_line, l.curr_col)
-    } else {
+    } else if op != structs.ASG {
         l.typestack.Push(structs.Cube[op][types[0]][types[j]])
     }
 
@@ -96,6 +96,16 @@ func (l *BigDuckListener) GenerateJmpTAC(jmptype int) {
     } else {
         item, _ := l.argstack.Pop()
         cond, _ := item.(string)
+        item, _ = l.typestack.Pop()
+        condtype, _ := item.(int)
+
+        if condtype != structs.Bool_t {
+            l.valid = false
+            fmt.Printf(
+                "line %d:%d expected boolean expression\n",
+                l.curr_line, l.curr_col)
+        }
+
         l.ir_code = append(l.ir_code, structs.Tac{Op: jmptype, Arg1: cond})
     }
 
@@ -130,8 +140,7 @@ func (l *BigDuckListener) GenerateParamTAC() {
     l.paramc++
 
     l.ir_code = append(
-        l.ir_code,
-        structs.Tac{Op: structs.PARAM, Arg1: param, Target: target})
+        l.ir_code, structs.Tac{Op: structs.PARAM, Arg1: param, Target: target})
     l.pc++
 }
 
@@ -167,17 +176,18 @@ func (l *BigDuckListener) GenerateProcCallRetTAC(procname string) {
         structs.Tac{Op: structs.GOPROC, Target: procname})
     l.pc++
 
+    _, sym, _ := l.symtable.Lookup(procname)
+
     tmp := "t" + strconv.Itoa(l.tmpc)
     l.argstack.Push(tmp)
+    l.typestack.Push(sym.RetType)
     l.tmpc++
 
     l.argstack.Push("__" + procname)
+    l.typestack.Push(sym.RetType)
     l.PushOp(structs.OpFromString["<-"])
     l.GenerateOpTAC()
 
     l.argstack.Push(tmp)
-
-    _, sym, _ := l.symtable.Lookup(procname)
-
     l.typestack.Push(sym.RetType)
 }

@@ -399,8 +399,6 @@ func (l *BigDuckListener) ExitBool_term(c *parser.Bool_termContext) {
     }
 
     if c.Bool_expr() == nil {
-        l.typestack.Push(structs.Bool_t)
-
         if c.ID() != nil {
             _, sym, exists := l.symtable.Lookup(c.ID().GetText())
 
@@ -684,6 +682,8 @@ func (l *BigDuckListener) EnterBodyCond(c *parser.BodyCondContext) {
     }
 
     l.jmpstack.Push(l.pc)
+    l.curr_line = c.GetStart().GetLine()
+    l.curr_col = c.GetStart().GetColumn()
     l.GenerateJmpTAC(structs.JMF)
 }
 
@@ -804,6 +804,8 @@ func (l *BigDuckListener) ExitForCond(c *parser.ForCondContext) {
     }
 
     l.jmpstack.Push(l.pc)
+    l.curr_line = c.GetStart().GetLine()
+    l.curr_col = c.GetStart().GetColumn()
     l.GenerateJmpTAC(structs.JMT)
     l.jmpstack.Push(l.pc)
     l.GenerateJmpTAC(structs.JMP)
@@ -864,6 +866,8 @@ func (l *BigDuckListener) ExitWhileStyle(c *parser.WhileStyleContext) {
     }
 
     l.jmpstack.Push(l.pc)
+    l.curr_line = c.GetStart().GetLine()
+    l.curr_col = c.GetStart().GetColumn()
     l.GenerateJmpTAC(structs.JMF)
 }
 
