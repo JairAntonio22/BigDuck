@@ -52,6 +52,8 @@ type BigDuckListener struct {
     curr_line   int
     curr_col    int
     curr_pcall  string
+
+    memmap      structs.MemMap
 }
 
 func (l *BigDuckListener) VisitErrorNode(node antlr.ErrorNode) {
@@ -61,6 +63,7 @@ func (l *BigDuckListener) VisitErrorNode(node antlr.ErrorNode) {
 // program     
 func (l *BigDuckListener) EnterProgram(c *parser.ProgramContext) {
     l.symtable = structs.NewSymTable()
+    l.memmap = structs.NewMemMap()
     l.ret_type = structs.Void_t
     l.scope = structs.Global
     l.valid = true
@@ -229,16 +232,12 @@ func (l *BigDuckListener) ExitProc_decl(c *parser.Proc_declContext) {
     if l.ret_type != structs.Void_t {
         l.symtable.Insert(
             structs.Global,
-            "__" + l.curr_proc,
+            "_" + l.curr_proc,
             structs.Symbol{Stype: l.ret_type})
     }
 
-    if l.valid && l.debug {
-        l.symtable.Print()
-        fmt.Println()
-    }
-
     l.symtable.ClearLocalScope()
+    l.memmap.ClearLocalScope()
     l.scope = structs.Global
     l.ret_type = structs.Void_t
     l.argc = 0
@@ -566,18 +565,7 @@ func (l *BigDuckListener) EnterProc_call(c *parser.Proc_callContext) {
     l.paramc = 0
     l.curr_pcall = c.ID().GetText()
 
-    l.ir_code = append(
-        l.ir_code,
-        structs.Tac{Op: structs.ERA, Target: c.ID().GetText()})
-    l.pc++
-}
-
-func (l *BigDuckListener) ExitProc_call(c *parser.Proc_callContext) {
-    if !l.valid {
-        return
-    }
-
-    _, sym, exists := l.symtable.Lookup(c.ID().GetText())
+    _, _, exists := l.symtable.Lookup(c.ID().GetText())
 
     if !exists {
         l.valid = false
@@ -586,6 +574,21 @@ func (l *BigDuckListener) ExitProc_call(c *parser.Proc_callContext) {
             c.GetStart().GetLine(), c.GetStart().GetColumn(), c.ID().GetText())
         return
     }
+
+    l.ir_code = append(
+        l.ir_code,
+        structs.Tac{
+            Op: structs.ERA,
+            Args: [3]string{"","", c.ID().GetText()}})
+    l.pc++
+}
+
+func (l *BigDuckListener) ExitProc_call(c *parser.Proc_callContext) {
+    if !l.valid {
+        return
+    }
+
+    _, sym, _ := l.symtable.Lookup(c.ID().GetText())
 
     if sym.RetType != structs.Void_t {
         l.curr_line = c.GetStart().GetLine()

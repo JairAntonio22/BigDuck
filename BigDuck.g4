@@ -24,9 +24,9 @@ FALSE   : 'false';
 fragment DIGIT  : [0-9];
 fragment DIGITS : DIGIT+;
 fragment LETTER : [A-Za-z]+;
-fragment SIGN   : [+-]?;
+fragment SIGN   : '-';
 
-CTE_INT     : SIGN DIGITS;
+CTE_INT     : DIGITS;
 CTE_FLOAT   : DIGITS ('.' DIGITS)? ([Ee] SIGN? DIGITS)?;
 CTE_STRING  : '"' ~('"')* '"';
 ID          : LETTER (LETTER | DIGIT | '_')*;

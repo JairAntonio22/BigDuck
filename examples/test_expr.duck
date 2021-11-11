@@ -1,23 +1,33 @@
+var ccount int;
 
-#| returns absolute value of a number |#
+#| returns the remainder of dividing k / n |#
 proc mod(k, n int) -> int {
+    ccount <- ccount + 1; 
+
     loop k >= n {
         k <- k - n;
     }
 
-    return k + 1;
+    return k;
+}
+
+#| returns whether n is an even number or not |#
+proc is_even(n int) -> bool {
+    ccount <- ccount + 1; 
+    return mod(n, 2) = 0;
 }
 
 #| main function |#
 proc main() 
     var f0, f1, tmp, sum int;
 {
+    ccount <- 1;
     f0 <- 0;
     f1 <- 1;
     sum <- 0;
 
     loop f0 < 4000000 {
-        if mod(f0, 2) = 0 {
+        if is_even(f0) {
             sum <- sum + f0;
         }
 
