@@ -1,9 +1,6 @@
-var ccount int;
 
 #| returns the remainder of dividing k / n |#
 proc mod(k, n int) -> int {
-    ccount <- ccount + 1; 
-
     loop k >= n {
         k <- k - n;
     }
@@ -13,7 +10,6 @@ proc mod(k, n int) -> int {
 
 #| returns whether n is an even number or not |#
 proc is_even(n int) -> bool {
-    ccount <- ccount + 1; 
     return mod(n, 2) = 0;
 }
 
@@ -21,7 +17,6 @@ proc is_even(n int) -> bool {
 proc main() 
     var f0, f1, tmp, sum int;
 {
-    ccount <- 1;
     f0 <- 0;
     f1 <- 1;
     sum <- 0;

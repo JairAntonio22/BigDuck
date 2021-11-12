@@ -15,7 +15,7 @@ type Tac struct {
 
 func (t Tac) Print() {
     fmt.Printf(
-        "%8s | %8s %8s %8s | %8x %8x %8x\n",
+        "%8s | %10s%10s%10s | %10x%10x%10x\n",
         OpToString[t.Op],
         t.Args[0],
         t.Args[1],
@@ -23,4 +23,13 @@ func (t Tac) Print() {
         t.Address[0],
         t.Address[1],
         t.Address[2])
+}
+
+func (t Tac) GetArgs() string {
+    return fmt.Sprintf("%x,%s,%s,%s\n", t.Op, t.Args[0], t.Args[1], t.Args[2])
+}
+
+func (t Tac) GetAddress() string {
+    return fmt.Sprintf(
+        "%x,%x,%x,%x\n", t.Op, t.Address[0], t.Address[1], t.Address[2])
 }

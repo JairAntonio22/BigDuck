@@ -19,6 +19,7 @@ type Symbol struct {
     Argc        int
     TypeArgs    []int
     RetType     int
+    Startpoint  int
     Ic          int
     Fc          int
     Bc          int

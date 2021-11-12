@@ -13,6 +13,8 @@ import (
 type BigDuckListener struct {
     *parser.BaseBigDuckListener
 
+    filename    string
+
     valid       bool
     debug       bool
 
@@ -34,6 +36,7 @@ type BigDuckListener struct {
 
     // variables to generarte intermidiate representation code
     ir_code     []structs.Tac
+    data_seg    []structs.Tac
 
     opstack     structs.Stack
     argstack    structs.Stack
@@ -48,6 +51,7 @@ type BigDuckListener struct {
     paramc      int
     loopstyle   int
     startpoint  int
+    startproc   string
 
     curr_line   int
     curr_col    int
@@ -68,13 +72,38 @@ func (l *BigDuckListener) EnterProgram(c *parser.ProgramContext) {
     l.scope = structs.Global
     l.valid = true
     structs.InitCube()
-    l.GenerateJmpTAC(structs.JMP)
+    l.ir_code = append(l.ir_code, structs.Tac{Op: structs.ERA})
+    l.pc++
+    l.ir_code = append(l.ir_code, structs.Tac{Op: structs.GOPROC})
+    l.pc++
  }
 
 func (l *BigDuckListener) ExitProgram(c *parser.ProgramContext) {
-    l.FillJmpTAC(0, l.startpoint)
+    if l.valid {
+        _, sym, _ := l.symtable.Lookup(l.startproc)
+
+        l.ir_code[0].Args[0] = strconv.Itoa(sym.Ic)
+        l.ir_code[0].Args[1] = strconv.Itoa(sym.Fc)
+        l.ir_code[0].Args[2] = strconv.Itoa(sym.Bc)
+        l.ir_code[0].Address[0] = sym.Ic
+        l.ir_code[0].Address[1] = sym.Fc
+        l.ir_code[0].Address[2] = sym.Bc
+
+        l.ir_code[1].Args[2] = l.startproc
+        l.ir_code[1].Address[2] = l.startpoint
+
+        l.data_seg = l.memmap.GetDataSegment()
+        l.GenerateObjFile()
+    }
 
     if l.debug {
+        for index, code := range l.data_seg {
+            fmt.Printf("%3d ", index);
+            code.Print()
+        }
+
+        fmt.Println()
+
         for index, code := range l.ir_code {
             fmt.Printf("%3d ", index);
             code.Print()
@@ -209,19 +238,6 @@ func (l *BigDuckListener) ExitProc_decl(c *parser.Proc_declContext) {
 
     _, sym, _ := l.symtable.Lookup(l.curr_proc)
 
-    for _, argtype := range typeArgs {
-        switch argtype {
-        case structs.Int_t:
-            sym.Ic += 1
-
-        case structs.Float_t:
-            sym.Fc += 1
-
-        case structs.Bool_t:
-            sym.Bc += 1
-        }
-    }
-
     sym.Stype = structs.Proc_t
     sym.Argc = l.argc
     sym.TypeArgs = typeArgs
@@ -235,6 +251,11 @@ func (l *BigDuckListener) ExitProc_decl(c *parser.Proc_declContext) {
             "_" + l.curr_proc,
             structs.Symbol{Stype: l.ret_type})
     }
+
+    sym.Ic = l.memmap.Typecount[structs.Local][structs.Int_t]
+    sym.Fc = l.memmap.Typecount[structs.Local][structs.Float_t]
+    sym.Bc = l.memmap.Typecount[structs.Local][structs.Bool_t]
+    l.symtable.Update(l.curr_proc, sym)
 
     l.symtable.ClearLocalScope()
     l.memmap.ClearLocalScope()
@@ -251,6 +272,7 @@ func (l *BigDuckListener) EnterSign(c *parser.SignContext) {
     }
 
     l.startpoint = l.pc
+    l.startproc = c.ID().GetText()
     _, _, exists := l.symtable.Lookup(c.ID().GetText())
 
     if exists {
@@ -259,7 +281,8 @@ func (l *BigDuckListener) EnterSign(c *parser.SignContext) {
             "line %d:%d duplicate symbol %s\n",
             c.GetStart().GetLine(), c.GetStart().GetColumn(), c.ID().GetText())
     } else {
-        l.symtable.Insert(l.scope, c.ID().GetText(), structs.Symbol{})
+        l.symtable.Insert(l.scope, c.ID().GetText(), structs.Symbol{
+            Startpoint: l.startpoint})
         l.curr_proc = c.ID().GetText()
         l.scope = structs.Local
     }
@@ -565,7 +588,7 @@ func (l *BigDuckListener) EnterProc_call(c *parser.Proc_callContext) {
     l.paramc = 0
     l.curr_pcall = c.ID().GetText()
 
-    _, _, exists := l.symtable.Lookup(c.ID().GetText())
+    _, sym, exists := l.symtable.Lookup(l.curr_pcall)
 
     if !exists {
         l.valid = false
@@ -579,7 +602,11 @@ func (l *BigDuckListener) EnterProc_call(c *parser.Proc_callContext) {
         l.ir_code,
         structs.Tac{
             Op: structs.ERA,
-            Args: [3]string{"","", c.ID().GetText()}})
+            Args: [3]string{
+                strconv.Itoa(sym.Ic),
+                strconv.Itoa(sym.Fc),
+                strconv.Itoa(sym.Bc)},
+            Address: [3]int{sym.Ic, sym.Fc, sym.Bc}})
     l.pc++
 }
 

@@ -85,6 +85,10 @@ const (
     RETURN      // returns value from procedures
     ENDPROC     // clears procedure call and local memory
 
+    DATA        // Indicates data segment
+    SET         // Sets value to address
+    PROGRAM     // Indicates program segment
+
     opEnumCount
 )
 
@@ -98,6 +102,7 @@ var OpToString [opEnumCount]string = [opEnumCount]string{
     "LPAREN", "RPAREN",
     "JMP", "JMT", "JMF",
     "PROC", "GOPROC", "ERA", "PARAM", "RETURN", "ENDPROC",
+    "DATA", "SET", "PROGRAM",
 }
 
 var OpFromString map[string]int = map[string]int {
@@ -115,8 +120,6 @@ var OpFromString map[string]int = map[string]int {
     "+"     : ADD,
     "/"     : DIV,
     "*"     : MUL,
-    "LPA"   : LPAREN,
-    "RPA"   : RPAREN,
     "JMP"   : JMP,
     "JMT"   : JMT,
     "JMF"   : JMF,

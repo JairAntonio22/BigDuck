@@ -1,6 +1,7 @@
 package main
 
 import (
+    "os"
     "fmt"
     "strconv"
     "./structs"
@@ -162,7 +163,14 @@ func (l *BigDuckListener) GenerateParamTAC() {
             structs.TypeToString[ptype])
     }
 
-    address := l.memmap.GetAddress(structs.Local, param, ptype)
+    scope, _, exists := l.symtable.Lookup(param)
+    var address int
+
+    if exists {
+        address = l.memmap.GetAddress(scope, param, ptype)
+    } else {
+        address = l.memmap.GetAddress(structs.Global, param, ptype)
+    }
 
     l.ir_code = append(
         l.ir_code, structs.Tac{
@@ -205,14 +213,15 @@ func (l *BigDuckListener) GenerateReturnTAC() {
 }
 
 func (l *BigDuckListener) GenerateProcCallRetTAC(procname string) {
+    _, sym, _ := l.symtable.Lookup(procname)
+
     l.ir_code = append(
         l.ir_code,
         structs.Tac{
             Op: structs.GOPROC,
-            Args: [3]string{"", "", procname}})
+            Args: [3]string{"", "", procname},
+            Address: [3]int{0, 0, sym.Startpoint}})
     l.pc++
-
-    _, sym, _ := l.symtable.Lookup(procname)
 
     tmp := "t" + strconv.Itoa(l.tmpc)
     l.argstack.Push(tmp)
@@ -226,4 +235,24 @@ func (l *BigDuckListener) GenerateProcCallRetTAC(procname string) {
 
     l.argstack.Push(tmp)
     l.typestack.Push(sym.RetType)
+}
+
+func (l *BigDuckListener) GenerateObjFile() {
+    content := ""
+    content += fmt.Sprintf("%x\n", structs.DATA)
+
+    for _, code := range l.data_seg {
+        content += code.GetArgs()
+    }
+
+    content += fmt.Sprintf("%x\n", structs.PROGRAM)
+
+    for _, code := range l.ir_code {
+        content += code.GetAddress()
+    }
+
+    file, err := os.Create(l.filename[:len(l.filename) - 5] + ".quack")
+    checkError(err)
+    defer file.Close()
+    file.WriteString(content)
 }
