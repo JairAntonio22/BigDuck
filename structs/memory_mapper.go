@@ -13,11 +13,8 @@ package structs
         2 0010 int
         3 0011 float
         4 0100 bool
-*/
 
-/*
     memory map
-
         1 is global bit, 3 type bits, 7 address nibbles
 
         0010 ... 0000 0000 -> local int at address 0
@@ -25,7 +22,10 @@ package structs
         0100 ... 0001 0110 -> local bool at address 22
 */
 
-import "fmt"
+import (
+    "fmt"
+    "strconv"
+)
 
 type MemMap struct {
     memcache    map[string]int
@@ -57,6 +57,14 @@ func (m *MemMap) GetAddress(scope int, var_name string, vtype int) int {
 
 func (m *MemMap) GetDataSegment() []Tac {
     var ir_code []Tac
+    ir_code = append(ir_code, Tac{ Op: ERA})
+
+    ir_code[0].Args[0] = strconv.Itoa(m.Typecount[Global][Int_t])
+    ir_code[0].Args[1] = strconv.Itoa(m.Typecount[Global][Float_t])
+    ir_code[0].Args[2] = strconv.Itoa(m.Typecount[Global][Bool_t])
+    ir_code[0].Address[0] = m.Typecount[Global][Int_t]
+    ir_code[0].Address[1] = m.Typecount[Global][Float_t]
+    ir_code[0].Address[2] = m.Typecount[Global][Bool_t]
 
     for key, value := range m.memcache {
         if value & (1 << 31) != 0 {

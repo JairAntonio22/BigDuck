@@ -1,18 +1,4 @@
 
-#| returns the remainder of dividing k / n |#
-proc mod(k, n int) -> int {
-    loop k >= n {
-        k <- k - n;
-    }
-
-    return k;
-}
-
-#| returns whether n is an even number or not |#
-proc is_even(n int) -> bool {
-    return mod(n, 2) = 0;
-}
-
 #| main function |#
 proc main() 
     var f0, f1, tmp, sum int;
@@ -22,10 +8,6 @@ proc main()
     sum <- 0;
 
     loop f0 < 4000000 {
-        if is_even(f0) {
-            sum <- sum + f0;
-        }
-
         tmp <- f1;
         f1 <- f0 + f1;
         f0 <- tmp;

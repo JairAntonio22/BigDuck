@@ -4,6 +4,8 @@
 
 package structs
 
+import "errors"
+
 // type enumeration to keep track of symbol types
 
 const (
@@ -85,7 +87,6 @@ const (
     RETURN      // returns value from procedures
     ENDPROC     // clears procedure call and local memory
 
-    DATA        // Indicates data segment
     SET         // Sets value to address
     PROGRAM     // Indicates program segment
 
@@ -102,7 +103,7 @@ var OpToString [opEnumCount]string = [opEnumCount]string{
     "LPAREN", "RPAREN",
     "JMP", "JMT", "JMF",
     "PROC", "GOPROC", "ERA", "PARAM", "RETURN", "ENDPROC",
-    "DATA", "SET", "PROGRAM",
+    "SET", "PROGRAM",
 }
 
 var OpFromString map[string]int = map[string]int {
@@ -123,6 +124,14 @@ var OpFromString map[string]int = map[string]int {
     "JMP"   : JMP,
     "JMT"   : JMT,
     "JMF"   : JMF,
+}
+
+func ValidateOp(op int) error {
+    if op < 0 || op >= opEnumCount {
+        return errors.New("Invalid operator found")
+    } else {
+        return nil
+    }
 }
 
 //enumeration to keep track of loop style

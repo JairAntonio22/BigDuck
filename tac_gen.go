@@ -125,7 +125,13 @@ func (l *BigDuckListener) GenerateJmpTAC(jmptype int) {
                 l.curr_line, l.curr_col)
         }
 
-        address := l.memmap.GetAddress(structs.Local, cond, condtype)
+        var address int
+
+        if cond == "#t" || cond == "#f" {
+            address = l.memmap.GetAddress(structs.Global, cond, condtype)
+        } else {
+            address = l.memmap.GetAddress(structs.Local, cond, condtype)
+        }
 
         l.ir_code = append(
             l.ir_code,
@@ -239,13 +245,12 @@ func (l *BigDuckListener) GenerateProcCallRetTAC(procname string) {
 
 func (l *BigDuckListener) GenerateObjFile() {
     content := ""
-    content += fmt.Sprintf("%x\n", structs.DATA)
 
     for _, code := range l.data_seg {
         content += code.GetArgs()
     }
 
-    content += fmt.Sprintf("%x\n", structs.PROGRAM)
+    content += fmt.Sprintf("%s", structs.Tac{Op: structs.PROGRAM}.GetAddress())
 
     for _, code := range l.ir_code {
         content += code.GetAddress()
