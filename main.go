@@ -19,7 +19,7 @@ func main() {
         if !strings.Contains(os.Args[1], ".duck") {
             fmt.Println("Source code files must have .duck extension")
         } else {
-            compile(os.Args[1], true)
+            compile(os.Args[1], false)
         }
 
     case 3:
