@@ -7,6 +7,7 @@ import (
 )
 
 type VirtualMachine struct {
+    Debug           bool
     Program         []Tac       // Program code
     memory          memory      // Memory manager
     basepc          int         // Pointer to program start
@@ -27,37 +28,38 @@ func (vm *VirtualMachine) InitMemory() {
                 curr_code.Address[2])
 
         case SET:
-            vaddress := curr_code.Address[2]
-            scope := GetScope(vaddress)
-            address := GetAddress(vaddress)
+            va := curr_code.Address[2]
+            s := GetScope(va)
+            a := GetAddress(va)
 
-            if scope != Global {
-                fmt.Printf("Local address used in data segment")
+            if s != Global {
+                fmt.Printf("Local address used in data segment\n")
                 os.Exit(0)
             }
 
-            switch GetType(vaddress) {
+            switch GetType(va) {
             case Int_t:
                 value, _ := strconv.ParseInt(curr_code.Args[0], 10, 64)
-                vm.memory.MemI[scope][address] = int(value)
+                vm.memory.MemI[s][a] = int(value)
 
             case Float_t:
                 value, _ := strconv.ParseFloat(curr_code.Args[0], 10)
-                vm.memory.MemF[scope][address] = value
+                vm.memory.MemF[s][a] = value
 
             case Bool_t:
                 if curr_code.Args[0] == "#t" {
-                    vm.memory.MemB[scope][address] = true
+                    vm.memory.MemB[s][a] = true
                 } else {
-                    vm.memory.MemB[scope][address] = false
+                    vm.memory.MemB[s][a] = false
                 }
 
             default:
-                fmt.Printf("Invalid address used in data segment")
+                fmt.Printf("Invalid address used in data segment\n")
                 os.Exit(0)
             }
 
         case PROGRAM:
+            vm.basepc = vm.pc
             break
 
         default:
@@ -67,8 +69,6 @@ func (vm *VirtualMachine) InitMemory() {
             os.Exit(0)
         }
     }
-
-    vm.basepc = vm.pc
 }
 
 func (vm *VirtualMachine) Execute() {
@@ -76,133 +76,381 @@ func (vm *VirtualMachine) Execute() {
 
     for ; vm.pc < len(vm.Program); vm.pc++ {
         curr_code =  vm.Program[vm.pc]
-        curr_code.Print()
+
+        if vm.Debug {
+            fmt.Printf("%3d ", vm.pc - vm.basepc)
+            curr_code.Print()
+        }
+
+        va1 := curr_code.Address[0]
+        va2 := curr_code.Address[1]
+        va3 := curr_code.Address[2]
+
+        s1 := GetScope(va1)
+        s2 := GetScope(va2)
+        s3 := GetScope(va3)
+
+        t1 := GetType(va1)
+        t2 := GetType(va2)
+        t3 := GetType(va3)
+
+        a1 := GetAddress(va1)
+        a2 := GetAddress(va2)
+        a3 := GetAddress(va3)
 
         switch curr_code.Op {
         case ASG:
-            vaddress1 := curr_code.Address[0]
-            vaddress2 := curr_code.Address[2]
+            if t1 == Int_t && t3 == Int_t {
+                vm.memory.MemI[s3][a3] = vm.memory.MemI[s1][a1]
 
-            scope1 := GetScope(vaddress1)
-            scope2 := GetScope(vaddress2)
+            } else if t1 == Float_t && t3 == Float_t {
+                vm.memory.MemF[s3][a3] = vm.memory.MemF[s1][a1]
 
-            type1 := GetType(vaddress1)
-            type2 := GetType(vaddress2)
+            } else if t1 == Bool_t && t3 == Bool_t {
+                vm.memory.MemB[s3][a3] = vm.memory.MemB[s1][a1]
 
-            address1 := GetAddress(vaddress1)
-            address2 := GetAddress(vaddress2)
+            } else if t1 == Int_t && t3 == Float_t {
+                vm.memory.MemI[s3][a3] = int(vm.memory.MemF[s1][a1])
 
-
-            if type1 == Int_t && type2 == Int_t {
-                vm.memory.MemI[scope2][address2] = vm.memory.MemI[scope1][address1]
-
-            } else if type1 == Float_t && type2 == Float_t {
-                vm.memory.MemF[scope2][address2] = vm.memory.MemF[scope1][address1]
-
-            } else if type1 == Bool_t && type2 == Bool_t {
-                vm.memory.MemB[scope2][address2] = vm.memory.MemB[scope1][address1]
-
-            } else if type1 == Int_t && type2 == Float_t {
-                vm.memory.MemI[scope2][address2] = int(vm.memory.MemF[scope1][address1])
-
-            } else if type1 == Float_t && type2 == Int_t {
-                vm.memory.MemF[scope2][address2] = float64(vm.memory.MemI[scope1][address1])
+            } else if t1 == Float_t && t3 == Int_t {
+                vm.memory.MemF[s3][a3] = float64(vm.memory.MemI[s1][a1])
 
             } else {
-                fmt.Printf("Type error mismatch")
+                fmt.Printf("Type error mismatch\n")
                 os.Exit(0)
             }
 
         case OR:
-            vaddress1 := curr_code.Address[0]
-            vaddress2 := curr_code.Address[1]
-            vaddress3 := curr_code.Address[2]
-
-            scope1 := GetScope(vaddress1)
-            scope2 := GetScope(vaddress2)
-            scope3 := GetScope(vaddress3)
-
-            type1 := GetType(vaddress1)
-            type2 := GetType(vaddress2)
-            type3 := GetType(vaddress3)
-
-            address1 := GetAddress(vaddress1)
-            address2 := GetAddress(vaddress2)
-            address3 := GetAddress(vaddress3)
-
-            if type1 == Bool_t && type2 == Bool_t && type3 == Bool_t {
-                vm.memory.MemB[scope3][address3] = (
-                    vm.memory.MemB[scope1][address1] || vm.memory.MemB[scope2][address2])
+            if t1 == Bool_t && t2 == Bool_t && t3 == Bool_t {
+                vm.memory.MemB[s3][a3] = (
+                    vm.memory.MemB[s1][a1] || vm.memory.MemB[s2][a2])
             } else {
-                fmt.Printf("Type error mismatch")
+                fmt.Printf("Type error mismatch\n")
                 os.Exit(0)
             }
 
         case AND:
-            vaddress1 := curr_code.Address[0]
-            vaddress2 := curr_code.Address[1]
-            vaddress3 := curr_code.Address[2]
-
-            scope1 := GetScope(vaddress1)
-            scope2 := GetScope(vaddress2)
-            scope3 := GetScope(vaddress3)
-
-            type1 := GetType(vaddress1)
-            type2 := GetType(vaddress2)
-            type3 := GetType(vaddress3)
-
-            address1 := GetAddress(vaddress1)
-            address2 := GetAddress(vaddress2)
-            address3 := GetAddress(vaddress3)
-
-            if type1 == Bool_t && type2 == Bool_t && type3 == Bool_t {
-                vm.memory.MemB[scope3][address3] = (
-                    vm.memory.MemB[scope1][address1] && vm.memory.MemB[scope2][address2])
+            if t1 == Bool_t && t2 == Bool_t && t3 == Bool_t {
+                vm.memory.MemB[s3][a3] = (
+                    vm.memory.MemB[s1][a1] && vm.memory.MemB[s2][a2])
             } else {
-                fmt.Printf("Type error mismatch")
+                fmt.Printf("Type error mismatch\n")
                 os.Exit(0)
             }
 
         case NOT:
-            vaddress1 := curr_code.Address[0]
-            vaddress2 := curr_code.Address[2]
-
-            scope1 := GetScope(vaddress1)
-            scope2 := GetScope(vaddress2)
-
-            type1 := GetType(vaddress1)
-            type2 := GetType(vaddress2)
-
-            address1 := GetAddress(vaddress1)
-            address2 := GetAddress(vaddress2)
-
-            if type1 == Bool_t && type2 == Bool_t {
-                vm.memory.MemB[scope2][address2] = !vm.memory.MemB[scope1][address1]
+            if t1 == Bool_t && t3 == Bool_t {
+                vm.memory.MemB[s3][a3] = !vm.memory.MemB[s1][a1]
             } else {
-                fmt.Printf("Type error mismatch")
+                fmt.Printf("Type error mismatch\n")
                 os.Exit(0)
             }
 
         case EQ:
+            if t1 == Int_t && t2 == Int_t && t3 == Bool_t {
+                vm.memory.MemB[s3][a3] = (
+                    vm.memory.MemI[s1][a1] == vm.memory.MemI[s2][a2])
+
+            } else if t1 == Int_t && t2 == Float_t && t3 == Bool_t {
+                vm.memory.MemB[s3][a3] = (
+                    float64(vm.memory.MemI[s1][a1]) == vm.memory.MemF[s2][a2])
+
+            } else if t1 == Float_t && t2 == Int_t && t3 == Bool_t {
+                vm.memory.MemB[s3][a3] = (
+                    vm.memory.MemF[s1][a1] == float64(vm.memory.MemI[s2][a2]))
+
+            } else if t1 == Float_t && t2 == Float_t && t3 == Bool_t {
+                vm.memory.MemB[s3][a3] = (
+                    vm.memory.MemF[s1][a1] == vm.memory.MemF[s2][a2])
+
+            } else {
+                fmt.Printf("Type error mismatch\n")
+                os.Exit(0)
+            }
 
         case NEQ:
+            if t1 == Int_t && t2 == Int_t && t3 == Bool_t {
+                vm.memory.MemB[s3][a3] = (
+                    vm.memory.MemI[s1][a1] != vm.memory.MemI[s2][a2])
+
+            } else if t1 == Int_t && t2 == Float_t && t3 == Bool_t {
+                vm.memory.MemB[s3][a3] = (
+                    float64(vm.memory.MemI[s1][a1]) != vm.memory.MemF[s2][a2])
+
+            } else if t1 == Float_t && t2 == Int_t && t3 == Bool_t {
+                vm.memory.MemB[s3][a3] = (
+                    vm.memory.MemF[s1][a1] != float64(vm.memory.MemI[s2][a2]))
+
+            } else if t1 == Float_t && t2 == Float_t && t3 == Bool_t {
+                vm.memory.MemB[s3][a3] = (
+                    vm.memory.MemF[s1][a1] != vm.memory.MemF[s2][a2])
+
+            } else {
+                fmt.Printf("Type error mismatch\n")
+                os.Exit(0)
+            }
 
         case LES:
+            if t1 == Int_t && t2 == Int_t && t3 == Bool_t {
+                vm.memory.MemB[s3][a3] = (
+                    vm.memory.MemI[s1][a1] < vm.memory.MemI[s2][a2])
+
+            } else if t1 == Int_t && t2 == Float_t && t3 == Bool_t {
+                vm.memory.MemB[s3][a3] = (
+                    float64(vm.memory.MemI[s1][a1]) < vm.memory.MemF[s2][a2])
+
+            } else if t1 == Float_t && t2 == Int_t && t3 == Bool_t {
+                vm.memory.MemB[s3][a3] = (
+                    vm.memory.MemF[s1][a1] < float64(vm.memory.MemI[s2][a2]))
+
+            } else if t1 == Float_t && t2 == Float_t && t3 == Bool_t {
+                vm.memory.MemB[s3][a3] = (
+                    vm.memory.MemF[s1][a1] < vm.memory.MemF[s2][a2])
+
+            } else {
+                fmt.Printf("Type error mismatch\n")
+                os.Exit(0)
+            }
+
         case GRE:
+            if t1 == Int_t && t2 == Int_t && t3 == Bool_t {
+                vm.memory.MemB[s3][a3] = (
+                    vm.memory.MemI[s1][a1] > vm.memory.MemI[s2][a2])
+
+            } else if t1 == Int_t && t2 == Float_t && t3 == Bool_t {
+                vm.memory.MemB[s3][a3] = (
+                    float64(vm.memory.MemI[s1][a1]) > vm.memory.MemF[s2][a2])
+
+            } else if t1 == Float_t && t2 == Int_t && t3 == Bool_t {
+                vm.memory.MemB[s3][a3] = (
+                    vm.memory.MemF[s1][a1] > float64(vm.memory.MemI[s2][a2]))
+
+            } else if t1 == Float_t && t2 == Float_t && t3 == Bool_t {
+                vm.memory.MemB[s3][a3] = (
+                    vm.memory.MemF[s1][a1] > vm.memory.MemF[s2][a2])
+
+            } else {
+                fmt.Printf("Type error mismatch\n")
+                os.Exit(0)
+            }
+
         case LEQ:
+            if t1 == Int_t && t2 == Int_t && t3 == Bool_t {
+                vm.memory.MemB[s3][a3] = (
+                    vm.memory.MemI[s1][a1] <= vm.memory.MemI[s2][a2])
+
+            } else if t1 == Int_t && t2 == Float_t && t3 == Bool_t {
+                vm.memory.MemB[s3][a3] = (
+                    float64(vm.memory.MemI[s1][a1]) <= vm.memory.MemF[s2][a2])
+
+            } else if t1 == Float_t && t2 == Int_t && t3 == Bool_t {
+                vm.memory.MemB[s3][a3] = (
+                    vm.memory.MemF[s1][a1] <= float64(vm.memory.MemI[s2][a2]))
+
+            } else if t1 == Float_t && t2 == Float_t && t3 == Bool_t {
+                vm.memory.MemB[s3][a3] = (
+                    vm.memory.MemF[s1][a1] <= vm.memory.MemF[s2][a2])
+
+            } else {
+                fmt.Printf("Type error mismatch\n")
+                os.Exit(0)
+            }
+
         case GEQ:
+            if t1 == Int_t && t2 == Int_t && t3 == Bool_t {
+                vm.memory.MemB[s3][a3] = (
+                    vm.memory.MemI[s1][a1] >= vm.memory.MemI[s2][a2])
+
+            } else if t1 == Int_t && t2 == Float_t && t3 == Bool_t {
+                vm.memory.MemB[s3][a3] = (
+                    float64(vm.memory.MemI[s1][a1]) >= vm.memory.MemF[s2][a2])
+
+            } else if t1 == Float_t && t2 == Int_t && t3 == Bool_t {
+                vm.memory.MemB[s3][a3] = (
+                    vm.memory.MemF[s1][a1] >= float64(vm.memory.MemI[s2][a2]))
+
+            } else if t1 == Float_t && t2 == Float_t && t3 == Bool_t {
+                vm.memory.MemB[s3][a3] = (
+                    vm.memory.MemF[s1][a1] >= vm.memory.MemF[s2][a2])
+
+            } else {
+                fmt.Printf("Type error mismatch\n")
+                os.Exit(0)
+            }
 
         case SUB:
+            if t1 == Int_t && t2 == Int_t && t3 == Int_t {
+                vm.memory.MemI[s3][a3] = (
+                    vm.memory.MemI[s1][a1] - vm.memory.MemI[s2][a2])
+
+            } else if t1 == Int_t && t2 == Float_t && t3 == Int_t {
+                vm.memory.MemI[s3][a3] = (
+                    vm.memory.MemI[s1][a1] - int(vm.memory.MemF[s2][a2]))
+
+            } else if t1 == Float_t && t2 == Int_t && t3 == Int_t {
+                vm.memory.MemI[s3][a3] = (
+                    int(vm.memory.MemF[s1][a1]) - vm.memory.MemI[s2][a2])
+
+            } else if t1 == Float_t && t2 == Float_t && t3 == Int_t {
+                vm.memory.MemI[s3][a3] = int(
+                    vm.memory.MemF[s1][a1] - vm.memory.MemF[s2][a2])
+
+            } else if t1 == Int_t && t2 == Int_t && t3 == Float_t {
+                vm.memory.MemF[s3][a3] = float64(
+                    vm.memory.MemI[s1][a1] - vm.memory.MemI[s2][a2])
+
+            } else if t1 == Int_t && t2 == Float_t && t3 == Float_t {
+                vm.memory.MemF[s3][a3] = (
+                    float64(vm.memory.MemI[s1][a1]) - vm.memory.MemF[s2][a2])
+
+            } else if t1 == Float_t && t2 == Int_t && t3 == Float_t {
+                vm.memory.MemF[s3][a3] = (
+                    vm.memory.MemF[s1][a1] - float64(vm.memory.MemI[s2][a2]))
+
+            } else if t1 == Float_t && t2 == Float_t && t3 == Float_t {
+                vm.memory.MemF[s3][a3] = (
+                    vm.memory.MemF[s1][a1] - vm.memory.MemF[s2][a2])
+
+            } else {
+                fmt.Printf("Type error mismatch\n")
+                os.Exit(0)
+            }
+
         case ADD:
+            if t1 == Int_t && t2 == Int_t && t3 == Int_t {
+                vm.memory.MemI[s3][a3] = (
+                    vm.memory.MemI[s1][a1] + vm.memory.MemI[s2][a2])
+
+            } else if t1 == Int_t && t2 == Float_t && t3 == Int_t {
+                vm.memory.MemI[s3][a3] = (
+                    vm.memory.MemI[s1][a1] + int(vm.memory.MemF[s2][a2]))
+
+            } else if t1 == Float_t && t2 == Int_t && t3 == Int_t {
+                vm.memory.MemI[s3][a3] = (
+                    int(vm.memory.MemF[s1][a1]) + vm.memory.MemI[s2][a2])
+
+            } else if t1 == Float_t && t2 == Float_t && t3 == Int_t {
+                vm.memory.MemI[s3][a3] = int(
+                    vm.memory.MemF[s1][a1] + vm.memory.MemF[s2][a2])
+
+            } else if t1 == Int_t && t2 == Int_t && t3 == Float_t {
+                vm.memory.MemF[s3][a3] = float64(
+                    vm.memory.MemI[s1][a1] + vm.memory.MemI[s2][a2])
+
+            } else if t1 == Int_t && t2 == Float_t && t3 == Float_t {
+                vm.memory.MemF[s3][a3] = (
+                    float64(vm.memory.MemI[s1][a1]) + vm.memory.MemF[s2][a2])
+
+            } else if t1 == Float_t && t2 == Int_t && t3 == Float_t {
+                vm.memory.MemF[s3][a3] = (
+                    vm.memory.MemF[s1][a1] + float64(vm.memory.MemI[s2][a2]))
+
+            } else if t1 == Float_t && t2 == Float_t && t3 == Float_t {
+                vm.memory.MemF[s3][a3] = (
+                    vm.memory.MemF[s1][a1] + vm.memory.MemF[s2][a2])
+
+            } else {
+                fmt.Printf("Type error mismatch\n")
+                os.Exit(0)
+            }
+
         case DIV:
+            if t1 == Int_t && t2 == Int_t && t3 == Int_t {
+                vm.memory.MemI[s3][a3] = (
+                    vm.memory.MemI[s1][a1] / vm.memory.MemI[s2][a2])
+
+            } else if t1 == Int_t && t2 == Float_t && t3 == Int_t {
+                vm.memory.MemI[s3][a3] = (
+                    vm.memory.MemI[s1][a1] / int(vm.memory.MemF[s2][a2]))
+
+            } else if t1 == Float_t && t2 == Int_t && t3 == Int_t {
+                vm.memory.MemI[s3][a3] = (
+                    int(vm.memory.MemF[s1][a1]) / vm.memory.MemI[s2][a2])
+
+            } else if t1 == Float_t && t2 == Float_t && t3 == Int_t {
+                vm.memory.MemI[s3][a3] = int(
+                    vm.memory.MemF[s1][a1] / vm.memory.MemF[s2][a2])
+
+            } else if t1 == Int_t && t2 == Int_t && t3 == Float_t {
+                vm.memory.MemF[s3][a3] = float64(
+                    vm.memory.MemI[s1][a1] / vm.memory.MemI[s2][a2])
+
+            } else if t1 == Int_t && t2 == Float_t && t3 == Float_t {
+                vm.memory.MemF[s3][a3] = (
+                    float64(vm.memory.MemI[s1][a1]) / vm.memory.MemF[s2][a2])
+
+            } else if t1 == Float_t && t2 == Int_t && t3 == Float_t {
+                vm.memory.MemF[s3][a3] = (
+                    vm.memory.MemF[s1][a1] / float64(vm.memory.MemI[s2][a2]))
+
+            } else if t1 == Float_t && t2 == Float_t && t3 == Float_t {
+                vm.memory.MemF[s3][a3] = (
+                    vm.memory.MemF[s1][a1] / vm.memory.MemF[s2][a2])
+
+            } else {
+                fmt.Printf("Type error mismatch\n")
+                os.Exit(0)
+            }
+
         case MUL:
+            if t1 == Int_t && t2 == Int_t && t3 == Int_t {
+                vm.memory.MemI[s3][a3] = (
+                    vm.memory.MemI[s1][a1] * vm.memory.MemI[s2][a2])
+
+            } else if t1 == Int_t && t2 == Float_t && t3 == Int_t {
+                vm.memory.MemI[s3][a3] = (
+                    vm.memory.MemI[s1][a1] * int(vm.memory.MemF[s2][a2]))
+
+            } else if t1 == Float_t && t2 == Int_t && t3 == Int_t {
+                vm.memory.MemI[s3][a3] = (
+                    int(vm.memory.MemF[s1][a1]) * vm.memory.MemI[s2][a2])
+
+            } else if t1 == Float_t && t2 == Float_t && t3 == Int_t {
+                vm.memory.MemI[s3][a3] = int(
+                    vm.memory.MemF[s1][a1] * vm.memory.MemF[s2][a2])
+
+            } else if t1 == Int_t && t2 == Int_t && t3 == Float_t {
+                vm.memory.MemF[s3][a3] = float64(
+                    vm.memory.MemI[s1][a1] * vm.memory.MemI[s2][a2])
+
+            } else if t1 == Int_t && t2 == Float_t && t3 == Float_t {
+                vm.memory.MemF[s3][a3] = (
+                    float64(vm.memory.MemI[s1][a1]) * vm.memory.MemF[s2][a2])
+
+            } else if t1 == Float_t && t2 == Int_t && t3 == Float_t {
+                vm.memory.MemF[s3][a3] = (
+                    vm.memory.MemF[s1][a1] * float64(vm.memory.MemI[s2][a2]))
+
+            } else if t1 == Float_t && t2 == Float_t && t3 == Float_t {
+                vm.memory.MemF[s3][a3] = (
+                    vm.memory.MemF[s1][a1] * vm.memory.MemF[s2][a2])
+
+            } else {
+                fmt.Printf("Type error mismatch\n")
+                os.Exit(0)
+            }
 
         case LPAREN:
+            fmt.Printf("Unexpected operator %s\n", TypeToString[curr_code.Op])
+            os.Exit(0)
+
         case RPAREN:
+            fmt.Printf("Unexpected operator %s\n", TypeToString[curr_code.Op])
+            os.Exit(0)
 
         case JMP:
+            vm.pc = vm.basepc + curr_code.Address[2]
+            fmt.Println(vm.memory.MemI[Local])
+
         case JMT:
+            if t1 == Bool_t && vm.memory.MemB[s1][a1] == true {
+                vm.pc = vm.basepc + curr_code.Address[2]
+            }
+
         case JMF:
+            if t1 == Bool_t && vm.memory.MemB[s1][a1] == false {
+                vm.pc = vm.basepc + curr_code.Address[2]
+            }
 
         case PROC:
         case GOPROC:

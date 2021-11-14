@@ -7,7 +7,7 @@ import (
     "./structs"
 )
 
-func run(filename string) {
+func run(filename string, debug bool) {
     var code []structs.Tac
 
     file, err := os.Open(filename)
@@ -46,7 +46,13 @@ func run(filename string) {
         }
     }
 
-    vm := structs.VirtualMachine{Program: code}
+    if debug {
+        for _, c := range code {
+            c.Print()
+        }
+    }
+
+    vm := structs.VirtualMachine{Program: code, Debug: debug}
     vm.InitMemory()
     vm.Execute()
 }

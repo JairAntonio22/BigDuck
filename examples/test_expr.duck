@@ -1,15 +1,13 @@
 
 #| main function |#
 proc main() 
-    var f0, f1, tmp, sum int;
+    var i, a int;
 {
-    f0 <- 0;
-    f1 <- 1;
-    sum <- 0;
+    a <- 1;
+    i <- 0;
 
-    loop f0 < 4000000 {
-        tmp <- f1;
-        f1 <- f0 + f1;
-        f0 <- tmp;
+    loop i < 5 {
+        a <- a * 2;
+        i <- i + 1;
     }
 }
