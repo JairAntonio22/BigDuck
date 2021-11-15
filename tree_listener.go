@@ -923,3 +923,16 @@ func (l *BigDuckListener) ExitRet_stmt(c * parser.Ret_stmtContext) {
     l.curr_col = c.GetStart().GetColumn()
     l.GenerateReturnTAC()
 }
+
+// print_r   
+// pparam    
+// pparamTerm
+func (l *BigDuckListener) ExitPparamTerm(c * parser.PparamTermContext) {
+    if !l.valid {
+        return
+    }
+
+    l.GeneratePrintTAC()
+}
+
+// pnextParam

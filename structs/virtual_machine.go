@@ -94,9 +94,9 @@ func (vm *VirtualMachine) Execute() {
         t2 := GetType(va2)
         t3 := GetType(va3)
 
-        a1 := GetAddress(va1)
-        a2 := GetAddress(va2)
-        a3 := GetAddress(va3)
+        a1 := vm.memory.Sp[Prev][t1] + GetAddress(va1)
+        a2 := vm.memory.Sp[Prev][t2] + GetAddress(va2)
+        a3 := vm.memory.Sp[Prev][t3] + GetAddress(va3)
 
         switch curr_code.Op {
         case ASG:
@@ -110,10 +110,10 @@ func (vm *VirtualMachine) Execute() {
                 vm.memory.MemB[s3][a3] = vm.memory.MemB[s1][a1]
 
             } else if t1 == Int_t && t3 == Float_t {
-                vm.memory.MemI[s3][a3] = int(vm.memory.MemF[s1][a1])
+                vm.memory.MemF[s3][a3] = float64(vm.memory.MemI[s1][a1])
 
             } else if t1 == Float_t && t3 == Int_t {
-                vm.memory.MemF[s3][a3] = float64(vm.memory.MemI[s1][a1])
+                vm.memory.MemI[s3][a3] = int(vm.memory.MemF[s1][a1])
 
             } else {
                 fmt.Printf("Type error mismatch\n")
@@ -440,7 +440,6 @@ func (vm *VirtualMachine) Execute() {
 
         case JMP:
             vm.pc = vm.basepc + curr_code.Address[2]
-            fmt.Println(vm.memory.MemI[Local])
 
         case JMT:
             if t1 == Bool_t && vm.memory.MemB[s1][a1] == true {
@@ -467,13 +466,29 @@ func (vm *VirtualMachine) Execute() {
         case RETURN:
         case ENDPROC:
 
-        case SET:
-        case PROGRAM:
+        case PRINT:
+            if t3 == Int_t {
+                fmt.Println(vm.memory.MemI[s3][a3])
+
+            } else if t3 == Float_t {
+                fmt.Println(vm.memory.MemF[s3][a3])
+
+            } else if t3 == Bool_t {
+                fmt.Println(vm.memory.MemB[s3][a3])
+
+            } else if t3 == Float_t {
+                fmt.Println(vm.memory.MemI[s3][a3])
+
+            } else if t3 == Int_t {
+                fmt.Println(vm.memory.MemF[s3][a3])
+
+            } else {
+                fmt.Printf("Type error mismatch\n")
+                os.Exit(0)
+            }
 
         default:
-            fmt.Printf(
-                "Unexpected operator %s at program segment\n",
-                TypeToString[curr_code.Op])
+            fmt.Printf("Unexpected operator at program segment\n")
             os.Exit(0)
         }
     }

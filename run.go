@@ -46,12 +46,6 @@ func run(filename string, debug bool) {
         }
     }
 
-    if debug {
-        for _, c := range code {
-            c.Print()
-        }
-    }
-
     vm := structs.VirtualMachine{Program: code, Debug: debug}
     vm.InitMemory()
     vm.Execute()

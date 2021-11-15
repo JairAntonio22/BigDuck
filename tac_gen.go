@@ -243,6 +243,30 @@ func (l *BigDuckListener) GenerateProcCallRetTAC(procname string) {
     l.typestack.Push(sym.RetType)
 }
 
+func (l *BigDuckListener) GeneratePrintTAC() {
+    item, _ := l.argstack.Pop()
+    param, _ := item.(string)
+    item, _ = l.typestack.Pop()
+    ptype, _ := item.(int)
+
+    scope, _, exists := l.symtable.Lookup(param)
+    var address int
+
+    if exists {
+        address = l.memmap.GetAddress(scope, param, ptype)
+    } else {
+        address = l.memmap.GetAddress(structs.Global, param, ptype)
+    }
+
+    l.ir_code = append(
+        l.ir_code, structs.Tac{
+            Op: structs.PRINT,
+            Args: [3]string{"", "", param},
+            Address: [3]int{0, 0, address}})
+    l.pc++
+    l.paramc++
+}
+
 func (l *BigDuckListener) GenerateObjFile() {
     content := ""
 

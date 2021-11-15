@@ -1,13 +1,22 @@
 
 #| main function |#
 proc main() 
-    var i, a int;
+    var x, y, abs float;
 {
-    a <- 1;
-    i <- 0;
+    x <- 2;
+    y <- 1;
+    abs <- 1;
 
-    loop i < 5 {
-        a <- a * 2;
-        i <- i + 1;
+    loop abs > 0.0001 {
+        print(y);
+        y <- (x / y + y) / 2;
+
+        abs <- y * y - x;
+
+        if abs < 0 {
+            abs <- -1 * abs;
+        }
     }
+
+    print(y);
 }

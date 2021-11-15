@@ -20,14 +20,17 @@ BOOL    : 'bool';
 TRUE    : 'true';
 FALSE   : 'false';
 
+// Built-in procedures
+PRINT_W : 'print';
+
 // Literals
 fragment DIGIT  : [0-9];
 fragment DIGITS : DIGIT+;
 fragment LETTER : [A-Za-z]+;
 fragment SIGN   : '-';
 
-CTE_INT     : DIGITS;
-CTE_FLOAT   : DIGITS ('.' DIGITS)? ([Ee] SIGN? DIGITS)?;
+CTE_INT     : SIGN? DIGITS;
+CTE_FLOAT   : SIGN? DIGITS ('.' DIGITS)? ([Ee] SIGN? DIGITS)?;
 CTE_STRING  : '"' ~('"')* '"';
 ID          : LETTER (LETTER | DIGIT | '_')*;
 WS          : [ \n\t\r] -> skip;
@@ -107,6 +110,18 @@ factor      : '(' num_expr ')'
             | CTE_FLOAT
             | proc_call;
 
+// Built-in procedures
+
+print_r     : PRINT_W '(' pparam ')';
+pparam      : pparamTerm pnextParam;
+pparamTerm  : bool_expr
+            | num_expr
+            | CTE_STRING;
+pnextParam  : ',' pparam
+            | ;
+
+/////////////////////////////////////
+
 proc_call   : ID '(' (param | ) ')';
 param       : paramTerm nextParam;
 paramTerm   : bool_expr
@@ -123,6 +138,7 @@ stmt        : assignment ';'
             | loop_stmt
             | ctrl_flow ';'
             | ret_stmt ';'
+            | print_r ';'
             | proc_call ';';
 
 assignment  : ID (dim | ) '<-' (num_expr | bool_expr);

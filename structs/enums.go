@@ -87,6 +87,8 @@ const (
     RETURN      // returns value from procedures
     ENDPROC     // clears procedure call and local memory
 
+    PRINT       // clears procedure call and local memory
+
     SET         // Sets value to address
     PROGRAM     // Indicates program segment
 
@@ -103,6 +105,7 @@ var OpToString [opEnumCount]string = [opEnumCount]string{
     "LPAREN", "RPAREN",
     "JMP", "JMT", "JMF",
     "PROC", "GOPROC", "ERA", "PARAM", "RETURN", "ENDPROC",
+    "PRINT",
     "SET", "PROGRAM",
 }
 
@@ -134,7 +137,7 @@ func ValidateOp(op int) error {
     }
 }
 
-//enumeration to keep track of loop style
+// enumeration to keep track of loop style
 
 const (
     InfStyle = iota
