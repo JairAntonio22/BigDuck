@@ -20,18 +20,13 @@ package structs
         1101 ... 0000 1011 -> global    string  at address 11
 */
 
-const (
-    Prev = iota
-    Curr
-    Size
-)
-
 type memory struct {
     MemI        [2][]int
     MemF        [2][]float64
     MemB        [2][]bool
-    Sp          [3]map[int]int
-    pcallc      int
+    memstack    memoryStack
+    framesize   map[int]int
+    Sp          map[int]int
 }
 
 func GetScope(address int) int {
@@ -50,22 +45,8 @@ func (m *memory) InitGlobal(ic, fc, bc int) {
     m.MemI[Global] = make([]int, ic)
     m.MemF[Global] = make([]float64, fc)
     m.MemB[Global] = make([]bool, bc)
-
-    m.Sp[Prev] = make(map[int]int)
-    m.Sp[Curr] = make(map[int]int)
-    m.Sp[Size] = make(map[int]int)
-
-    m.Sp[Prev][Int_t] = 0
-    m.Sp[Prev][Float_t] = 0
-    m.Sp[Prev][Bool_t] = 0
-
-    m.Sp[Curr][Int_t] = 0
-    m.Sp[Curr][Float_t] = 0
-    m.Sp[Curr][Bool_t] = 0
-
-    m.Sp[Size][Int_t] = 0
-    m.Sp[Size][Float_t] = 0
-    m.Sp[Size][Bool_t] = 0
+    m.framesize = make(map[int]int)
+    m.Sp = make(map[int]int)
 }
 
 func (m *memory) InitLocal(ic, fc, bc int) {
@@ -73,17 +54,37 @@ func (m *memory) InitLocal(ic, fc, bc int) {
     m.MemF[Local] = append(m.MemF[Local], make([]float64, fc)...)
     m.MemB[Local] = append(m.MemB[Local], make([]bool, bc)...)
 
-    m.Sp[Size][Int_t]   = ic
-    m.Sp[Size][Float_t] = fc
-    m.Sp[Size][Bool_t]  = bc
+    m.memstack.Push(ic, fc, bc)
 }
 
-func (m *memory) ChangeContext() {
-    m.Sp[Prev][Int_t]   = m.Sp[Curr][Int_t]
-    m.Sp[Prev][Float_t] = m.Sp[Curr][Float_t]
-    m.Sp[Prev][Bool_t]  = m.Sp[Curr][Bool_t]
+func (m *memory) PushContext() {
+    m.Sp[Int_t]     += m.framesize[Int_t]
+    m.Sp[Float_t]   += m.framesize[Float_t]
+    m.Sp[Bool_t]    += m.framesize[Bool_t]
 
-    m.Sp[Curr][Int_t]   += m.Sp[Size][Int_t]
-    m.Sp[Curr][Float_t] += m.Sp[Size][Float_t]
-    m.Sp[Curr][Bool_t]  += m.Sp[Size][Bool_t]
+    ic, fc, bc := m.memstack.Top()
+    m.framesize[Int_t]      = ic
+    m.framesize[Float_t]    = fc
+    m.framesize[Bool_t]     = bc
+}
+
+func (m *memory) PopContext() {
+    ic, fc, bc := m.memstack.Pop()
+
+    m.MemI[Local] = append(
+        []int(nil), m.MemI[Local][:len(m.MemI[Local]) - ic]...)
+    m.MemF[Local] = append(
+        []float64(nil), m.MemF[Local][:len(m.MemF[Local]) - fc]...)
+    m.MemB[Local] = append(
+        []bool(nil), m.MemB[Local][:len(m.MemB[Local]) - bc]...)
+
+    ic, fc, bc = m.memstack.Top()
+
+    m.framesize[Int_t]      = ic
+    m.framesize[Float_t]    = fc
+    m.framesize[Bool_t]     = bc
+
+    m.Sp[Int_t]     -= m.framesize[Int_t]
+    m.Sp[Float_t]   -= m.framesize[Float_t]
+    m.Sp[Bool_t]    -= m.framesize[Bool_t]
 }

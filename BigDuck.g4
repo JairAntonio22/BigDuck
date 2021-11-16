@@ -59,7 +59,8 @@ nextDim     : dim nextDim
 
 procs_decl  : proc_decl (procs_decl | );
 
-proc_decl   : sign (ret_type | ) (var_decl | ) block;
+proc_decl   : sign (ret_type | ) proc_info (var_decl | ) block;
+proc_info   : ;
 
 sign        : PROC ID args;
 
@@ -110,18 +111,6 @@ factor      : '(' num_expr ')'
             | CTE_FLOAT
             | proc_call;
 
-// Built-in procedures
-
-print_r     : PRINT_W '(' pparam ')';
-pparam      : pparamTerm pnextParam;
-pparamTerm  : bool_expr
-            | num_expr
-            | CTE_STRING;
-pnextParam  : ',' pparam
-            | ;
-
-/////////////////////////////////////
-
 proc_call   : ID '(' (param | ) ')';
 param       : paramTerm nextParam;
 paramTerm   : bool_expr
@@ -139,7 +128,9 @@ stmt        : assignment ';'
             | ctrl_flow ';'
             | ret_stmt ';'
             | print_r ';'
-            | proc_call ';';
+            | void_proc ';';
+
+void_proc   : proc_call;
 
 assignment  : ID (dim | ) '<-' (num_expr | bool_expr);
 
@@ -162,3 +153,13 @@ infLoop     : ;
 ctrl_flow   : (BREAK | SKIP_W);
 
 ret_stmt    : RETURN (num_expr | bool_expr | proc_call | );
+
+// Built-in procedures
+
+print_r     : PRINT_W '(' pparam ')';
+pparam      : pparamTerm pnextParam;
+pparamTerm  : bool_expr
+            | num_expr
+            | CTE_STRING;
+pnextParam  : ',' pparam
+            | ;

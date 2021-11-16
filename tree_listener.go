@@ -27,6 +27,7 @@ type BigDuckListener struct {
 
     in_decl     bool
     in_args     bool
+    in_stmt     bool
 
     scope       int
     argc        int
@@ -228,29 +229,14 @@ func (l *BigDuckListener) ExitProc_decl(c *parser.Proc_declContext) {
     l.ir_code = append(l.ir_code, structs.Tac{Op: structs.ENDPROC})
     l.pc++
 
-    var typeArgs []int
-
-    for !l.typequeue.Empty() {
-        item, _ := l.typequeue.Pop()
-        stype, _ := item.(int)
-        typeArgs = append(typeArgs, stype)
-    }
-
-    _, sym, _ := l.symtable.Lookup(l.curr_proc)
-
-    sym.Stype = structs.Proc_t
-    sym.Argc = l.argc
-    sym.TypeArgs = typeArgs
-    sym.RetType = l.ret_type
-
-    l.symtable.Update(l.curr_proc, sym)
-
     if l.ret_type != structs.Void_t {
         l.symtable.Insert(
             structs.Global,
             "_" + l.curr_proc,
             structs.Symbol{Stype: l.ret_type})
     }
+
+    _, sym, _ := l.symtable.Lookup(l.curr_proc)
 
     sym.Ic = l.memmap.Typecount[structs.Local][structs.Int_t]
     sym.Fc = l.memmap.Typecount[structs.Local][structs.Float_t]
@@ -265,6 +251,30 @@ func (l *BigDuckListener) ExitProc_decl(c *parser.Proc_declContext) {
     l.tmpc = 0
 }
 
+// proc_info   
+func (l *BigDuckListener) ExitProc_info(c *parser.Proc_infoContext) {
+    if !l.valid {
+        return
+    }
+
+    var typeArgs []int
+
+    for !l.typequeue.Empty() {
+        item, _ := l.typequeue.Pop()
+        stype, _ := item.(int)
+        typeArgs = append(typeArgs, stype)
+        fmt.Println(stype)
+    }
+
+    _, sym, _ := l.symtable.Lookup(l.curr_proc)
+
+    sym.Stype = structs.Proc_t
+    sym.Argc = l.argc
+    sym.TypeArgs = typeArgs
+    sym.RetType = l.ret_type
+
+    l.symtable.Update(l.curr_proc, sym)
+}
 // sign        
 func (l *BigDuckListener) EnterSign(c *parser.SignContext) {
     if !l.valid {
@@ -621,6 +631,16 @@ func (l *BigDuckListener) ExitProc_call(c *parser.Proc_callContext) {
         l.curr_line = c.GetStart().GetLine()
         l.curr_col = c.GetStart().GetColumn()
         l.GenerateProcCallRetTAC(c.ID().GetText())
+
+    } else if l.in_stmt {
+        l.ir_code = append(
+            l.ir_code,
+            structs.Tac{
+                Op: structs.GOPROC,
+                Args: [3]string{"", "", c.ID().GetText()},
+                Address: [3]int{0, 0, sym.Startpoint}})
+        l.pc++
+
     } else {
         l.valid = false
         fmt.Printf(
@@ -669,6 +689,15 @@ func (l *BigDuckListener) ExitParamTerm(c *parser.ParamTermContext) {
 // stmts       
 
 // stmt        
+
+// void_proc        
+func (l *BigDuckListener) EnterVoid_proc(c *parser.Void_procContext) {
+    l.in_stmt = true;
+}
+
+func (l *BigDuckListener) ExitVoid_proc(c *parser.Void_procContext) {
+    l.in_stmt = false;
+}
 
 // assignment  
 func (l *BigDuckListener) EnterAssignment(c *parser.AssignmentContext) {
@@ -925,6 +954,14 @@ func (l *BigDuckListener) ExitRet_stmt(c * parser.Ret_stmtContext) {
 }
 
 // print_r   
+func (l *BigDuckListener) ExitPrint_r(c * parser.Print_rContext) {
+    if !l.valid {
+        return
+    }
+
+    l.ir_code[l.pc - 1].Op = structs.PRINTLN
+}
+
 // pparam    
 // pparamTerm
 func (l *BigDuckListener) ExitPparamTerm(c * parser.PparamTermContext) {

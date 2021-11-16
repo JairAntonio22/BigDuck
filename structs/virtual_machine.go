@@ -12,6 +12,8 @@ type VirtualMachine struct {
     memory          memory      // Memory manager
     basepc          int         // Pointer to program start
     pc              int         // Program counter
+    pcstack         Stack       // Program counter stack
+    pcallc          int         // Procedure call counter
 }
 
 func (vm *VirtualMachine) InitMemory() {
@@ -73,12 +75,13 @@ func (vm *VirtualMachine) InitMemory() {
 
 func (vm *VirtualMachine) Execute() {
     var curr_code Tac
+    run_program := true
 
-    for ; vm.pc < len(vm.Program); vm.pc++ {
+    for ; run_program ; vm.pc++ {
         curr_code =  vm.Program[vm.pc]
 
         if vm.Debug {
-            fmt.Printf("%3d ", vm.pc - vm.basepc)
+            fmt.Printf("%3d ", vm.pc - vm.basepc - 1)
             curr_code.Print()
         }
 
@@ -94,9 +97,25 @@ func (vm *VirtualMachine) Execute() {
         t2 := GetType(va2)
         t3 := GetType(va3)
 
-        a1 := vm.memory.Sp[Prev][t1] + GetAddress(va1)
-        a2 := vm.memory.Sp[Prev][t2] + GetAddress(va2)
-        a3 := vm.memory.Sp[Prev][t3] + GetAddress(va3)
+        var a1, a2, a3 int
+
+        if s1 == Local {
+            a1 = vm.memory.Sp[t1] + GetAddress(va1)
+        } else {
+            a1 = GetAddress(va1)
+        }
+
+        if s2 == Local {
+            a2 = vm.memory.Sp[t2] + GetAddress(va2)
+        } else {
+            a2 = GetAddress(va2)
+        }
+
+        if s3 == Local {
+            a3 = vm.memory.Sp[t3] + GetAddress(va3)
+        } else {
+            a3 = GetAddress(va3)
+        }
 
         switch curr_code.Op {
         case ASG:
@@ -451,10 +470,11 @@ func (vm *VirtualMachine) Execute() {
                 vm.pc = vm.basepc + curr_code.Address[2]
             }
 
-        case PROC:
         case GOPROC:
+            vm.pcstack.Push(vm.pc)
             vm.pc = vm.basepc + curr_code.Address[2]
-            vm.memory.ChangeContext()
+            vm.memory.PushContext()
+            vm.pcallc++
 
         case ERA:
             vm.memory.InitLocal(
@@ -464,9 +484,71 @@ func (vm *VirtualMachine) Execute() {
 
         case PARAM:
         case RETURN:
+            if va1 != 0 && va3 != 0 {
+                if t1 == Int_t && t3 == Int_t {
+                    vm.memory.MemI[s3][a3] = vm.memory.MemI[s1][a1]
+
+                } else if t1 == Float_t && t3 == Float_t {
+                    vm.memory.MemF[s3][a3] = vm.memory.MemF[s1][a1]
+
+                } else if t1 == Bool_t && t3 == Bool_t {
+                    vm.memory.MemB[s3][a3] = vm.memory.MemB[s1][a1]
+
+                } else if t1 == Int_t && t3 == Float_t {
+                    vm.memory.MemF[s3][a3] = float64(vm.memory.MemI[s1][a1])
+
+                } else if t1 == Float_t && t3 == Int_t {
+                    vm.memory.MemI[s3][a3] = int(vm.memory.MemF[s1][a1])
+
+                } else {
+                    fmt.Printf("Type error mismatch\n")
+                    os.Exit(0)
+                }
+            }
+
+            item, _ := vm.pcstack.Pop()
+            vm.pc, _ = item.(int)
+            vm.pcallc--
+
+            if vm.pcallc == 0 {
+                run_program = false
+            } else {
+                vm.memory.PopContext()
+            }
+
         case ENDPROC:
+            item, _ := vm.pcstack.Pop()
+            vm.pc, _ = item.(int)
+            vm.pcallc--
+
+            if vm.pcallc == 0 {
+                run_program = false
+            } else {
+                vm.memory.PopContext()
+            }
 
         case PRINT:
+            if t3 == Int_t {
+                fmt.Print(vm.memory.MemI[s3][a3], " ")
+
+            } else if t3 == Float_t {
+                fmt.Print(vm.memory.MemF[s3][a3], " ")
+
+            } else if t3 == Bool_t {
+                fmt.Print(vm.memory.MemB[s3][a3], " ")
+
+            } else if t3 == Float_t {
+                fmt.Print(vm.memory.MemI[s3][a3], " ")
+
+            } else if t3 == Int_t {
+                fmt.Print(vm.memory.MemF[s3][a3], " ")
+
+            } else {
+                fmt.Printf("Type error mismatch\n")
+                os.Exit(0)
+            }
+
+        case PRINTLN:
             if t3 == Int_t {
                 fmt.Println(vm.memory.MemI[s3][a3])
 

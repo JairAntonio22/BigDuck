@@ -156,6 +156,8 @@ func (l *BigDuckListener) GenerateParamTAC() {
     ptype, _ := item.(int)
 
     _, sym, _ := l.symtable.Lookup(l.curr_pcall)
+    l.symtable.Print()
+
     argtype := sym.TypeArgs[l.paramc]
 
     if structs.Cube[structs.ASG][ptype][argtype] == structs.Error_t {
@@ -206,14 +208,22 @@ func (l *BigDuckListener) GenerateReturnTAC() {
                 l.curr_line, l.curr_col)
         }
 
-        address := l.memmap.GetAddress(structs.Local, result, rtype)
+        scope := structs.Local
+        _, _, exists := l.symtable.Lookup(result)
+
+        if !exists || (len(result) >= 1 && result[0] != 't') {
+            scope = structs.Global
+        }
+
+        address1 := l.memmap.GetAddress(scope, result, rtype)
+        address2 := l.memmap.GetAddress(structs.Global, "_" + l.curr_proc, rtype)
 
         l.ir_code = append(
             l.ir_code,
             structs.Tac{
                 Op: structs.RETURN,
-                Args: [3]string{"", "", result},
-                Address: [3]int{0, 0, address}})
+                Args: [3]string{result, "", "_" + l.curr_proc},
+                Address: [3]int{address1, 0, address2}})
         l.pc++
     }
 }

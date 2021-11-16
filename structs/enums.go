@@ -80,7 +80,6 @@ const (
     JMT         // jump on true
     JMF         // jump on false
 
-    PROC        // indicates proc id, no. args, startpoint
     GOPROC      // go to procedure
     ERA         // indicates the size of local memory to be used
     PARAM       // assigns value to parameter passed to procedure
@@ -88,6 +87,7 @@ const (
     ENDPROC     // clears procedure call and local memory
 
     PRINT       // clears procedure call and local memory
+    PRINTLN     // clears procedure call and local memory
 
     SET         // Sets value to address
     PROGRAM     // Indicates program segment
@@ -104,8 +104,8 @@ var OpToString [opEnumCount]string = [opEnumCount]string{
     "SUB", "ADD", "DIV", "MUL",
     "LPAREN", "RPAREN",
     "JMP", "JMT", "JMF",
-    "PROC", "GOPROC", "ERA", "PARAM", "RETURN", "ENDPROC",
-    "PRINT",
+    "GOPROC", "ERA", "PARAM", "RETURN", "ENDPROC",
+    "PRINT", "PRINTLN",
     "SET", "PROGRAM",
 }
 

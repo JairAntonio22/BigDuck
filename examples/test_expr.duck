@@ -1,22 +1,37 @@
 
+proc fib(n int) -> int {
+    if n <= 0 {
+        return 0;
+    } else if n = 1 {
+        return 1;
+    } else {
+        return fib(n - 1) + fib(n - 2);
+    }
+}
 #| main function |#
+proc main() {
+    print(fib(10));
+}
+
+#|
+proc abs(x float) -> float {
+    if x < 0 {
+        return x * -1;
+    } else {
+        return x;
+    }
+}
+
 proc main() 
-    var x, y, abs float;
+    var x, y float;
 {
     x <- 2;
     y <- 1;
-    abs <- 1;
 
-    loop abs > 0.0001 {
-        print(y);
+    loop abs(y * y - x) > 0.00001 {
         y <- (x / y + y) / 2;
-
-        abs <- y * y - x;
-
-        if abs < 0 {
-            abs <- -1 * abs;
-        }
     }
 
     print(y);
 }
+|#
