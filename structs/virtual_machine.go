@@ -13,7 +13,8 @@ type VirtualMachine struct {
     basepc          int         // Pointer to program start
     pc              int         // Program counter
     pcstack         Stack       // Program counter stack
-    pcallc          int         // Procedure call counter
+    pvaluequeue     Queue       // Parameter value queue
+    paddressqueue   Queue       // Parameter address queue
 }
 
 func (vm *VirtualMachine) InitMemory() {
@@ -474,7 +475,34 @@ func (vm *VirtualMachine) Execute() {
             vm.pcstack.Push(vm.pc)
             vm.pc = vm.basepc + curr_code.Address[2]
             vm.memory.PushContext()
-            vm.pcallc++
+
+            for !vm.paddressqueue.Empty() {
+                item, _ := vm.paddressqueue.Pop()
+
+                va, _ := item.(int)
+                t := GetType(va)
+                a := vm.memory.Sp[t] + GetAddress(va)
+
+                item, _ = vm.pvaluequeue.Pop()
+
+                switch t {
+                case Int_t:
+                    value, _ := item.(int)
+                    vm.memory.MemI[Local][a] = value
+
+                case Float_t:
+                    value, _ := item.(float64)
+                    vm.memory.MemF[Local][a] = value
+
+                case Bool_t:
+                    value, _ := item.(bool)
+                    vm.memory.MemB[Local][a] = value
+
+                default:
+                    fmt.Printf("Type error mismatch\n")
+                    os.Exit(0)
+                }
+            }
 
         case ERA:
             vm.memory.InitLocal(
@@ -483,6 +511,28 @@ func (vm *VirtualMachine) Execute() {
                 curr_code.Address[2])
 
         case PARAM:
+            vm.paddressqueue.Push(va3)
+
+            if t1 == Int_t && t3 == Int_t {
+                vm.pvaluequeue.Push(vm.memory.MemI[s1][a1])
+
+            } else if t1 == Float_t && t3 == Float_t {
+                vm.pvaluequeue.Push(vm.memory.MemF[s1][a1])
+
+            } else if t1 == Bool_t && t3 == Bool_t {
+                vm.pvaluequeue.Push(vm.memory.MemB[s1][a1])
+
+            } else if t1 == Int_t && t3 == Float_t {
+                vm.pvaluequeue.Push(float64(vm.memory.MemI[s1][a1]))
+
+            } else if t1 == Float_t && t3 == Int_t {
+                vm.pvaluequeue.Push(int(vm.memory.MemF[s1][a1]))
+
+            } else {
+                fmt.Printf("Type error mismatch\n")
+                os.Exit(0)
+            }
+
         case RETURN:
             if va1 != 0 && va3 != 0 {
                 if t1 == Int_t && t3 == Int_t {
@@ -508,9 +558,8 @@ func (vm *VirtualMachine) Execute() {
 
             item, _ := vm.pcstack.Pop()
             vm.pc, _ = item.(int)
-            vm.pcallc--
 
-            if vm.pcallc == 0 {
+            if vm.pcstack.Size() == 0 {
                 run_program = false
             } else {
                 vm.memory.PopContext()
@@ -519,9 +568,8 @@ func (vm *VirtualMachine) Execute() {
         case ENDPROC:
             item, _ := vm.pcstack.Pop()
             vm.pc, _ = item.(int)
-            vm.pcallc--
 
-            if vm.pcallc == 0 {
+            if vm.pcstack.Size() == 0 {
                 run_program = false
             } else {
                 vm.memory.PopContext()

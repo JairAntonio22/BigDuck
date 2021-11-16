@@ -155,10 +155,9 @@ func (l *BigDuckListener) GenerateParamTAC() {
     item, _ = l.typestack.Pop()
     ptype, _ := item.(int)
 
-    _, sym, _ := l.symtable.Lookup(l.curr_pcall)
-    l.symtable.Print()
+    _, procsym, _ := l.symtable.Lookup(l.curr_pcall)
 
-    argtype := sym.TypeArgs[l.paramc]
+    argtype := procsym.TypeArgs[l.paramc]
 
     if structs.Cube[structs.ASG][ptype][argtype] == structs.Error_t {
         l.valid = false
@@ -183,8 +182,8 @@ func (l *BigDuckListener) GenerateParamTAC() {
     l.ir_code = append(
         l.ir_code, structs.Tac{
             Op: structs.PARAM,
-            Args: [3]string{"", "", param},
-            Address: [3]int{0, 0, address}})
+            Args: [3]string{param, "", fmt.Sprintf("%x", procsym.Paddress[l.paramc])},
+            Address: [3]int{address, 0, procsym.Paddress[l.paramc]}})
     l.pc++
     l.paramc++
 }

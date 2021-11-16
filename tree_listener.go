@@ -23,6 +23,7 @@ type BigDuckListener struct {
 
     symqueue    structs.Queue
     typequeue   structs.Queue
+    paramqueue  structs.Queue
     dimqueue    structs.Queue
 
     in_decl     bool
@@ -46,6 +47,7 @@ type BigDuckListener struct {
     jmpstack    structs.Stack
     skipqueue   structs.Queue
     breakqueue  structs.Queue
+    eraqueue    structs.Queue
 
     pc          int
     tmpc        int
@@ -189,6 +191,7 @@ func (l *BigDuckListener) EnterScalar(c *parser.ScalarContext) {
 
             if l.in_args {
                 l.typequeue.Push(stype)
+                l.paramqueue.Push(name)
             }
         }
     }
@@ -241,7 +244,20 @@ func (l *BigDuckListener) ExitProc_decl(c *parser.Proc_declContext) {
     sym.Ic = l.memmap.Typecount[structs.Local][structs.Int_t]
     sym.Fc = l.memmap.Typecount[structs.Local][structs.Float_t]
     sym.Bc = l.memmap.Typecount[structs.Local][structs.Bool_t]
+
     l.symtable.Update(l.curr_proc, sym)
+
+    for !l.eraqueue.Empty() {
+        item, _ := l.eraqueue.Pop()
+        pc, _ := item.(int)
+        l.ir_code[pc].Args[0] = strconv.Itoa(sym.Ic)
+        l.ir_code[pc].Args[1] = strconv.Itoa(sym.Fc)
+        l.ir_code[pc].Args[2] = strconv.Itoa(sym.Bc)
+
+        l.ir_code[pc].Address[0] = sym.Ic
+        l.ir_code[pc].Address[1] = sym.Fc
+        l.ir_code[pc].Address[2] = sym.Bc
+    }
 
     l.symtable.ClearLocalScope()
     l.memmap.ClearLocalScope()
@@ -258,12 +274,17 @@ func (l *BigDuckListener) ExitProc_info(c *parser.Proc_infoContext) {
     }
 
     var typeArgs []int
+    var paddress []int
 
-    for !l.typequeue.Empty() {
+    for i := 0; !l.typequeue.Empty(); i++ {
         item, _ := l.typequeue.Pop()
         stype, _ := item.(int)
         typeArgs = append(typeArgs, stype)
-        fmt.Println(stype)
+
+        item, _ = l.paramqueue.Pop()
+        name, _ := item.(string)
+        paddress = append(
+            paddress, l.memmap.GetAddress(structs.Local, name, stype))
     }
 
     _, sym, _ := l.symtable.Lookup(l.curr_proc)
@@ -272,9 +293,11 @@ func (l *BigDuckListener) ExitProc_info(c *parser.Proc_infoContext) {
     sym.Argc = l.argc
     sym.TypeArgs = typeArgs
     sym.RetType = l.ret_type
+    sym.Paddress = paddress
 
     l.symtable.Update(l.curr_proc, sym)
 }
+
 // sign        
 func (l *BigDuckListener) EnterSign(c *parser.SignContext) {
     if !l.valid {
@@ -606,6 +629,10 @@ func (l *BigDuckListener) EnterProc_call(c *parser.Proc_callContext) {
             "line %d:%d procedure %s not declared\n",
             c.GetStart().GetLine(), c.GetStart().GetColumn(), c.ID().GetText())
         return
+    }
+
+    if l.curr_proc == l.curr_pcall {
+        l.eraqueue.Push(l.pc)
     }
 
     l.ir_code = append(

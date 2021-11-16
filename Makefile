@@ -25,4 +25,4 @@ parser: BigDuck.g4
 	java -jar $(ANTLR) BigDuck.g4 -Dlanguage=Go -o parser
 
 clean:
-	rm -fr parser ducc
+	rm -fr parser ducc examples/*.quack

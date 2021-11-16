@@ -1,19 +1,4 @@
 
-proc fib(n int) -> int {
-    if n <= 0 {
-        return 0;
-    } else if n = 1 {
-        return 1;
-    } else {
-        return fib(n - 1) + fib(n - 2);
-    }
-}
-#| main function |#
-proc main() {
-    print(fib(10));
-}
-
-#|
 proc abs(x float) -> float {
     if x < 0 {
         return x * -1;
@@ -22,16 +7,20 @@ proc abs(x float) -> float {
     }
 }
 
-proc main() 
-    var x, y float;
+proc sqrt(x float) -> float
+    var y float;
 {
-    x <- 2;
     y <- 1;
 
     loop abs(y * y - x) > 0.00001 {
         y <- (x / y + y) / 2;
     }
 
-    print(y);
+    return y;
 }
-|#
+
+proc main() {
+    print(sqrt(2));
+    print(sqrt(4));
+    print(sqrt(10));
+}

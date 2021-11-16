@@ -14,12 +14,14 @@ type Symbol struct {
 
     // for vars
     Dim         []int
+    address     int
 
     // for procs
     Argc        int
     TypeArgs    []int
     RetType     int
     Startpoint  int
+    Paddress    []int
     Ic          int
     Fc          int
     Bc          int
