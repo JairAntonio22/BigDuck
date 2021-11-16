@@ -1,26 +1,82 @@
 
-proc abs(x float) -> float {
-    if x < 0 {
-        return x * -1;
+#| Iterative fibbonaci implementation |#
+proc fib_iter(n int) -> int 
+    var f0, f1, tmp int;
+{
+    f0 <- 0;
+    f1 <- 1;
+
+    loop ; n > 0; n <- n - 1 {
+        tmp <- f1;
+        f1 <- f0 + f1;
+        f0 <- tmp;
+    }
+    
+    return f0;
+}
+
+#| Recursive fibbonaci implementation |#
+proc fib_rec(n int) -> int {
+    if n <= 0 {
+        return 0;
+    } else if n = 1 {
+        return 1;
     } else {
-        return x;
+        return fib_rec(n - 1) + fib_rec(n - 2);
     }
 }
 
-proc sqrt(x float) -> float
-    var y float;
-{
-    y <- 1;
-
-    loop abs(y * y - x) > 0.00001 {
-        y <- (x / y + y) / 2;
+#| Tail recursive fibbonaci implementation |#
+proc aux_fib_tail(f0, f1, n int) -> int {
+    if n <= 0 {
+        return f0;
+    } else {
+        return aux_fib_tail(f1, f0 + f1, n - 1);
     }
+}
 
-    return y;
+proc fib_tail(n int) -> int {
+    return aux_fib_tail(0, 1, n);
+}
+
+#| Iterative factorial implementation |#
+proc fact_iter(n int) -> int 
+    var acc int;
+{
+    loop acc <- 1; n > 0; n <- n - 1 {
+        acc <- n * acc;
+    }
+    
+    return acc;
+}
+
+#| Recursive factorial implementation |#
+proc fact_rec(n int) -> int {
+    if n <= 0 {
+        return 1;
+    } else {
+        return n * fact_rec(n - 1);
+    }
+}
+
+#| Tail recursive factorial implementation |#
+proc aux_fact_tail(acc, n int) -> int {
+    if n <= 0 {
+        return acc;
+    } else {
+        return aux_fact_tail(n * acc, n - 1);
+    }
+}
+
+proc fact_tail(n int) -> int {
+    return aux_fact_tail(1, n);
 }
 
 proc main() {
-    print(sqrt(2));
-    print(sqrt(4));
-    print(sqrt(10));
+    print(fib_iter(10));
+    print(fib_rec(10));
+    print(fib_tail(10));
+    print(fact_iter(10));
+    print(fact_rec(10));
+    print(fact_tail(10));
 }
