@@ -3,9 +3,149 @@
 
 \section{Development Environment}
 
+\paragraph{} The BigDuck compiler will be developed using the Go programming
+language. Antlr4 will be used as lexer and parser generator. And it will be
+developed on MacOS, any other system support is not considered. Nevertheless
+with access to a Go compiler and ANTLR, it should be possible to run the
+BigDuck compiler however this has not been tested.
+
 \section{Lexical Analisis}
 
+\subsubsection{Reserved Keywords}
+\begin{verbatim}
+proc                return              if                  else
+loop                break               skip                and
+or                  not                 var                 int
+float               bool                true                false
+\end{verbatim}
+
+\subsubsection{Tokens}
+\begin{align*}
+	\texttt{DIGIT}
+	&\rightarrow\texttt{[0-9]}\\
+	\texttt{DIGITS}
+	&\rightarrow\texttt{digit+}\\
+	\texttt{LETTER}
+	&\rightarrow\texttt{[A-Za-z]}\\
+	\texttt{SIGN}
+	&\rightarrow\texttt{`` - ''}\\
+	\texttt{CTE\_INT}
+	&\rightarrow\texttt{sign? digits}\\
+	\texttt{CTE\_FLOAT}
+	&\rightarrow\texttt{sign? digits (\textbackslash.\ digits)?}\\
+	\texttt{ID}
+	&\rightarrow\texttt{letter (letter | digit | `` \_ '')*}\\
+	\texttt{COMMENT}
+	&\rightarrow\texttt{`` \#| '' \phantom{}.*? `` |\# '' *}\\
+\end{align*}
+
 \section{Syntactical Analisis}
+\begin{align*}
+	\texttt{program}
+	\rightarrow&\ \texttt{vars\_decl procs\_decl}\\
+	\phantom{0}\\
+	\texttt{vars\_decl}
+	\rightarrow&\ \texttt{var\_decl var\_decl}\\
+            |&\ \epsilon\\
+	\texttt{var\_decl}
+	\rightarrow&\ \texttt{VAR ID next\_var var\_type `` ; '' next\_var\_decl}\\
+	\texttt{next\_var}
+	\rightarrow&\ \texttt{`` , '' ID next\_var}\\
+            |&\ \epsilon\\
+	\texttt{next\_var\_decl}
+	\rightarrow&\ \texttt{var\_decl next\_var\_decl}\\
+            |&\ \epsilon\\
+	\phantom{0}\\
+	\texttt{var\_type}
+	\rightarrow&\ \texttt{scalar | tensor}\\
+	\phantom{0}\\
+	\texttt{scalar}
+	\rightarrow&\ \texttt{INT | FLOAT | BOOL}\\
+	\phantom{0}\\
+	\texttt{tensor}
+	\rightarrow&\ \texttt{dimension scalar}\\
+	\texttt{dimension}
+	\rightarrow&\ \texttt{`` [ '' num\_expr `` ] next\_dimension ''}\\
+	\texttt{next\_dimension}
+	\rightarrow&\ \texttt{dimension next\_dimension}\\
+            |&\ \epsilon\\
+	\phantom{0}\\
+	\texttt{procs\_decl}
+	\rightarrow&\ \texttt{proc\_decl procs\_decl}\\
+            |&\ \epsilon\\
+	\phantom{0}\\
+	\texttt{proc\_decl}
+	\rightarrow&\ \texttt{PROC ID proc\_args ret\_type local\_decl block}\\
+	\phantom{0}\\
+	\texttt{proc\_args}
+	\rightarrow&\ \texttt{`` ( '' `` ) ''}\\
+            |&\ \texttt{`` ( '' ID next\_args scalar next\_types `` ) ''}\\
+	\texttt{next\_args}
+	\rightarrow&\ \texttt{`` , '' ID next\_args}\\
+            |&\ \epsilon\\
+	\texttt{next\_types}
+	\rightarrow&\ \texttt{`` ; '' ID next\_args scalar next\_types}\\
+            |&\ \epsilon\\
+	\phantom{0}\\
+	\texttt{ret\_type}
+	\rightarrow&\ \texttt{`` -> '' scalar}\\
+\end{align*}
+
+\begin{align*}
+	\texttt{bool\_expr}
+	\rightarrow&\ \texttt{and\_expr next\_bool}\\
+	\texttt{next\_bool}
+	\rightarrow&\ \texttt{OR bool\_expr}\\
+            |&\ \epsilon\\
+	\phantom{0}\\
+	\texttt{and\_expr}
+	\rightarrow&\ \texttt{not\_expr next\_and}\\
+	\texttt{next\_and}
+	\rightarrow&\ \texttt{AND bool\_expr}\\
+            |&\ \epsilon\\
+	\phantom{0}\\
+	\texttt{not\_expr}
+	\rightarrow&\ \texttt{(NOT | } \epsilon \texttt{ ) bool\_term}\\
+	\texttt{bool\_term}
+	\rightarrow&\ \texttt{`` ( '' bool\_expr `` ) ''}\\
+            |&\ \texttt{rel\_expr}\\
+            |&\ \texttt{TRUE}\\
+            |&\ \texttt{FALSE}\\
+            |&\ \texttt{ID (dimension | } \epsilon \texttt{ )}\\
+            |&\ \texttt{proc\_call}\\
+	\phantom{0}\\
+	\texttt{rel\_expr}
+	\rightarrow&\ \texttt{num\_expr rel\_op num\_expr}\\
+	\texttt{rel\_op}
+	\rightarrow&\ \texttt{`` = ''}\\
+            |&\ \texttt{`` /= ''}\\
+            |&\ \texttt{`` < ''}\\
+            |&\ \texttt{`` > ''}\\
+            |&\ \texttt{`` >= ''}\\
+            |&\ \texttt{`` <= ''}\\
+	\phantom{0}\\
+	\texttt{num\_expr}
+	\rightarrow&\ \texttt{prod\_expr next\_sum}\\
+	\texttt{next\_sum}
+	\rightarrow&\ \texttt{( `` + '' | `` - '') num\_expr}\\
+            |&\ \epsilon\\
+	\phantom{0}\\
+	\texttt{prod\_expr}
+	\rightarrow&\ \texttt{factor next\_prod}\\
+	\texttt{next\_prod}
+	\rightarrow&\ \texttt{(`` * '' | `` / '') prod\_expr}\\
+            |&\ \epsilon\\
+\end{align*}
+
+\begin{align*}
+	\texttt{factor}
+	\rightarrow&\ \texttt{`` ( '' num\_expr `` ) ''}\\
+            |&\ \texttt{CTE\_INT}\\
+            |&\ \texttt{CTE\_FLOAT}\\
+            |&\ \texttt{ID (dimension | } \epsilon \texttt{ )}\\
+            |&\ \texttt{proc\_call}\\
+	\phantom{0}\\
+\end{align*}
 
 \section{IR Code and Semantic Analisis}
 \subsection{Operation Code}

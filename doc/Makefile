@@ -9,4 +9,3 @@ final_doc.pdf: *.tex
 
 clean:
 	latexmk -c
-	$(RM) final_doc.pdf

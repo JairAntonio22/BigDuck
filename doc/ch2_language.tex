@@ -20,8 +20,89 @@ operations, and some basic utilities for reading and writing \texttt{.csv}
 iles. All this to make it easier for the user to work within the
 Machine-Learning and Data Science fields.
 
+\newpage
 
 \section{Language Errors}
 \subsection{Compile-Time Errors}
+\paragraph{} BigDuck is language aimed for the developement of mathematical
+models commonly used in Machine-Learning and Data Science. Therefore this
+language includes integer and floating point arithmetic, vector and matrix
+operations, and some basic utilities for reading and writing \texttt{.csv} 
+iles. All this to make it easier for the user to work within the
+Machine-Learning and Data Science fields.
+
+\begin{figure}[h]
+    \centering
+    \begin{tabular}{p{1.5in}p{2.5in}}
+        \toprule
+        \textbf{Error message} & \textbf{Description}\\
+
+        \midrule Duplicate symbol &
+        This occurs when the current symbol is already used on the declared
+        scope.\\
+
+        \midrule Variable was not \newline declared &
+        This occurs when the current variable has not been \newline previously
+        declared.\\
+
+        \midrule Procedure was not \newline declared &
+        This occurs when current procedure has not been \newline previously
+        declared.\\
+
+        \midrule Void procedure used \newline in expression &
+        This occurs when there is no return value on the procedure call in
+        an expression.\\
+
+        \midrule Procedure expected $n$ \newline arguments, given $m$ &
+        This occurs when the procedure call was given $m$ arguments but it
+        does not match with expectected $n$ atributes specified on declaration.\\
+
+        \midrule Type error mismatch &
+        This occurs when an operation can not be performed with the given
+        operands.\\
+
+        \midrule Expected boolean \newline expression &
+        This occurs when an expression inside a condition (if's or loop's) does
+        not evaluated to a boolean value.\\
+
+        \midrule Parameter expected \newline to be $a$, given $b$ &
+        This occurs when the parameter of type $b$ does not match with type $a$
+        expected by the procedure.\\
+
+        \midrule Return type \newline different from \newline procedure sign &
+        This occurs when the returned value does not match with the return
+        type expected.\\
+
+        \bottomrule
+    \end{tabular}
+\end{figure}
+
+\newpage
+
 \subsection{Run-Time Errors}
+\begin{figure}[h]
+    \centering
+    \begin{tabular}{p{1.5in}p{2.5in}}
+        \toprule
+        \textbf{Error message} & \textbf{Description}\\
+
+        \midrule Local address used \newline in data segment &
+        This occurs when it is attempted to initialize a local address before
+        having a local context setup.\\
+
+        \midrule Invalid address used \newline in data segment &
+        This occurs when it is attempted to initialize an address that does not
+        conform to with address specification.\\
+
+        \midrule Unexpected operator \newline at data segment &
+        This occurs when an operator is used on a segment it was not supposed
+        to be.\\
+
+        \midrule Type error mismatch &
+        This occurs when an operation can not be performed with the given
+        operands.\\
+
+        \bottomrule
+    \end{tabular}
+\end{figure}
 

@@ -65,7 +65,7 @@ proc_info   : ;
 sign        : PROC ID args;
 
 args        : '(' (ID nextArg scalar nextTypes | ) ')';
-nextTypes   : ';' ID nextArg var_type nextTypes
+nextTypes   : ';' ID nextArg scalar nextTypes
             | ;
 nextArg     : ',' ID nextArg
             | ;
