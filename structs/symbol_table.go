@@ -14,7 +14,7 @@ type Symbol struct {
 
     // for vars
     Dim         []int
-    address     int
+    Baddress    int
 
     // for procs
     Argc        int
@@ -44,7 +44,7 @@ func (s SymTable) Print() {
     for scope := 0; scope < scopeEnumCount; scope++ {
         for name, _ := range s.table[scope] {
             fmt.Printf(
-                "%s\t%16s %8s %+v\n",
+                "%s\t%6s %8s %+v\n",
                 ScopeToString[scope],
                 name,
                 TypeToString[s.table[scope][name].Stype],

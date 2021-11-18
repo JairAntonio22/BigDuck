@@ -40,6 +40,9 @@ float               bool                true                false
 \end{align*}
 
 \section{Syntactical Analisis}
+\paragraph{Note} The following grammar is not a one-to-one description of the
+grammar used in the compiler, this is because there are addtional rules just to
+have some breakpoints on the grammar required for compilation.
 \begin{align*}
 	\texttt{program}
 	\rightarrow&\ \texttt{vars\_decl procs\_decl}\\
@@ -86,12 +89,12 @@ float               bool                true                false
 	\texttt{next\_types}
 	\rightarrow&\ \texttt{`` ; '' ID next\_args scalar next\_types}\\
             |&\ \epsilon\\
-	\phantom{0}\\
-	\texttt{ret\_type}
-	\rightarrow&\ \texttt{`` -> '' scalar}\\
 \end{align*}
 
 \begin{align*}
+	\texttt{ret\_type}
+	\rightarrow&\ \texttt{`` -> '' scalar}\\
+	\phantom{0}\\
 	\texttt{bool\_expr}
 	\rightarrow&\ \texttt{and\_expr next\_bool}\\
 	\texttt{next\_bool}
@@ -111,7 +114,7 @@ float               bool                true                false
             |&\ \texttt{rel\_expr}\\
             |&\ \texttt{TRUE}\\
             |&\ \texttt{FALSE}\\
-            |&\ \texttt{ID (dimension | } \epsilon \texttt{ )}\\
+            |&\ \texttt{variable}\\
             |&\ \texttt{proc\_call}\\
 	\phantom{0}\\
 	\texttt{rel\_expr}
@@ -142,16 +145,183 @@ float               bool                true                false
 	\rightarrow&\ \texttt{`` ( '' num\_expr `` ) ''}\\
             |&\ \texttt{CTE\_INT}\\
             |&\ \texttt{CTE\_FLOAT}\\
-            |&\ \texttt{ID (dimension | } \epsilon \texttt{ )}\\
+            |&\ \texttt{variable}\\
             |&\ \texttt{proc\_call}\\
 	\phantom{0}\\
+	\texttt{variable}
+            |&\ \texttt{ID (dimension | } \epsilon \texttt{ )}\\
+	\phantom{0}\\
+	\texttt{proc\_call}
+	\rightarrow&\ \texttt{ID `` ( '' (param | } \epsilon \texttt{ ) `` ) ''}\\
+	\texttt{param}
+	\rightarrow&\ \texttt{param\_term next\_param}\\
+	\texttt{param\_term}
+	\rightarrow&\ \texttt{bool\_expr}\\
+            |&\ \texttt{num\_expr}\\
+	\texttt{next\_param}
+	\rightarrow&\ \texttt{`` , '' param}\\
+	\texttt{block}
+	\rightarrow&\ \texttt{`` \{ '' stmts `` \} ''}\\
+	\phantom{0}\\
+	\texttt{stmts}
+	\rightarrow&\ \texttt{stmt stmts}\\
+            |&\ \epsilon\\
+	\texttt{stmt}
+	\rightarrow&\ \texttt{assigment  `` ; ''}\\
+            |&\ \texttt{condition}\\
+            |&\ \texttt{loop\_stmt}\\
+            |&\ \texttt{ctrl\_flow `` ; ''}\\
+            |&\ \texttt{ret\_stmt `` ; ''}\\
+            |&\ \texttt{proc\_call `` ; ''}\\
+	\phantom{0}\\
+	\texttt{assignment}
+	\rightarrow&\ \texttt{variable `` <- '' (num\_expr | bool\_expr)}\\
+	\phantom{0}\\
+	\texttt{condition}
+	\rightarrow&\ \texttt{IF bool\_expr block (alter | } \epsilon \texttt{ )}\\
+	\phantom{0}\\
+	\texttt{alter}
+	\rightarrow&\ \texttt{IF bool\_expr block (alter | } \epsilon \texttt{ )}\\
+	\phantom{0}\\
+	\texttt{loop}
+	\rightarrow&\ \texttt{LOOP (for\_style | while\_style | infinite) block}\\
+	\texttt{for\_style}
+	\rightarrow&\ \texttt{
+            (assignment | } \epsilon \texttt{ ) 
+            `` ; '' bool\_expr `` ; '' assignment }\\
+	\texttt{while\_style}
+	\rightarrow&\ \texttt{bool\_expr}\\
+	\texttt{infinite}
+	\rightarrow&\ \epsilon\\
 \end{align*}
 
 \section{IR Code and Semantic Analisis}
 \subsection{Operation Code}
+\paragraph{} For this project the operation code can be considered as an
+instruction set, since each of this operation indicates an action to be perform
+by the virtual machine in order to achieve some computation. The operator code
+names were chosen to be like mnemonics to facilitate some developement tasks.
+
+\begin{figure}[h]
+    \centering
+    \begin{tabular}{p{1in}p{3in}}
+        \toprule
+        \textbf{Operator} & \textbf{Description}\\
+        \midrule NOP &
+        Null operator, mainly used as null value for \newline compilation checks.\\
+
+        \midrule ASG &
+        Assignation.\\
+
+        \midrule OR &
+        Logical or.\\
+
+        \midrule AND &
+        Logical and.\\
+
+        \midrule NOT &
+        Logical not.\\
+
+        \midrule EQ &
+        Value equality comparison.\\
+
+        \midrule NEQ &
+        Value inequality comparison.\\
+
+        \midrule LES &
+        Less than comparison.\\
+
+        \midrule GRE &
+        Greater than comparison.\\
+
+        \midrule LEQ &
+        Less than or equal comparison.\\
+
+        \midrule GEQ &
+        Greater than or equal comparison.\\
+
+        \midrule SUB &
+        Arithmetic substraction.\\
+
+        \midrule ADD &
+        Arithmetic addition.\\
+
+        \midrule DIV &
+        Arithmetic division.\\
+
+        \midrule MUL &
+        Arithmetic multiplication.\\
+
+        \midrule GOPROC &
+        Indicates change to a procedure.\\
+
+        \midrule GOPROC &
+        Indicates change to a procedure.\\
+
+        \midrule ERA &
+        Indicates the framesizes for new memory to be \newline allocated.\\
+
+        \midrule PARAM &
+        Indicates value of the parameter to be passed to a procedure.\\
+
+        \midrule RETURN &
+        Indicates the value to be returned by a procedure.\\
+
+        \midrule ENDPROC &
+        Clears the procedure context and restores program execution\\
+
+        \bottomrule
+    \end{tabular}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \begin{tabular}{p{1in}p{3in}}
+        \toprule
+        \textbf{Operator} & \textbf{Description}\\
+        \midrule ASSERT &
+        Run-time check for tensor index correctness.\\
+
+        \midrule PRINT &
+        Prints value to STDOUT.\\
+
+        \midrule PRINTLN &
+        Prints value and newline char to STDOUT.\\
+
+        \midrule SET &
+        Initializes global address with givenn values.\\
+
+        \midrule PROGRAM &
+        Indicates program starting point on executable.\\
+
+        \bottomrule
+    \end{tabular}
+\end{figure}
 \subsection{Virtual Addresses}
 \subsection{Syntax Diagrams}
 \subsection{Semantic and IR Generation Actions}
 \subsection{Semantic Consideration Table}
 
 \section{Memory Management}
+\subsubsection{Tree listener}
+\begin{figure}[h]
+    \centering
+    \begin{tabular}{p{1in}p{3in}}
+        \toprule
+        \textbf{Element} & \textbf{Description}\\
+        \midrule Filename &
+        Keeps the name of the source code to produce the executable.\\
+
+        \midrule Valid &
+        Flag to indicate whether an error has been found or not.\\
+
+        \midrule Debug &
+        Flag to indicate whether debug mode is toggled.\\
+
+        \midrule Symbol table &
+        Table to keep track of the variable symbols and procedures used in
+        source code.\\
+
+        \bottomrule
+    \end{tabular}\\
+\end{figure}

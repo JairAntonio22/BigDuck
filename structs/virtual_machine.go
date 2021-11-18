@@ -37,7 +37,7 @@ func (vm *VirtualMachine) InitMemory() {
 
             if s != Global {
                 fmt.Printf("Local address used in data segment\n")
-                os.Exit(0)
+                os.Exit(1)
             }
 
             switch GetType(va) {
@@ -56,9 +56,13 @@ func (vm *VirtualMachine) InitMemory() {
                     vm.memory.MemB[s][a] = false
                 }
 
+            case String_t:
+                value := curr_code.Args[0][1:len(curr_code.Args[0]) - 1]
+                vm.memory.Strings[a] = value
+
             default:
                 fmt.Printf("Invalid address used in data segment\n")
-                os.Exit(0)
+                os.Exit(1)
             }
 
         case PROGRAM:
@@ -69,7 +73,7 @@ func (vm *VirtualMachine) InitMemory() {
             fmt.Printf(
                 "Unexpected operator %s at data segment\n",
                 TypeToString[curr_code.Op])
-            os.Exit(0)
+            os.Exit(1)
         }
     }
 }
@@ -137,7 +141,7 @@ func (vm *VirtualMachine) Execute() {
 
             } else {
                 fmt.Printf("Type error mismatch\n")
-                os.Exit(0)
+                os.Exit(1)
             }
 
         case OR:
@@ -146,7 +150,7 @@ func (vm *VirtualMachine) Execute() {
                     vm.memory.MemB[s1][a1] || vm.memory.MemB[s2][a2])
             } else {
                 fmt.Printf("Type error mismatch\n")
-                os.Exit(0)
+                os.Exit(1)
             }
 
         case AND:
@@ -155,7 +159,7 @@ func (vm *VirtualMachine) Execute() {
                     vm.memory.MemB[s1][a1] && vm.memory.MemB[s2][a2])
             } else {
                 fmt.Printf("Type error mismatch\n")
-                os.Exit(0)
+                os.Exit(1)
             }
 
         case NOT:
@@ -163,7 +167,7 @@ func (vm *VirtualMachine) Execute() {
                 vm.memory.MemB[s3][a3] = !vm.memory.MemB[s1][a1]
             } else {
                 fmt.Printf("Type error mismatch\n")
-                os.Exit(0)
+                os.Exit(1)
             }
 
         case EQ:
@@ -185,7 +189,7 @@ func (vm *VirtualMachine) Execute() {
 
             } else {
                 fmt.Printf("Type error mismatch\n")
-                os.Exit(0)
+                os.Exit(1)
             }
 
         case NEQ:
@@ -207,7 +211,7 @@ func (vm *VirtualMachine) Execute() {
 
             } else {
                 fmt.Printf("Type error mismatch\n")
-                os.Exit(0)
+                os.Exit(1)
             }
 
         case LES:
@@ -229,7 +233,7 @@ func (vm *VirtualMachine) Execute() {
 
             } else {
                 fmt.Printf("Type error mismatch\n")
-                os.Exit(0)
+                os.Exit(1)
             }
 
         case GRE:
@@ -251,7 +255,7 @@ func (vm *VirtualMachine) Execute() {
 
             } else {
                 fmt.Printf("Type error mismatch\n")
-                os.Exit(0)
+                os.Exit(1)
             }
 
         case LEQ:
@@ -273,7 +277,7 @@ func (vm *VirtualMachine) Execute() {
 
             } else {
                 fmt.Printf("Type error mismatch\n")
-                os.Exit(0)
+                os.Exit(1)
             }
 
         case GEQ:
@@ -295,7 +299,7 @@ func (vm *VirtualMachine) Execute() {
 
             } else {
                 fmt.Printf("Type error mismatch\n")
-                os.Exit(0)
+                os.Exit(1)
             }
 
         case SUB:
@@ -333,7 +337,7 @@ func (vm *VirtualMachine) Execute() {
 
             } else {
                 fmt.Printf("Type error mismatch\n")
-                os.Exit(0)
+                os.Exit(1)
             }
 
         case ADD:
@@ -371,7 +375,7 @@ func (vm *VirtualMachine) Execute() {
 
             } else {
                 fmt.Printf("Type error mismatch\n")
-                os.Exit(0)
+                os.Exit(1)
             }
 
         case DIV:
@@ -409,7 +413,7 @@ func (vm *VirtualMachine) Execute() {
 
             } else {
                 fmt.Printf("Type error mismatch\n")
-                os.Exit(0)
+                os.Exit(1)
             }
 
         case MUL:
@@ -447,16 +451,16 @@ func (vm *VirtualMachine) Execute() {
 
             } else {
                 fmt.Printf("Type error mismatch\n")
-                os.Exit(0)
+                os.Exit(1)
             }
 
         case LPAREN:
             fmt.Printf("Unexpected operator %s\n", TypeToString[curr_code.Op])
-            os.Exit(0)
+            os.Exit(1)
 
         case RPAREN:
             fmt.Printf("Unexpected operator %s\n", TypeToString[curr_code.Op])
-            os.Exit(0)
+            os.Exit(1)
 
         case JMP:
             vm.pc = vm.basepc + curr_code.Address[2]
@@ -500,7 +504,7 @@ func (vm *VirtualMachine) Execute() {
 
                 default:
                     fmt.Printf("Type error mismatch\n")
-                    os.Exit(0)
+                    os.Exit(1)
                 }
             }
 
@@ -530,7 +534,7 @@ func (vm *VirtualMachine) Execute() {
 
             } else {
                 fmt.Printf("Type error mismatch\n")
-                os.Exit(0)
+                os.Exit(1)
             }
 
         case RETURN:
@@ -552,7 +556,7 @@ func (vm *VirtualMachine) Execute() {
 
                 } else {
                     fmt.Printf("Type error mismatch\n")
-                    os.Exit(0)
+                    os.Exit(1)
                 }
             }
 
@@ -591,9 +595,12 @@ func (vm *VirtualMachine) Execute() {
             } else if t3 == Int_t {
                 fmt.Print(vm.memory.MemF[s3][a3], " ")
 
+            } else if t3 == String_t {
+                fmt.Print(vm.memory.Strings[a3], " ")
+
             } else {
                 fmt.Printf("Type error mismatch\n")
-                os.Exit(0)
+                os.Exit(1)
             }
 
         case PRINTLN:
@@ -612,14 +619,17 @@ func (vm *VirtualMachine) Execute() {
             } else if t3 == Int_t {
                 fmt.Println(vm.memory.MemF[s3][a3])
 
+            } else if t3 == String_t {
+                fmt.Println(vm.memory.Strings[a3], " ")
+
             } else {
                 fmt.Printf("Type error mismatch\n")
-                os.Exit(0)
+                os.Exit(1)
             }
 
         default:
             fmt.Printf("Unexpected operator at program segment\n")
-            os.Exit(0)
+            os.Exit(1)
         }
     }
 }

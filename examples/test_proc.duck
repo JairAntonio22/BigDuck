@@ -1,0 +1,109 @@
+var iter_count int;
+
+#| Iterative fibbonaci implementation |#
+proc fib_iter(n int) -> int 
+    var f0, f1, tmp int;
+{
+    f0 <- 0;
+    f1 <- 1;
+    loop ; n > 0; n <- n - 1 {
+        iter_count <- iter_count + 1;
+        tmp <- f1;
+        f1 <- f0 + f1;
+        f0 <- tmp;
+    }
+    
+    return f0;
+}
+
+#| Recursive fibbonaci implementation |#
+proc fib_rec(n int) -> int {
+    iter_count <- iter_count + 1;
+    if n <= 0 {
+        return 0;
+    } else if n = 1 {
+        return 1;
+    } else {
+        return fib_rec(n - 1) + fib_rec(n - 2);
+    }
+}
+
+#| Tail recursive fibbonaci implementation |#
+proc aux_fib_tail(f0, f1, n int) -> int {
+    iter_count <- iter_count + 1;
+    if n <= 0 {
+        return f0;
+    } else {
+        return aux_fib_tail(f1, f0 + f1, n - 1);
+    }
+}
+
+proc fib_tail(n int) -> int {
+    return aux_fib_tail(0, 1, n);
+}
+
+#| Iterative factorial implementation |#
+proc fact_iter(n int) -> int 
+    var acc int;
+{
+    loop acc <- 1; n > 0; n <- n - 1 {
+        iter_count <- iter_count + 1;
+        acc <- n * acc;
+    }
+    
+    return acc;
+}
+
+#| Recursive factorial implementation |#
+proc fact_rec(n int) -> int {
+    iter_count <- iter_count + 1;
+    if n <= 0 {
+        return 1;
+    } else {
+        return n * fact_rec(n - 1);
+    }
+}
+
+#| Tail recursive factorial implementation |#
+proc aux_fact_tail(acc, n int) -> int {
+    iter_count <- iter_count + 1;
+    if n <= 0 {
+        return acc;
+    } else {
+        return aux_fact_tail(n * acc, n - 1);
+    }
+}
+
+proc fact_tail(n int) -> int {
+    return aux_fact_tail(1, n);
+}
+
+proc main() 
+    var result, n int;
+{
+    n <- 15;
+
+    iter_count <- 0;
+    result <- fib_iter(n);
+    print(iter_count, result);
+
+    iter_count <- 0;
+    result <- fib_rec(n);
+    print(iter_count, result);
+
+    iter_count <- 0;
+    result <- fib_tail(n);
+    print(iter_count, result);
+
+    iter_count <- 0;
+    result <- fact_iter(n);
+    print(iter_count, result);
+
+    iter_count <- 0;
+    result <- fact_rec(n);
+    print(iter_count, result);
+
+    iter_count <- 0;
+    result <- fact_tail(n);
+    print(iter_count, result);
+}

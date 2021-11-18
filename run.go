@@ -4,8 +4,21 @@ import (
     "bufio"
     "os"
     "strconv"
+    "strings"
     "./structs"
 )
+
+func count_quotes(str string) int {
+    count := 0
+
+    for _, c := range str {
+        if c == '"' {
+            count++
+        }
+    }
+
+    return count
+}
 
 func run(filename string, debug bool) {
     var code []structs.Tac
@@ -32,7 +45,26 @@ func run(filename string, debug bool) {
             i := state - 1
 
             if curr_code.Op == structs.SET && !(state == 3) {
-                curr_code.Args[i] = scanner.Text()
+                var value string
+                value = scanner.Text()
+
+                // This part is ugly, I know...
+                // it is more of an afterthought patch than designed
+                if count_quotes(value) == 1 {
+                    keep_reading := true
+
+                    for keep_reading {
+                        scanner.Scan()
+                        value += " " + scanner.Text()
+
+                        if strings.Contains(scanner.Text(), "\"") {
+                            keep_reading = false
+                        }
+                    }
+                }
+                // You can keep reading
+
+                curr_code.Args[i] = value
             } else {
                 op, err := strconv.ParseInt(scanner.Text(), 16, 64)
                 checkError(err)

@@ -14,6 +14,8 @@ const (
     Int_t
     Float_t
     Bool_t
+    String_t
+    Pointer_t
     Tensor_t
     Proc_t
     typeEnumCount
@@ -86,6 +88,8 @@ const (
     RETURN      // returns value from procedures
     ENDPROC     // clears procedure call and local memory
 
+    ASSERT      // checks whether a boolean value is true
+
     PRINT       // clears procedure call and local memory
     PRINTLN     // clears procedure call and local memory
 
@@ -105,6 +109,7 @@ var OpToString [opEnumCount]string = [opEnumCount]string{
     "LPAREN", "RPAREN",
     "JMP", "JMT", "JMF",
     "GOPROC", "ERA", "PARAM", "RETURN", "ENDPROC",
+    "ASSERT",
     "PRINT", "PRINTLN",
     "SET", "PROGRAM",
 }
@@ -131,7 +136,7 @@ var OpFromString map[string]int = map[string]int {
 
 func ValidateOp(op int) error {
     if op < 0 || op >= opEnumCount {
-        return errors.New("Invalid operator found")
+        return errors.New("Unexpected operator found")
     } else {
         return nil
     }

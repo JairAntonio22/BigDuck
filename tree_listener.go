@@ -59,6 +59,8 @@ type BigDuckListener struct {
     curr_line   int
     curr_col    int
     curr_pcall  string
+    curr_tensor structs.Symbol
+    curr_dim    int
 
     memmap      structs.MemMap
 }
@@ -180,14 +182,30 @@ func (l *BigDuckListener) EnterScalar(c *parser.ScalarContext) {
                 "line %d:%d duplicate symbol %s\n",
                 c.GetStart().GetLine(), c.GetStart().GetColumn(), name)
         } else {
+            var baddress int
             stype := structs.TypeFromString[c.GetText()]
+
+            if len(var_dim) > 0 {
+                size := 1
+
+                for _, dim := range var_dim {
+                    size *= dim
+                }
+
+                baddress = l.memmap.GetAddress(l.scope, name, stype)
+
+                for i := 1; i < size; i++ {
+                    l.memmap.GetAddress(l.scope, name + strconv.Itoa(i), stype)
+                }
+            }
 
             l.symtable.Insert(
                 l.scope,
                 name,
                 structs.Symbol {
                     Stype: stype,
-                    Dim: var_dim})
+                    Dim: var_dim,
+                    Baddress: baddress})
 
             if l.in_args {
                 l.typequeue.Push(stype)
@@ -213,9 +231,91 @@ func (l *BigDuckListener) EnterDim(c *parser.DimContext) {
             fmt.Printf(
                 "line %d:%d tensor dimension must be constant\n",
                 c.GetStart().GetLine(), c.GetStart().GetColumn())
+        } else if n <= 0 {
+            l.valid = false
+            fmt.Printf(
+                "line %d:%d tensor dimension must be greater than 0\n",
+                c.GetStart().GetLine(), c.GetStart().GetColumn())
         } else {
             l.dimqueue.Push(n)
         }
+    }
+}
+
+// rbracket
+func (l *BigDuckListener) EnterRbracket(c *parser.RbracketContext) {
+    if !l.valid {
+        return
+    }
+
+    if l.in_decl {
+        return
+    }
+
+    item := l.argstack.Top()
+    result, _ := item.(string)
+    item = l.typestack.Top()
+    rtype, _ := item.(int)
+
+
+    if rtype != structs.Int_t {
+        l.valid = false
+        fmt.Printf(
+            "line %d:%d index value must be of type int\n",
+            c.GetStart().GetLine(), c.GetStart().GetColumn())
+        return
+    }
+
+    scope := structs.Local
+    _, _, exists := l.symtable.Lookup(result)
+
+    if !exists || (len(result) >= 1 && result[0] != 't') {
+        scope = structs.Global
+    }
+
+    dim := l.curr_tensor.Dim[l.curr_dim]
+
+    address1:= l.memmap.GetAddress(scope, result, rtype)
+    address2:= l.memmap.GetAddress(
+        structs.Global, strconv.Itoa(dim), structs.Int_t)
+
+    l.ir_code = append(
+        l.ir_code, structs.Tac{
+            Op: structs.ASSERT,
+            Args: [3]string{result, "0", strconv.Itoa(dim)},
+            Address: [3]int{address1, 0, address2}})
+    l.pc++
+
+    if l.curr_dim + 1 < len(l.curr_tensor.Dim) {
+        m := 1
+
+        for i := l.curr_dim + 1; i < len(l.curr_tensor.Dim); i++ {
+            m *= l.curr_tensor.Dim[i]
+        }
+
+        l.argstack.Push(strconv.Itoa(m))
+        l.typestack.Push(structs.Int_t)
+
+        l.PushOp(structs.OpFromString["*"])
+        l.GenerateOpTAC()
+
+
+    } else {
+        l.argstack.Push(strconv.Itoa(l.curr_tensor.Baddress))
+        l.typestack.Push(structs.Int_t)
+
+        l.PushOp(structs.OpFromString["+"])
+        l.GenerateOpTAC()
+    }
+
+    l.curr_dim++
+
+    if l.curr_dim > len(l.curr_tensor.Dim) {
+        l.valid = false
+        fmt.Printf(
+            "line %d:%d tensor access does not match with dimensions\n",
+            c.GetStart().GetLine(),
+            c.GetStart().GetColumn())
     }
 }
 
@@ -257,6 +357,10 @@ func (l *BigDuckListener) ExitProc_decl(c *parser.Proc_declContext) {
         l.ir_code[pc].Address[0] = sym.Ic
         l.ir_code[pc].Address[1] = sym.Fc
         l.ir_code[pc].Address[2] = sym.Bc
+    }
+
+    if l.debug {
+        l.symtable.Print()
     }
 
     l.symtable.ClearLocalScope()
@@ -454,22 +558,7 @@ func (l *BigDuckListener) ExitBool_term(c *parser.Bool_termContext) {
     }
 
     if c.Bool_expr() == nil {
-        if c.ID() != nil {
-            _, sym, exists := l.symtable.Lookup(c.ID().GetText())
-
-            if !exists {
-                l.valid = false
-                fmt.Printf(
-                    "line %d:%d variable %s was not declared\n",
-                    c.GetStart().GetLine(),
-                    c.GetStart().GetColumn(),
-                    c.ID().GetText())
-            }
-
-            l.argstack.Push(c.ID().GetText())
-            l.typestack.Push(sym.Stype)
-
-        } else if c.TRUE() != nil {
+        if c.TRUE() != nil {
             l.argstack.Push("#t")
             l.typestack.Push(structs.Bool_t)
 
@@ -575,22 +664,7 @@ func (l *BigDuckListener) ExitFactor(c *parser.FactorContext) {
     }
 
     if c.Num_expr() == nil {
-        if c.ID() != nil {
-            _, sym, exists := l.symtable.Lookup(c.ID().GetText())
-
-            if !exists {
-                l.valid = false
-                fmt.Printf(
-                    "line %d:%d variable %s was not declared\n",
-                    c.GetStart().GetLine(),
-                    c.GetStart().GetColumn(),
-                    c.ID().GetText())
-            }
-
-            l.argstack.Push(c.ID().GetText())
-            l.typestack.Push(sym.Stype)
-
-        } else if c.CTE_INT() != nil {
+        if c.CTE_INT() != nil {
             l.argstack.Push(c.CTE_INT().GetText())
             l.typestack.Push(structs.Int_t)
 
@@ -610,6 +684,64 @@ func (l *BigDuckListener) ExitFactor(c *parser.FactorContext) {
         l.curr_col = c.GetStart().GetColumn()
         l.GenerateOpTAC()
     }
+}
+
+// variable
+func (l *BigDuckListener) EnterVariable(c *parser.VariableContext) {
+    _, sym, exists := l.symtable.Lookup(c.ID().GetText())
+
+    if !exists {
+        l.valid = false
+        fmt.Printf(
+            "line %d:%d variable %s was not declared\n",
+            c.GetStart().GetLine(),
+            c.GetStart().GetColumn(),
+            c.ID().GetText())
+        return
+    }
+
+    l.argstack.Push(c.ID().GetText())
+    l.typestack.Push(sym.Stype)
+
+    if c.Dim() != nil {
+        l.argstack.Pop()
+        l.typestack.Pop()
+
+        if len(sym.Dim) == 0 {
+            l.valid = false
+            fmt.Printf(
+                "line %d:%d variable %s is scalar\n",
+                c.GetStart().GetLine(),
+                c.GetStart().GetColumn(),
+                c.ID().GetText())
+        } else {
+            l.curr_dim = 0
+            l.curr_tensor = sym
+            l.PushOp(structs.LPAREN)
+        }
+    }
+}
+
+func (l *BigDuckListener) ExitVariable(c *parser.VariableContext) {
+    if c.Dim() != nil {
+        l.PushOp(structs.RPAREN)
+
+        if l.curr_dim != len(l.curr_tensor.Dim) {
+            l.valid = false
+            fmt.Printf(
+                "line %d:%d tensor access does not match with dimensions\n",
+                c.GetStart().GetLine(),
+                c.GetStart().GetColumn())
+        }
+    }
+}
+
+// t_access
+func (l *BigDuckListener) EnterT_access(c *parser.T_accessContext) {
+}
+
+// t_end
+func (l *BigDuckListener) EnterT_end(c *parser.T_endContext) {
 }
 
 // proc_call   
@@ -733,20 +865,6 @@ func (l *BigDuckListener) EnterAssignment(c *parser.AssignmentContext) {
     }
 
     l.PushOp(structs.OpFromString["<-"])
-
-    _, sym, exists := l.symtable.Lookup(c.ID().GetText())
-
-    if !exists {
-        l.valid = false
-        fmt.Printf(
-            "line %d:%d variable %s was not declared\n",
-            c.GetStart().GetLine(),
-            c.GetStart().GetColumn(),
-            c.ID().GetText())
-    }
-
-    l.argstack.Push(c.ID().GetText())
-    l.typestack.Push(sym.Stype)
 }
 
 func (l *BigDuckListener) ExitAssignment(c *parser.AssignmentContext) {
@@ -996,7 +1114,20 @@ func (l *BigDuckListener) ExitPparamTerm(c * parser.PparamTermContext) {
         return
     }
 
-    l.GeneratePrintTAC()
+    if c.CTE_STRING() != nil {
+        address := l.memmap.GetAddress(
+            structs.Global, c.CTE_STRING().GetText(), structs.String_t)
+
+        l.ir_code = append(
+            l.ir_code, structs.Tac{
+                Op: structs.PRINT,
+                Args: [3]string{"", "", c.CTE_STRING().GetText()},
+                Address: [3]int{0, 0, address}})
+        l.pc++
+
+    } else {
+        l.GeneratePrintTAC()
+    }
 }
 
 // pnextParam

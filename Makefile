@@ -6,9 +6,16 @@ TARGET_CC=duck
 all: $(TARGET_CC)
 
 test: $(TARGET_CC)
+	rm -fr examples/*.quack
 	clear
 	./$(TARGET_CC) examples/test_expr.duck
 	./$(TARGET_CC) run examples/test_expr.quack
+
+benchmark: $(TARGET_CC)
+	rm -fr examples/*.quack
+	clear
+	time -p ./$(TARGET_CC) examples/test_expr.duck
+	time -p ./$(TARGET_CC) run examples/test_expr.quack
 
 test_vm: $(TARGET_CC)
 	clear

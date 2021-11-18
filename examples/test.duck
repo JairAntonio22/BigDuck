@@ -1,4 +1,3 @@
-var global int;
 
 proc factorial(n int) -> int {
     if n < 1 {

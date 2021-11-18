@@ -53,8 +53,9 @@ var_type    : scalar | tensor;
 scalar      : INT | FLOAT | BOOL;
 
 tensor      : dim scalar;
-dim         : '[' num_expr ']' nextDim;
-nextDim     : dim nextDim
+dim         : '[' num_expr ']' rbracket /*nextDim*/;
+rbracket    : ;
+nextDim     : dim
             | ;
 
 procs_decl  : proc_decl (procs_decl | );
@@ -72,6 +73,7 @@ nextArg     : ',' ID nextArg
 
 ret_type    : '->' scalar;
 
+
 bool_expr   : and_expr nextBool;
 nextBool    : OR bool_expr
             | ;
@@ -85,7 +87,7 @@ bool_term   : '(' bool_expr ')'
             | rel_expr
             | TRUE
             | FALSE
-            | ID (dim | )
+            | variable
             | proc_call;
 
 rel_expr    : num_expr opRel;
@@ -106,16 +108,19 @@ nextProd    : ('*' | '/') prod_expr
             | ;
 
 factor      : '(' num_expr ')'
-            | ID (dim | )
+            | variable
             | CTE_INT
             | CTE_FLOAT
             | proc_call;
 
+variable    : ID (t_access dim t_end| );
+t_access    : ;
+t_end       : ;
+
 proc_call   : ID '(' (param | ) ')';
 param       : paramTerm nextParam;
 paramTerm   : bool_expr
-            | num_expr
-            | CTE_STRING;
+            | num_expr;
 nextParam   : ',' param
             | ;
 
@@ -132,7 +137,7 @@ stmt        : assignment ';'
 
 void_proc   : proc_call;
 
-assignment  : ID (dim | ) '<-' (num_expr | bool_expr);
+assignment  : variable '<-' (num_expr | bool_expr);
 
 condition   : IF bool_expr bodyCond;
 bodyCond    : block endIfBlock;

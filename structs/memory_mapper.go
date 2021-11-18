@@ -15,7 +15,7 @@ package structs
         4 0100 bool
 
     memory map
-        1 is global bit, 3 type bits, 7 address nibbles
+        1 addressing mode bit, 1 is global bit, 3 type bits, 7 address nibbles
 
         0010 ... 0000 0000 -> local int at address 0
         1011 ... 0000 1010 -> global float at address 10
@@ -29,14 +29,12 @@ import (
 
 type MemMap struct {
     memcache    map[string]int
-    varcache    map[int]string
     Typecount   [2]map[int]int
 }
 
 func NewMemMap() MemMap {
     return MemMap{
         memcache: make(map[string]int),
-        varcache: make(map[int]string),
         Typecount: [2]map[int]int{
             make(map[int]int),
             make(map[int]int)}}
@@ -49,7 +47,6 @@ func (m *MemMap) GetAddress(scope int, var_name string, vtype int) int {
         address |= (scope << 31) | (vtype << 28) | m.Typecount[scope][vtype]
         m.Typecount[scope][vtype]++
         m.memcache[var_name] = address
-        m.varcache[address] = var_name
     }
 
     return address

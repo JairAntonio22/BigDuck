@@ -3,7 +3,61 @@
 
 \section{Enviroment}
 
+\paragraph{} Welcome to the BigDuck programming language reference. Through
+this chapter it is going to be presented all the syntax and features present
+on this programming language.
+
+\paragraph{} Once downloaded the codebase, on any UNIX-like environment (like
+macOS or Linux) you can use Make to build the compiler. Just be sure you have
+installed ANTLR 4.9 on its usual directory \texttt{/usr/local/lib/}. However
+if you are on macOS Monterey, it is almost certain that you can run the
+\texttt{duck} executable like any other executable from the terminal.
+
+\paragraph{} After getting the compiler, create a new text file with the
+\texttt{.duck} file extension, and type the following text.
+\begin{verbatim}
+proc main() {
+    print("Hello, World!");
+}
+\end{verbatim}
+\paragraph{} Every BigDuck program starts by the last procedure declared
+(procedures will be explained in more detail further in the chapter). The print
+command displays on screen the text inside the quotation marks.
+
+\paragraph{} Run this program with the following commands.
+\begin{verbatim}
+./duck hello.duck
+./duck run hello.quack
+\end{verbatim}
+\paragraph{} The first command compiles the source code and creates a new file,
+called executable, with the same name of the source code file just with the
+extension changed to \texttt{.quack}. The second command will read the file
+and execute it.
+
 \section{Variables}
+\paragraph{} To work with values it is necessary to store them in variables.
+Variables can be thought of containers for values in memory, therefore, you
+can used them to make any desired computation.
+
+\paragraph{} Look at the following example for variable declaration.
+\begin{verbatim}
+proc main()
+    var a, b, c int;
+    var x, y float;
+    var condition bool;
+{
+    print(global);  #| print global |#
+    print(local);   #| print local  |#
+}
+\end{verbatim}
+
+\paragraph{} As you can see you have to start with the keyword \texttt{var}
+followed by a list of names separated by comas, and a type keyword. This tells
+to the language that every name on the list will be of the same type.
+
+\paragraph{} On the BigDuck language there are 3 primitive types; \texttt{int},
+\texttt{float}, and \texttt{bool}. Which are enough for any kind of numeric
+and logic operation.
 
 \section{Statements}
 \subsection{Assignments}

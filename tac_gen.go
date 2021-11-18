@@ -273,7 +273,6 @@ func (l *BigDuckListener) GeneratePrintTAC() {
             Args: [3]string{"", "", param},
             Address: [3]int{0, 0, address}})
     l.pc++
-    l.paramc++
 }
 
 func (l *BigDuckListener) GenerateObjFile() {

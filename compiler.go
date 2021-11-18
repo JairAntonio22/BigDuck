@@ -2,6 +2,7 @@ package main
 
 import (
     "fmt"
+    "os"
     "./parser"
     "github.com/antlr/antlr4/runtime/Go/antlr"
 )
@@ -26,6 +27,7 @@ func compile(filename string, debug bool) {
             fmt.Println("Program is valid")
         } else {
             fmt.Println("Program is not valid")
+	    os.Exit(1)
         }
     }
 }

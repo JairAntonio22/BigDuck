@@ -10,17 +10,21 @@ package structs
         3 0011 float
         4 0100 bool
         5 0101 string
+        6 0110 pointer
 
     memory map
-        1 is global bit, 3 type bits, 7 address nibbles
+        1 addressing mode bit, 1 is global bit, 3 type bits, 7 address nibbles
 
         0010 ... 0000 0000 -> local     int     at address 0
         1011 ... 0000 1010 -> global    float   at address 10
         0100 ... 0001 0110 -> local     bool    at address 22
         1101 ... 0000 1011 -> global    string  at address 11
+        1110 ... 0000 1111 -> global    pointer at address 15
 */
 
 type memory struct {
+    Strings     map[int]string
+    Pointers    map[int]int
     MemI        [2][]int
     MemF        [2][]float64
     MemB        [2][]bool
@@ -42,6 +46,7 @@ func GetAddress(address int) int {
 }
 
 func (m *memory) InitGlobal(ic, fc, bc int) {
+    m.Strings = make(map[int]string, ic)
     m.MemI[Global] = make([]int, ic)
     m.MemF[Global] = make([]float64, fc)
     m.MemB[Global] = make([]bool, bc)
