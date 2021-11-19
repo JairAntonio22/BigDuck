@@ -1,0 +1,28 @@
+
+proc main()
+    var array [10]int;
+    var x, i int;
+    var exists bool;
+{
+    print("=== Array ===");
+
+    loop i <- 0; i < 10; i <- i + 1 {
+	array[i] <- (i - 5) * (i - 5);
+	print(array[i]);
+    }
+
+    x <- 9;
+
+    loop i <- 0; i < 10; i <- i + 1 {
+        if x = array[i] {
+            exists <- true;
+            break;
+        }
+    }
+
+    if exists {
+        print("Value", x, "was found in array at position", i);
+    } else {
+        print("Value", x, "was not found in array");
+    }
+}

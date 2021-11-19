@@ -1,0 +1,46 @@
+
+#| Iterative factorial implementation |#
+proc fact_iter(n int) -> int 
+    var acc int;
+{
+    loop acc <- 1; n > 0; n <- n - 1 {
+        acc <- n * acc;
+    }
+    
+    return acc;
+}
+
+#| Recursive factorial implementation |#
+proc fact_rec(n int) -> int {
+    if n <= 0 {
+        return 1;
+    } else {
+        return n * fact_rec(n - 1);
+    }
+}
+
+#| Tail recursive factorial implementation |#
+proc aux_fact_tail(acc, n int) -> int {
+    if n <= 0 {
+        return acc;
+    } else {
+        return aux_fact_tail(n * acc, n - 1);
+    }
+}
+
+proc fact_tail(n int) -> int {
+    return aux_fact_tail(1, n);
+}
+
+#| Main procedure |#
+proc main() 
+    var f1, f2, f3, i int;
+{
+    loop i <- 0; i < 15; i <- i + 1 {
+        f1 <- fact_iter(i);
+        f2 <- fact_rec(i);
+        f3 <- fact_tail(i);
+
+        print(f1, f2, f3);
+    }
+}

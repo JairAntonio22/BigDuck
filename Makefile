@@ -1,24 +1,30 @@
 
 ANTLR=/usr/local/lib/antlr-4.9-complete.jar
 
-TARGET_CC=duck
+TARGET=duck
 
-all: $(TARGET_CC)
+all: $(TARGET)
 
-test: $(TARGET_CC)
+install: $(TARGET)
+	cp duck /usr/local/bin
+
+uninstall: $(TARGET)
+	rm /usr/local/bin/$(TARGET)
+
+test: $(TARGET)
 	rm -fr examples/*.quack
 	clear
-	./$(TARGET_CC) examples/test_expr.duck
-	./$(TARGET_CC) run examples/test_expr.quack
+	./$(TARGET) examples/test.duck
+	./$(TARGET) run examples/test.quack
 
-benchmark: $(TARGET_CC)
+benchmark: $(TARGET)
 	rm -fr examples/*.quack
 	clear
-	time -p ./$(TARGET_CC) examples/test_expr.duck
-	time -p ./$(TARGET_CC) run examples/test_expr.quack
+	time -p ./$(TARGET) examples/test_expr.duck
+	time -p ./$(TARGET) run examples/test_expr.quack
 
-$(TARGET_CC): parser structs *.go
-	go build -o $(TARGET_CC) *.go
+$(TARGET): parser structs *.go
+	go build -o $(TARGET) *.go
 
 parser: BigDuck.g4
 	java -jar $(ANTLR) BigDuck.g4 -Dlanguage=Go -o parser

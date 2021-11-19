@@ -53,7 +53,7 @@ var_type    : scalar | tensor;
 scalar      : INT | FLOAT | BOOL;
 
 tensor      : dim scalar;
-dim         : '[' num_expr ']' rbracket /*nextDim*/;
+dim         : '[' num_expr ']' rbracket nextDim;
 rbracket    : ;
 nextDim     : dim
             | ;
@@ -113,7 +113,7 @@ factor      : '(' num_expr ')'
             | CTE_FLOAT
             | proc_call;
 
-variable    : ID (t_access dim t_end| );
+variable    : ID (dim | );
 t_access    : ;
 t_end       : ;
 

@@ -1,0 +1,53 @@
+
+#| Iterative fibbonaci implementation |#
+proc fib_iter(n int) -> int 
+    var f0, f1, tmp int;
+{
+    f0 <- 0;
+    f1 <- 1;
+
+    loop ; n > 0; n <- n - 1 {
+        tmp <- f1;
+        f1 <- f0 + f1;
+        f0 <- tmp;
+    }
+    
+    return f0;
+}
+
+#| Recursive fibbonaci implementation |#
+proc fib_rec(n int) -> int {
+    if n <= 0 {
+        return 0;
+    } else if n = 1 {
+        return 1;
+    } else {
+        return fib_rec(n - 1) + fib_rec(n - 2);
+    }
+}
+
+#| Tail recursive fibbonaci implementation |#
+proc aux_fib_tail(f0, f1, n int) -> int {
+    if n <= 0 {
+        return f0;
+    } else {
+        return aux_fib_tail(f1, f0 + f1, n - 1);
+    }
+}
+
+proc fib_tail(n int) -> int {
+    return aux_fib_tail(0, 1, n);
+}
+
+#| Main procedure |#
+proc main() 
+    var f1, f2, f3, i int;
+{
+    loop i <- 0; i < 15; i <- i + 1 {
+        f1 <- fib_iter(i);
+        f2 <- fib_rec(i);
+        f3 <- fib_tail(i);
+
+        print(f1, f2, f3);
+    }
+}

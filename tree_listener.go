@@ -244,11 +244,7 @@ func (l *BigDuckListener) EnterDim(c *parser.DimContext) {
 
 // rbracket
 func (l *BigDuckListener) EnterRbracket(c *parser.RbracketContext) {
-    if !l.valid {
-        return
-    }
-
-    if l.in_decl {
+    if !l.valid || l.in_decl {
         return
     }
 
@@ -297,10 +293,19 @@ func (l *BigDuckListener) EnterRbracket(c *parser.RbracketContext) {
         l.typestack.Push(structs.Int_t)
 
         l.PushOp(structs.OpFromString["*"])
-        l.GenerateOpTAC(3)
+        l.GenerateOpTAC(0)
 
+        if l.curr_dim > 0 {
+            l.PushOp(structs.OpFromString["+"])
+            l.GenerateOpTAC(0)
+        }
 
     } else {
+        if l.curr_dim > 0 {
+            l.PushOp(structs.OpFromString["+"])
+            l.GenerateOpTAC(0)
+        }
+
         l.argstack.Push(strconv.Itoa(l.curr_tensor.Baddress))
         l.typestack.Push(structs.Int_t)
 
@@ -688,6 +693,10 @@ func (l *BigDuckListener) ExitFactor(c *parser.FactorContext) {
 
 // variable
 func (l *BigDuckListener) EnterVariable(c *parser.VariableContext) {
+    if !l.valid {
+        return
+    }
+
     _, sym, exists := l.symtable.Lookup(c.ID().GetText())
 
     if !exists {
@@ -723,6 +732,10 @@ func (l *BigDuckListener) EnterVariable(c *parser.VariableContext) {
 }
 
 func (l *BigDuckListener) ExitVariable(c *parser.VariableContext) {
+    if !l.valid {
+        return
+    }
+
     if c.Dim() != nil {
         l.PushOp(structs.RPAREN)
 
@@ -737,12 +750,8 @@ func (l *BigDuckListener) ExitVariable(c *parser.VariableContext) {
 }
 
 // t_access
-func (l *BigDuckListener) EnterT_access(c *parser.T_accessContext) {
-}
 
 // t_end
-func (l *BigDuckListener) EnterT_end(c *parser.T_endContext) {
-}
 
 // proc_call   
 func (l *BigDuckListener) EnterProc_call(c *parser.Proc_callContext) {
@@ -851,10 +860,18 @@ func (l *BigDuckListener) ExitParamTerm(c *parser.ParamTermContext) {
 
 // void_proc        
 func (l *BigDuckListener) EnterVoid_proc(c *parser.Void_procContext) {
+    if !l.valid {
+        return
+    }
+
     l.in_stmt = true;
 }
 
 func (l *BigDuckListener) ExitVoid_proc(c *parser.Void_procContext) {
+    if !l.valid {
+        return
+    }
+
     l.in_stmt = false;
 }
 
