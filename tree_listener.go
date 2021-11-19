@@ -297,7 +297,7 @@ func (l *BigDuckListener) EnterRbracket(c *parser.RbracketContext) {
         l.typestack.Push(structs.Int_t)
 
         l.PushOp(structs.OpFromString["*"])
-        l.GenerateOpTAC()
+        l.GenerateOpTAC(3)
 
 
     } else {
@@ -305,7 +305,7 @@ func (l *BigDuckListener) EnterRbracket(c *parser.RbracketContext) {
         l.typestack.Push(structs.Int_t)
 
         l.PushOp(structs.OpFromString["+"])
-        l.GenerateOpTAC()
+        l.GenerateOpTAC(3)
     }
 
     l.curr_dim++
@@ -503,7 +503,7 @@ func (l *BigDuckListener) ExitAnd_expr(c *parser.And_exprContext) {
     if l.TopOp() == structs.OR {
         l.curr_line = c.GetStart().GetLine()
         l.curr_col = c.GetStart().GetColumn()
-        l.GenerateOpTAC()
+        l.GenerateOpTAC(0)
     }
 }
 
@@ -537,7 +537,7 @@ func (l *BigDuckListener) ExitNot_expr(c *parser.Not_exprContext) {
     if c.NOT() != nil {
         l.curr_line = c.GetStart().GetLine()
         l.curr_col = c.GetStart().GetColumn()
-        l.GenerateOpTAC()
+        l.GenerateOpTAC(0)
     }
 }
 
@@ -576,7 +576,7 @@ func (l *BigDuckListener) ExitBool_term(c *parser.Bool_termContext) {
     if top == structs.AND {
         l.curr_line = c.GetStart().GetLine()
         l.curr_col = c.GetStart().GetColumn()
-        l.GenerateOpTAC()
+        l.GenerateOpTAC(0)
     }
 }
 
@@ -588,7 +588,7 @@ func (l *BigDuckListener) ExitRel_expr(c *parser.Rel_exprContext) {
 
     l.curr_line = c.GetStart().GetLine()
     l.curr_col = c.GetStart().GetColumn()
-    l.GenerateOpTAC()
+    l.GenerateOpTAC(0)
 }
 
 // opRel       
@@ -627,7 +627,7 @@ func (l *BigDuckListener) ExitProd_expr(c *parser.Prod_exprContext) {
     if l.TopOp() == structs.ADD || l.TopOp() == structs.SUB {
         l.curr_line = c.GetStart().GetLine()
         l.curr_col = c.GetStart().GetColumn()
-        l.GenerateOpTAC()
+        l.GenerateOpTAC(0)
     }
 }
 
@@ -682,7 +682,7 @@ func (l *BigDuckListener) ExitFactor(c *parser.FactorContext) {
     if top == structs.MUL || top == structs.DIV {
         l.curr_line = c.GetStart().GetLine()
         l.curr_col = c.GetStart().GetColumn()
-        l.GenerateOpTAC()
+        l.GenerateOpTAC(0)
     }
 }
 
@@ -874,7 +874,7 @@ func (l *BigDuckListener) ExitAssignment(c *parser.AssignmentContext) {
 
     l.curr_line = c.GetStart().GetLine()
     l.curr_col = c.GetStart().GetColumn()
-    l.GenerateOpTAC()
+    l.GenerateOpTAC(0)
 }
 
 // condition   

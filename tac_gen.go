@@ -45,7 +45,7 @@ func (l *BigDuckListener) PushOp(op int) {
     }
 }
 
-func (l *BigDuckListener) GenerateOpTAC() {
+func (l *BigDuckListener) GenerateOpTAC(pointer int) {
     var args [3]string
     var types [3]int
     var i, argc int
@@ -91,13 +91,17 @@ func (l *BigDuckListener) GenerateOpTAC() {
     var address [3]int
 
     for i = 0; i < 3; i++ {
-        scope, _, exists := l.symtable.Lookup(args[i])
+	scope, _, exists := l.symtable.Lookup(args[i])
 
-        if exists || (len(args[i]) > 0 && args[i][0] == 't') {
-            address[i] = l.memmap.GetAddress(scope, args[i], types[i])
-        } else if len(args[i]) > 0 {
-            address[i] = l.memmap.GetAddress(structs.Global, args[i], types[i])
-        }
+	if exists || (len(args[i]) > 0 && args[i][0] == 't') {
+	    if i + 1 == pointer {
+		l.memmap.RegisterPointer(scope, args[i])
+	    }
+
+	    address[i] = l.memmap.GetAddress(scope, args[i], types[i])
+	} else if len(args[i]) > 0 {
+	    address[i] = l.memmap.GetAddress(structs.Global, args[i], types[i])
+	}
     }
 
     l.ir_code = append(
@@ -246,7 +250,7 @@ func (l *BigDuckListener) GenerateProcCallRetTAC(procname string) {
     l.argstack.Push("_" + procname)
     l.typestack.Push(sym.RetType)
     l.PushOp(structs.OpFromString["<-"])
-    l.GenerateOpTAC()
+    l.GenerateOpTAC(0)
 
     l.argstack.Push(tmp)
     l.typestack.Push(sym.RetType)

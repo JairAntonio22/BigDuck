@@ -46,8 +46,9 @@ proc main()
     var x, y float;
     var condition bool;
 {
-    print(global);  #| print global |#
-    print(local);   #| print local  |#
+    print(a, b, c);     #| prints: 0 0 0 |#
+    print(x, y);        #| prints: 0 0   |#
+    print(condition);   #| prints: false |#
 }
 \end{verbatim}
 
@@ -58,6 +59,16 @@ to the language that every name on the list will be of the same type.
 \paragraph{} On the BigDuck language there are 3 primitive types; \texttt{int},
 \texttt{float}, and \texttt{bool}. Which are enough for any kind of numeric
 and logic operation.
+
+\paragraph{} The text that is enclosed by \texttt{\#|} and \texttt{|\#} is
+ignored by the compiler, this are called comments and are used to clarify a
+section of code. In this case they show the output of performing such
+instructions.
+
+\paragraph{} On the BigDuck language all variables are initialize to their
+respective zero value, for ints and floats is \texttt{0}, and for bools is
+\texttt{false}. The next section we will discuss on how to change this values
+and work with variables.
 
 \section{Statements}
 \subsection{Assignments}

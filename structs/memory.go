@@ -45,6 +45,10 @@ func GetAddress(address int) int {
     return address & 0x0fffffff
 }
 
+func IsPointer(address int) bool {
+    return address & (0x1 << 32) != 0
+}
+
 func (m *memory) InitGlobal(ic, fc, bc int) {
     m.Strings = make(map[int]string, ic)
     m.MemI[Global] = make([]int, ic)

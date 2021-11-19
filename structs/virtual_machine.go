@@ -15,6 +15,7 @@ type VirtualMachine struct {
     pcstack         Stack       // Program counter stack
     pvaluequeue     Queue       // Parameter value queue
     paddressqueue   Queue       // Parameter address queue
+    init_ptr	    bool
 }
 
 func (vm *VirtualMachine) InitMemory() {
@@ -36,7 +37,7 @@ func (vm *VirtualMachine) InitMemory() {
             a := GetAddress(va)
 
             if s != Global {
-                fmt.Printf("Local address used in data segment\n")
+                fmt.Printf("line %d: Local address used in data segment\n", vm.pc)
                 os.Exit(1)
             }
 
@@ -61,7 +62,7 @@ func (vm *VirtualMachine) InitMemory() {
                 vm.memory.Strings[a] = value
 
             default:
-                fmt.Printf("Invalid address used in data segment\n")
+                fmt.Printf("line %d: Invalid address used in data segment\n", vm.pc)
                 os.Exit(1)
             }
 
@@ -71,7 +72,8 @@ func (vm *VirtualMachine) InitMemory() {
 
         default:
             fmt.Printf(
-                "Unexpected operator %s at data segment\n",
+                "line %d: Unexpected operator %s at data segment\n",
+		vm.pc,
                 TypeToString[curr_code.Op])
             os.Exit(1)
         }
@@ -104,23 +106,54 @@ func (vm *VirtualMachine) Execute() {
 
         var a1, a2, a3 int
 
-        if s1 == Local {
-            a1 = vm.memory.Sp[t1] + GetAddress(va1)
-        } else {
-            a1 = GetAddress(va1)
-        }
+	if IsPointer(va1) {
+	    ref := vm.memory.MemI[s1][vm.memory.Sp[t1] + GetAddress(va1)]
 
-        if s2 == Local {
-            a2 = vm.memory.Sp[t2] + GetAddress(va2)
-        } else {
-            a2 = GetAddress(va2)
-        }
+	    s1 = GetScope(ref)
+	    t1 = GetType(ref)
+	    a1 = GetAddress(ref)
 
-        if s3 == Local {
-            a3 = vm.memory.Sp[t3] + GetAddress(va3)
-        } else {
-            a3 = GetAddress(va3)
-        }
+	} else {
+	    if s1 == Local {
+		a1 = vm.memory.Sp[t1] + GetAddress(va1)
+	    } else {
+		a1 = GetAddress(va1)
+	    }
+	}
+
+	if IsPointer(va2) {
+	    ref := vm.memory.MemI[s2][vm.memory.Sp[t2] + GetAddress(va2)]
+
+	    s2 = GetScope(ref)
+	    t2 = GetType(ref)
+	    a2 = GetAddress(ref)
+
+	} else {
+	    if s2 == Local {
+		a2 = vm.memory.Sp[t2] + GetAddress(va2)
+	    } else {
+		a2 = GetAddress(va2)
+	    }
+	}
+
+	if IsPointer(va3) && !vm.init_ptr {
+	    ref := vm.memory.MemI[s3][vm.memory.Sp[t3] + GetAddress(va3)]
+
+	    s3 = GetScope(ref)
+	    t3 = GetType(ref)
+	    a3 = GetAddress(ref)
+
+	} else {
+	    if s3 == Local {
+		a3 = vm.memory.Sp[t3] + GetAddress(va3)
+	    } else {
+		a3 = GetAddress(va3)
+	    }
+
+	    if IsPointer(va3) {
+		vm.init_ptr = false
+	    }
+	}
 
         switch curr_code.Op {
         case ASG:
@@ -140,7 +173,7 @@ func (vm *VirtualMachine) Execute() {
                 vm.memory.MemI[s3][a3] = int(vm.memory.MemF[s1][a1])
 
             } else {
-                fmt.Printf("Type error mismatch\n")
+                fmt.Printf("line %d: Type error mismatch\n", vm.pc)
                 os.Exit(1)
             }
 
@@ -149,7 +182,7 @@ func (vm *VirtualMachine) Execute() {
                 vm.memory.MemB[s3][a3] = (
                     vm.memory.MemB[s1][a1] || vm.memory.MemB[s2][a2])
             } else {
-                fmt.Printf("Type error mismatch\n")
+                fmt.Printf("line %d: Type error mismatch\n", vm.pc)
                 os.Exit(1)
             }
 
@@ -158,7 +191,7 @@ func (vm *VirtualMachine) Execute() {
                 vm.memory.MemB[s3][a3] = (
                     vm.memory.MemB[s1][a1] && vm.memory.MemB[s2][a2])
             } else {
-                fmt.Printf("Type error mismatch\n")
+                fmt.Printf("line %d: Type error mismatch\n", vm.pc)
                 os.Exit(1)
             }
 
@@ -166,7 +199,7 @@ func (vm *VirtualMachine) Execute() {
             if t1 == Bool_t && t3 == Bool_t {
                 vm.memory.MemB[s3][a3] = !vm.memory.MemB[s1][a1]
             } else {
-                fmt.Printf("Type error mismatch\n")
+                fmt.Printf("line %d: Type error mismatch\n", vm.pc)
                 os.Exit(1)
             }
 
@@ -188,7 +221,7 @@ func (vm *VirtualMachine) Execute() {
                     vm.memory.MemF[s1][a1] == vm.memory.MemF[s2][a2])
 
             } else {
-                fmt.Printf("Type error mismatch\n")
+                fmt.Printf("line %d: Type error mismatch\n", vm.pc)
                 os.Exit(1)
             }
 
@@ -210,7 +243,7 @@ func (vm *VirtualMachine) Execute() {
                     vm.memory.MemF[s1][a1] != vm.memory.MemF[s2][a2])
 
             } else {
-                fmt.Printf("Type error mismatch\n")
+                fmt.Printf("line %d: Type error mismatch\n", vm.pc)
                 os.Exit(1)
             }
 
@@ -232,7 +265,7 @@ func (vm *VirtualMachine) Execute() {
                     vm.memory.MemF[s1][a1] < vm.memory.MemF[s2][a2])
 
             } else {
-                fmt.Printf("Type error mismatch\n")
+                fmt.Printf("line %d: Type error mismatch\n", vm.pc)
                 os.Exit(1)
             }
 
@@ -254,7 +287,7 @@ func (vm *VirtualMachine) Execute() {
                     vm.memory.MemF[s1][a1] > vm.memory.MemF[s2][a2])
 
             } else {
-                fmt.Printf("Type error mismatch\n")
+                fmt.Printf("line %d: Type error mismatch\n", vm.pc)
                 os.Exit(1)
             }
 
@@ -276,7 +309,7 @@ func (vm *VirtualMachine) Execute() {
                     vm.memory.MemF[s1][a1] <= vm.memory.MemF[s2][a2])
 
             } else {
-                fmt.Printf("Type error mismatch\n")
+                fmt.Printf("line %d: Type error mismatch\n", vm.pc)
                 os.Exit(1)
             }
 
@@ -298,7 +331,7 @@ func (vm *VirtualMachine) Execute() {
                     vm.memory.MemF[s1][a1] >= vm.memory.MemF[s2][a2])
 
             } else {
-                fmt.Printf("Type error mismatch\n")
+                fmt.Printf("line %d: Type error mismatch\n", vm.pc)
                 os.Exit(1)
             }
 
@@ -336,7 +369,7 @@ func (vm *VirtualMachine) Execute() {
                     vm.memory.MemF[s1][a1] - vm.memory.MemF[s2][a2])
 
             } else {
-                fmt.Printf("Type error mismatch\n")
+                fmt.Printf("line %d: Type error mismatch\n", vm.pc)
                 os.Exit(1)
             }
 
@@ -374,7 +407,7 @@ func (vm *VirtualMachine) Execute() {
                     vm.memory.MemF[s1][a1] + vm.memory.MemF[s2][a2])
 
             } else {
-                fmt.Printf("Type error mismatch\n")
+                fmt.Printf("line %d: Type error mismatch\n", vm.pc)
                 os.Exit(1)
             }
 
@@ -412,7 +445,7 @@ func (vm *VirtualMachine) Execute() {
                     vm.memory.MemF[s1][a1] / vm.memory.MemF[s2][a2])
 
             } else {
-                fmt.Printf("Type error mismatch\n")
+                fmt.Printf("line %d: Type error mismatch\n", vm.pc)
                 os.Exit(1)
             }
 
@@ -450,16 +483,22 @@ func (vm *VirtualMachine) Execute() {
                     vm.memory.MemF[s1][a1] * vm.memory.MemF[s2][a2])
 
             } else {
-                fmt.Printf("Type error mismatch\n")
+                fmt.Printf("line %d: Type error mismatch\n", vm.pc)
                 os.Exit(1)
             }
 
         case LPAREN:
-            fmt.Printf("Unexpected operator %s\n", TypeToString[curr_code.Op])
+            fmt.Printf(
+		"line %d: Unexpected operator %s\n",
+		vm.pc,
+		TypeToString[curr_code.Op])
             os.Exit(1)
 
         case RPAREN:
-            fmt.Printf("Unexpected operator %s\n", TypeToString[curr_code.Op])
+            fmt.Printf(
+		"line %d: Unexpected operator %s\n",
+		vm.pc,
+		TypeToString[curr_code.Op])
             os.Exit(1)
 
         case JMP:
@@ -503,7 +542,7 @@ func (vm *VirtualMachine) Execute() {
                     vm.memory.MemB[Local][a] = value
 
                 default:
-                    fmt.Printf("Type error mismatch\n")
+                    fmt.Printf("line %d: Type error mismatch\n", vm.pc)
                     os.Exit(1)
                 }
             }
@@ -533,7 +572,7 @@ func (vm *VirtualMachine) Execute() {
                 vm.pvaluequeue.Push(int(vm.memory.MemF[s1][a1]))
 
             } else {
-                fmt.Printf("Type error mismatch\n")
+                fmt.Printf("line %d: Type error mismatch\n", vm.pc)
                 os.Exit(1)
             }
 
@@ -555,7 +594,7 @@ func (vm *VirtualMachine) Execute() {
                     vm.memory.MemI[s3][a3] = int(vm.memory.MemF[s1][a1])
 
                 } else {
-                    fmt.Printf("Type error mismatch\n")
+                    fmt.Printf("line %d: Type error mismatch\n", vm.pc)
                     os.Exit(1)
                 }
             }
@@ -579,6 +618,18 @@ func (vm *VirtualMachine) Execute() {
                 vm.memory.PopContext()
             }
 
+	case ASSERT:
+            if t1 == Int_t {
+		index := vm.memory.MemI[s1][a1]
+		limit := vm.memory.MemI[s3][a3]
+		vm.init_ptr = true
+
+		if index < 0 || index >= limit {
+                    fmt.Printf("line %d: Index out of range\n", vm.pc)
+                    os.Exit(1)
+		}
+	    }
+
         case PRINT:
             if t3 == Int_t {
                 fmt.Print(vm.memory.MemI[s3][a3], " ")
@@ -599,7 +650,7 @@ func (vm *VirtualMachine) Execute() {
                 fmt.Print(vm.memory.Strings[a3], " ")
 
             } else {
-                fmt.Printf("Type error mismatch\n")
+                fmt.Printf("line %d: Type error mismatch\n", vm.pc)
                 os.Exit(1)
             }
 
@@ -623,12 +674,14 @@ func (vm *VirtualMachine) Execute() {
                 fmt.Println(vm.memory.Strings[a3], " ")
 
             } else {
-                fmt.Printf("Type error mismatch\n")
+                fmt.Printf("line %d: Type error mismatch\n", vm.pc)
                 os.Exit(1)
             }
 
         default:
-            fmt.Printf("Unexpected operator at program segment\n")
+            fmt.Printf(
+		"line %d: Unexpected operator at program segment\n",
+		vm.pc)
             os.Exit(1)
         }
     }

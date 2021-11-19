@@ -88,10 +88,10 @@ const (
     RETURN      // returns value from procedures
     ENDPROC     // clears procedure call and local memory
 
-    ASSERT      // checks whether a boolean value is true
+    ASSERT      // checks whether a given value is 
 
-    PRINT       // clears procedure call and local memory
-    PRINTLN     // clears procedure call and local memory
+    PRINT       // prints on stdout
+    PRINTLN     // prints on stdout with newline character
 
     SET         // Sets value to address
     PROGRAM     // Indicates program segment

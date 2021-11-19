@@ -1,25 +1,36 @@
-var call_count int;
-
-proc fib(n int) -> int {
-    call_count <- call_count + 1;
-
-    if n <= 0 {
-        return 0;
-
-    } else if n = 1 {
-        return 1;
-
-    } else {
-        return fib(n - 1) + fib(n - 2);
-    }
-}
 
 proc main()
-    var ans, i int;
+    var array [10]int;
+    var i, j, tmp int;
+    var is_sorted bool;
 {
-    loop i <- 0; i <= 35; i <- i + 1 { 
-        call_count <- 0;
-        ans <- fib(i);
-        print("The", i, "fibonacci is", ans, "took", call_count, "iterations");
+    print("=== Unsorted array ===");
+
+    loop i <- 0; i < 10; i <- i + 1 {
+	array[i] <- (i - 5) * (i - 5);
+	print(array[i]);
+    }
+
+    loop i <- 0; i < 10 - 1; i <- i + 1 {
+	is_sorted <- true;
+
+	loop j <- i + 1; j < 10; j <- j + 1 {
+	    if array[i] > array[j] {
+		tmp <- array[i];
+		array[i] <- array[j];
+		array[j] <- tmp;
+		is_sorted <- false;
+	    }
+	}
+
+	if is_sorted {
+	    break;
+	}
+    }
+    
+    print("=== Sorted array ===");
+
+    loop i <- 0; i < 10; i <- i + 1 {
+	print(array[i]);
     }
 }

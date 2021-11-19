@@ -1,0 +1,103 @@
+\contentsline {part}{I\hspace {1em}Description and Technical Documentation}{3}{}%
+\contentsline {chapter}{\numberline {1}Project}{4}{}%
+\contentsline {section}{\numberline {1.1}Introduction}{4}{}%
+\contentsline {subsection}{\numberline {1.1.1}Purpose}{4}{}%
+\contentsline {paragraph}{}{4}{}%
+\contentsline {subsection}{\numberline {1.1.2}Scope}{4}{}%
+\contentsline {paragraph}{}{4}{}%
+\contentsline {section}{\numberline {1.2}Software Requirements}{5}{}%
+\contentsline {subsection}{\numberline {1.2.1}Analysis}{5}{}%
+\contentsline {paragraph}{}{5}{}%
+\contentsline {paragraph}{Functional requirements}{5}{}%
+\contentsline {paragraph}{Non-Functional requirements}{5}{}%
+\contentsline {subsection}{\numberline {1.2.2}Test Cases}{6}{}%
+\contentsline {section}{\numberline {1.3}Software Developement Process}{6}{}%
+\contentsline {subsection}{\numberline {1.3.1}Developement Process Description}{6}{}%
+\contentsline {paragraph}{}{6}{}%
+\contentsline {subsection}{\numberline {1.3.2}Weekly Log}{6}{}%
+\contentsline {subsection}{\numberline {1.3.3}Git Commitments}{7}{}%
+\contentsline {paragraph}{Note}{7}{}%
+\contentsline {chapter}{\numberline {2}Language}{10}{}%
+\contentsline {section}{\numberline {2.1}General Overview}{10}{}%
+\contentsline {subsection}{\numberline {2.1.1}Language Name}{10}{}%
+\contentsline {paragraph}{}{10}{}%
+\contentsline {paragraph}{}{10}{}%
+\contentsline {subsection}{\numberline {2.1.2}Main Features Description}{10}{}%
+\contentsline {paragraph}{}{10}{}%
+\contentsline {section}{\numberline {2.2}Language Errors}{11}{}%
+\contentsline {subsection}{\numberline {2.2.1}Compile-Time Errors}{11}{}%
+\contentsline {paragraph}{}{11}{}%
+\contentsline {subsection}{\numberline {2.2.2}Run-Time Errors}{12}{}%
+\contentsline {chapter}{\numberline {3}Compiler}{13}{}%
+\contentsline {section}{\numberline {3.1}Development Environment}{13}{}%
+\contentsline {paragraph}{}{13}{}%
+\contentsline {section}{\numberline {3.2}Lexical Analisis}{13}{}%
+\contentsline {subsubsection}{Reserved Keywords}{13}{}%
+\contentsline {subsubsection}{Tokens}{13}{}%
+\contentsline {section}{\numberline {3.3}Syntactical Analisis}{14}{}%
+\contentsline {paragraph}{Note}{14}{}%
+\contentsline {section}{\numberline {3.4}IR Code and Semantic Analisis}{17}{}%
+\contentsline {subsection}{\numberline {3.4.1}Operation Code}{17}{}%
+\contentsline {paragraph}{}{17}{}%
+\contentsline {subsection}{\numberline {3.4.2}Virtual Addresses}{18}{}%
+\contentsline {subsection}{\numberline {3.4.3}Syntax Diagrams}{18}{}%
+\contentsline {subsection}{\numberline {3.4.4}Semantic and IR Generation Actions}{18}{}%
+\contentsline {subsection}{\numberline {3.4.5}Semantic Consideration Table}{18}{}%
+\contentsline {section}{\numberline {3.5}Memory Management}{18}{}%
+\contentsline {subsubsection}{Tree listener}{18}{}%
+\contentsline {chapter}{\numberline {4}Virtual Machine}{19}{}%
+\contentsline {section}{\numberline {4.1}Development Environment}{19}{}%
+\contentsline {paragraph}{}{19}{}%
+\contentsline {section}{\numberline {4.2}Memory Management}{19}{}%
+\contentsline {subsection}{\numberline {4.2.1}Architecture}{19}{}%
+\contentsline {paragraph}{}{19}{}%
+\contentsline {paragraph}{}{19}{}%
+\contentsline {subsection}{\numberline {4.2.2}Data Structures}{21}{}%
+\contentsline {subsubsection}{Virtual machine}{21}{}%
+\contentsline {subsubsection}{Memory}{21}{}%
+\contentsline {subsubsection}{Memory Stack}{21}{}%
+\contentsline {subsection}{\numberline {4.2.3}Virtual Address Translation}{22}{}%
+\contentsline {paragraph}{}{22}{}%
+\contentsline {paragraph}{Scope enumeration}{22}{}%
+\contentsline {paragraph}{Type enumeration}{22}{}%
+\contentsline {paragraph}{}{22}{}%
+\contentsline {paragraph}{Memory map}{22}{}%
+\contentsline {paragraph}{Examples}{22}{}%
+\contentsline {paragraph}{Note}{22}{}%
+\contentsline {paragraph}{}{22}{}%
+\contentsline {chapter}{\numberline {5}Execution Evidence}{23}{}%
+\contentsline {section}{\numberline {5.1}Test Cases}{23}{}%
+\contentsline {subsection}{\numberline {5.1.1}Test Implementation}{23}{}%
+\contentsline {subsection}{\numberline {5.1.2}IR Code Output}{23}{}%
+\contentsline {subsection}{\numberline {5.1.3}Execution Output}{23}{}%
+\contentsline {chapter}{\numberline {6}Code Documentation}{24}{}%
+\contentsline {section}{\numberline {6.1}Modules Description}{24}{}%
+\contentsline {part}{II\hspace {1em}User Manual}{25}{}%
+\contentsline {chapter}{\numberline {7}Quick Reference}{26}{}%
+\contentsline {section}{\numberline {7.1}Enviroment}{26}{}%
+\contentsline {paragraph}{}{26}{}%
+\contentsline {paragraph}{}{26}{}%
+\contentsline {paragraph}{}{26}{}%
+\contentsline {paragraph}{}{26}{}%
+\contentsline {paragraph}{}{26}{}%
+\contentsline {paragraph}{}{26}{}%
+\contentsline {section}{\numberline {7.2}Variables}{27}{}%
+\contentsline {paragraph}{}{27}{}%
+\contentsline {paragraph}{}{27}{}%
+\contentsline {paragraph}{}{27}{}%
+\contentsline {paragraph}{}{27}{}%
+\contentsline {paragraph}{}{27}{}%
+\contentsline {paragraph}{}{27}{}%
+\contentsline {section}{\numberline {7.3}Statements}{28}{}%
+\contentsline {subsection}{\numberline {7.3.1}Assignments}{28}{}%
+\contentsline {subsection}{\numberline {7.3.2}Arithmetic Expressions}{28}{}%
+\contentsline {subsection}{\numberline {7.3.3}Operator Hierarchy}{28}{}%
+\contentsline {section}{\numberline {7.4}Conditional Statements}{28}{}%
+\contentsline {section}{\numberline {7.5}Loop Statements}{28}{}%
+\contentsline {subsection}{\numberline {7.5.1}Infinite Loop}{28}{}%
+\contentsline {subsection}{\numberline {7.5.2}While Loop}{28}{}%
+\contentsline {subsection}{\numberline {7.5.3}For Loop}{28}{}%
+\contentsline {subsection}{\numberline {7.5.4}Control Flow Statements}{28}{}%
+\contentsline {section}{\numberline {7.6}Procedures}{28}{}%
+\contentsline {section}{\numberline {7.7}Tensorial Types}{28}{}%
+\contentsline {section}{\numberline {7.8}Built-in Procedures}{28}{}%

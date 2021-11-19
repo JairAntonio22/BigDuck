@@ -44,12 +44,18 @@ func (m *MemMap) GetAddress(scope int, var_name string, vtype int) int {
     address, exists := m.memcache[var_name]
 
     if !exists {
-        address |= (scope << 31) | (vtype << 28) | m.Typecount[scope][vtype]
+	address = (scope << 31) | (vtype << 28) | m.Typecount[scope][vtype]
         m.Typecount[scope][vtype]++
         m.memcache[var_name] = address
     }
 
     return address
+}
+
+func (m *MemMap) RegisterPointer(scope int, var_name string) {
+    address := (1 << 32) | (scope << 31) | (Int_t << 28) | m.Typecount[scope][Int_t]
+    m.Typecount[scope][Int_t]++
+    m.memcache[var_name] = address
 }
 
 func (m *MemMap) GetDataSegment() []Tac {

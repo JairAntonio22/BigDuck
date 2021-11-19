@@ -17,14 +17,6 @@ benchmark: $(TARGET_CC)
 	time -p ./$(TARGET_CC) examples/test_expr.duck
 	time -p ./$(TARGET_CC) run examples/test_expr.quack
 
-test_vm: $(TARGET_CC)
-	clear
-	./$(TARGET_CC) run examples/test_expr.quack
-
-test_comp: $(TARGET_CC)
-	clear
-	./$(TARGET_CC) examples/test_expr.duck
-
 $(TARGET_CC): parser structs *.go
 	go build -o $(TARGET_CC) *.go
 
