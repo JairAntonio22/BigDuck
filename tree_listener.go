@@ -32,6 +32,7 @@ type BigDuckListener struct {
 
     scope       int
     argc        int
+    loop_nest   int
 
     ret_type    int
     curr_proc   string
@@ -953,6 +954,14 @@ func (l *BigDuckListener) ExitAlter(c *parser.AlterContext) {
 }
 
 // loop_stmt   
+func (l *BigDuckListener) EnterLoop_stmt(c *parser.Loop_stmtContext) {
+    if !l.valid {
+        return
+    }
+
+    l.loop_nest++
+}
+
 func (l *BigDuckListener) ExitLoop_stmt(c *parser.Loop_stmtContext) {
     if !l.valid {
         return
@@ -999,6 +1008,8 @@ func (l *BigDuckListener) ExitLoop_stmt(c *parser.Loop_stmtContext) {
         index, _ = item.(int)
         l.FillJmpTAC(index, l.pc)
     }
+
+    l.loop_nest--
 }
 
 func (l *BigDuckListener) EnterCtrl_flow(c *parser.Ctrl_flowContext) {
@@ -1006,12 +1017,21 @@ func (l *BigDuckListener) EnterCtrl_flow(c *parser.Ctrl_flowContext) {
         return
     }
 
-    if c.BREAK() != nil {
-        l.breakqueue.Push(l.pc)
-        l.GenerateJmpTAC(structs.JMP)
-    } else if c.SKIP_W() != nil {
-        l.skipqueue.Push(l.pc)
-        l.GenerateJmpTAC(structs.JMP)
+    if l.loop_nest > 0 {
+        if c.BREAK() != nil {
+            l.breakqueue.Push(l.pc)
+            l.GenerateJmpTAC(structs.JMP)
+
+        } else if c.SKIP_W() != nil {
+            l.skipqueue.Push(l.pc)
+            l.GenerateJmpTAC(structs.JMP)
+        }
+    } else {
+        l.valid = false
+        fmt.Printf(
+            "line %d:%d cannot use control flow statements outside of loops\n",
+            c.GetStart().GetLine(),
+            c.GetStart().GetColumn())
     }
 }
 

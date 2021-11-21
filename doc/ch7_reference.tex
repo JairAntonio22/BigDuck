@@ -135,7 +135,8 @@ substraction, or relational operators have the same precedence. The order of
 evaluation is resolved by giving priority to one that was read first.
 
 \paragraph{} Therefore the expression \texttt{a {+} b {-} c} is equal to
-\texttt{(a {+} b) {-} c}, and is \textbf{not equal} to \texttt{a {+} (b {-} c)}.
+\texttt{(a {+} b) {-} c}, and it is \textbf{not equal} to
+\texttt{a {+} (b {-} c)}.
 
 \section{Conditional Statements}
 
@@ -337,7 +338,64 @@ will be ignored and the next iteration is going to be reached. However the
 break statement exits the loop. These are usefull to avoid unnecessary 
 operations or to make the code more readable.
 
+\newpage
+
 \section{Procedures}
+
+\paragraph{} At this point everything has been done inside the main procedure,
+this means that all code written in main belongs to the same context. With
+context it is meant that all variables and flow of the program is self contained
+in the procedure. This may be good enough for small programs, however as the
+complexity increases you start seeing code repetition or related code to perform
+an action.
+
+\paragraph{} Many programming languages, including BigDuck, are able to
+provide different contexts through; functions, procedures, methods, etc. On this
+language it is done through procedure, whose syntax is the following.
+
+\begin{verbatim}
+proc name(args) -> type
+    vars
+{
+}
+\end{verbatim}
+
+\paragraph{} Where \texttt{name} is the procedure name, \texttt{args} is a list
+of arguments to be passed to a procedure, \texttt{type} indicates the return
+type of the procedure, and \texttt{vars} indicate local variables to be use.\\
+
+\noindent
+The following are examples of procedures.
+
+\begin{verbatim}
+proc square(x float) -> float {
+    return x * x;
+}
+
+proc distance(x1, y1, x2, y2 float) -> float {
+    return sqrt(square(x2 - x1) - square(y2 - y1));
+}
+
+proc close_enough(x1, y1, x2, y2 float) -> bool {
+    return distance(x1, y1, x2, y2) > 0.01;
+}
+
+proc get_circle_area(r float) -> float {
+    return 3.14159 * square(r);
+}
+\end{verbatim}
+
+\paragraph{} Using procedures is not only helpful to write less code, but it
+also helps to make the code more abstract (hiding unnecessary information), and
+it allows to handle problems with more ease.
+
+\newpage
+
+\paragraph{} The last thing to cover about procedures is recursion. Recursion
+can be seen as a higher level form of loops, this is because it cover all the
+use cases of loops and can use less lines of code. However sometimes may be
+harder to think in a recursive solution, thus it remains at the taste of the
+user when to use recursion rather than explicit loops.
 
 \section{Tensorial Types}
 
