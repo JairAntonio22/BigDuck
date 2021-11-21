@@ -293,16 +293,22 @@ func (l *BigDuckListener) EnterRbracket(c *parser.RbracketContext) {
         l.typestack.Push(structs.Int_t)
 
         l.PushOp(structs.OpFromString["*"])
+        l.curr_line = c.GetStart().GetLine()
+        l.curr_col = c.GetStart().GetColumn()
         l.GenerateOpTAC(0)
 
         if l.curr_dim > 0 {
             l.PushOp(structs.OpFromString["+"])
+            l.curr_line = c.GetStart().GetLine()
+            l.curr_col = c.GetStart().GetColumn()
             l.GenerateOpTAC(0)
         }
 
     } else {
         if l.curr_dim > 0 {
             l.PushOp(structs.OpFromString["+"])
+            l.curr_line = c.GetStart().GetLine()
+            l.curr_col = c.GetStart().GetColumn()
             l.GenerateOpTAC(0)
         }
 
@@ -310,6 +316,8 @@ func (l *BigDuckListener) EnterRbracket(c *parser.RbracketContext) {
         l.typestack.Push(structs.Int_t)
 
         l.PushOp(structs.OpFromString["+"])
+        l.curr_line = c.GetStart().GetLine()
+        l.curr_col = c.GetStart().GetColumn()
         l.GenerateOpTAC(3)
     }
 
@@ -1148,3 +1156,96 @@ func (l *BigDuckListener) ExitPparamTerm(c * parser.PparamTermContext) {
 }
 
 // pnextParam
+
+// read
+
+func (l *BigDuckListener) ExitRead(c * parser.ReadContext) {
+    if !l.valid {
+        return
+    }
+
+    l.ir_code[l.pc - 1].Op = structs.PRINTLN
+
+    item, _ := l.argstack.Pop()
+    target, _ := item.(string)
+    item, _ = l.typestack.Pop()
+    stype, _ := item.(int)
+
+    scope, _, exists := l.symtable.Lookup(target)
+
+    if exists || (len(target) > 0 && target[0] == 't') {
+        address := l.memmap.GetAddress(scope, target, stype)
+
+        l.ir_code = append(
+            l.ir_code, structs.Tac{
+                Op: structs.READ,
+                Args: [3]string{"", "", target},
+                Address: [3]int{0, 0, address}})
+        l.pc++
+
+    } else {
+        l.valid = false
+        fmt.Printf(
+            "line %d:%d variable %s was not declared\n",
+            c.GetStart().GetLine(),
+            c.GetStart().GetColumn(),
+            target)
+        return
+    }
+}
+
+// u_func
+func (l *BigDuckListener) EnterU_func(c * parser.U_funcContext) {
+    if !l.valid {
+        return
+    }
+
+    l.PushOp(structs.LPAREN)
+}
+
+func (l *BigDuckListener) ExitU_func(c * parser.U_funcContext) {
+    if !l.valid {
+        return
+    }
+
+    l.PushOp(structs.OpFromString[c.U_funcs().GetText()])
+    l.curr_line = c.GetStart().GetLine()
+    l.curr_col = c.GetStart().GetColumn()
+    l.GenerateOpTAC(0)
+    l.PushOp(structs.RPAREN)
+}
+
+// u_funcs 
+
+// bin_func
+func (l *BigDuckListener) EnterBin_func(c * parser.Bin_funcContext) {
+    if !l.valid {
+        return
+    }
+
+    l.PushOp(structs.LPAREN)
+}
+
+func (l *BigDuckListener) ExitBin_func(c * parser.Bin_funcContext) {
+    if !l.valid {
+        return
+    }
+
+    l.PushOp(structs.OpFromString[c.Bin_funcs().GetText()])
+    l.curr_line = c.GetStart().GetLine()
+    l.curr_col = c.GetStart().GetColumn()
+    l.GenerateOpTAC(0)
+    l.PushOp(structs.RPAREN)
+}
+
+// bin_func2
+func (l *BigDuckListener) EnterBin_func2(c * parser.Bin_func2Context) {
+    if !l.valid {
+        return
+    }
+
+    l.PushOp(structs.RPAREN)
+    l.PushOp(structs.LPAREN)
+}
+
+// bin_funcs 

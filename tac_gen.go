@@ -52,15 +52,15 @@ func (l *BigDuckListener) GenerateOpTAC(pointer int) {
 
     op := l.PopOp()
 
-    if op == structs.NOT {
-        i = 0
+    is_unary, _ := structs.IsUnaryOp[op]
+
+    if is_unary {
         argc = 0
     } else {
-        i = 1
         argc = 1
     }
 
-    for ; i >= 0; i-- {
+    for i = argc; i >= 0; i-- {
         item, _ := l.argstack.Pop()
         args[i], _ = item.(string)
         item, _ = l.typestack.Pop()
@@ -70,6 +70,7 @@ func (l *BigDuckListener) GenerateOpTAC(pointer int) {
     if structs.Cube[op][types[0]][types[argc]] == structs.Error_t {
         l.valid = false;
         fmt.Printf("line %d:%d type error mismatch\n", l.curr_line, l.curr_col)
+        fmt.Println(args[0], args[2])
     } else if op != structs.ASG {
         types[2] = structs.Cube[op][types[0]][types[argc]]
         l.typestack.Push(types[2])

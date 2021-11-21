@@ -1,19 +1,4 @@
 
-proc main()
-    var test [3][3]int;
-    var i, j, k, rows, cols int;
-{
-    rows <- 3;
-    cols <- 3;
-
-    loop i <- 0; i < rows; i <- i + 1 {
-	loop j <- 0; j < cols; j <- j + 1 {
-	    test[i][j] <- k;
-	    k <- k + 1;
-	}
-    }
-
-    print(test[0][0], test[0][1], test[0][2]);
-    print(test[1][0], test[1][1], test[1][2]);
-    print(test[2][0], test[2][1], test[2][2]);
+proc main() {
+    print(exp(1));
 }

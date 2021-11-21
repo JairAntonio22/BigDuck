@@ -43,11 +43,17 @@ proc fib_tail(n int) -> int {
 proc main() 
     var f1, f2, f3, i int;
 {
-    loop i <- 0; i < 15; i <- i + 1 {
+    loop {
+        print("=== Fibonacci ===");
+
+        i <- read("Type value of the nth fibonacci to calculate");
+
         f1 <- fib_iter(i);
         f2 <- fib_rec(i);
         f3 <- fib_tail(i);
 
-        print(f1, f2, f3);
+        print("Iterative answer", f1);
+        print("Recursive answer", f2);
+        print("Tail recursive answer", f3);
     }
 }

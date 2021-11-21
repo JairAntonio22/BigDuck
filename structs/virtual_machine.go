@@ -1,7 +1,9 @@
 package structs
 
 import (
+    "bufio"
     "fmt"
+    "math"
     "os"
     "strconv"
 )
@@ -37,7 +39,7 @@ func (vm *VirtualMachine) InitMemory() {
             a := GetAddress(va)
 
             if s != Global {
-                fmt.Printf("line %d: Local address used in data segment\n", vm.pc)
+                fmt.Printf("Local address used in data segment\n")
                 os.Exit(1)
             }
 
@@ -62,7 +64,7 @@ func (vm *VirtualMachine) InitMemory() {
                 vm.memory.Strings[a] = value
 
             default:
-                fmt.Printf("line %d: Invalid address used in data segment\n", vm.pc)
+                fmt.Printf("Invalid address used in data segment\n")
                 os.Exit(1)
             }
 
@@ -72,8 +74,7 @@ func (vm *VirtualMachine) InitMemory() {
 
         default:
             fmt.Printf(
-                "line %d: Unexpected operator %s at data segment\n",
-		vm.pc,
+                "Unexpected operator %s at data segment\n",
                 TypeToString[curr_code.Op])
             os.Exit(1)
         }
@@ -83,6 +84,8 @@ func (vm *VirtualMachine) InitMemory() {
 func (vm *VirtualMachine) Execute() {
     var curr_code Tac
     run_program := true
+
+    reader := bufio.NewReader(os.Stdin)
 
     for ; run_program ; vm.pc++ {
         curr_code =  vm.Program[vm.pc]
@@ -173,7 +176,7 @@ func (vm *VirtualMachine) Execute() {
                 vm.memory.MemI[s3][a3] = int(vm.memory.MemF[s1][a1])
 
             } else {
-                fmt.Printf("line %d: Type error mismatch\n", vm.pc)
+                fmt.Printf("Type error mismatch\n")
                 os.Exit(1)
             }
 
@@ -182,7 +185,7 @@ func (vm *VirtualMachine) Execute() {
                 vm.memory.MemB[s3][a3] = (
                     vm.memory.MemB[s1][a1] || vm.memory.MemB[s2][a2])
             } else {
-                fmt.Printf("line %d: Type error mismatch\n", vm.pc)
+                fmt.Printf("Type error mismatch\n")
                 os.Exit(1)
             }
 
@@ -191,7 +194,7 @@ func (vm *VirtualMachine) Execute() {
                 vm.memory.MemB[s3][a3] = (
                     vm.memory.MemB[s1][a1] && vm.memory.MemB[s2][a2])
             } else {
-                fmt.Printf("line %d: Type error mismatch\n", vm.pc)
+                fmt.Printf("Type error mismatch\n")
                 os.Exit(1)
             }
 
@@ -199,7 +202,7 @@ func (vm *VirtualMachine) Execute() {
             if t1 == Bool_t && t3 == Bool_t {
                 vm.memory.MemB[s3][a3] = !vm.memory.MemB[s1][a1]
             } else {
-                fmt.Printf("line %d: Type error mismatch\n", vm.pc)
+                fmt.Printf("Type error mismatch\n")
                 os.Exit(1)
             }
 
@@ -221,7 +224,7 @@ func (vm *VirtualMachine) Execute() {
                     vm.memory.MemF[s1][a1] == vm.memory.MemF[s2][a2])
 
             } else {
-                fmt.Printf("line %d: Type error mismatch\n", vm.pc)
+                fmt.Printf("Type error mismatch\n")
                 os.Exit(1)
             }
 
@@ -243,7 +246,7 @@ func (vm *VirtualMachine) Execute() {
                     vm.memory.MemF[s1][a1] != vm.memory.MemF[s2][a2])
 
             } else {
-                fmt.Printf("line %d: Type error mismatch\n", vm.pc)
+                fmt.Printf("Type error mismatch\n")
                 os.Exit(1)
             }
 
@@ -265,7 +268,7 @@ func (vm *VirtualMachine) Execute() {
                     vm.memory.MemF[s1][a1] < vm.memory.MemF[s2][a2])
 
             } else {
-                fmt.Printf("line %d: Type error mismatch\n", vm.pc)
+                fmt.Printf("Type error mismatch\n")
                 os.Exit(1)
             }
 
@@ -287,7 +290,7 @@ func (vm *VirtualMachine) Execute() {
                     vm.memory.MemF[s1][a1] > vm.memory.MemF[s2][a2])
 
             } else {
-                fmt.Printf("line %d: Type error mismatch\n", vm.pc)
+                fmt.Printf("Type error mismatch\n")
                 os.Exit(1)
             }
 
@@ -309,7 +312,7 @@ func (vm *VirtualMachine) Execute() {
                     vm.memory.MemF[s1][a1] <= vm.memory.MemF[s2][a2])
 
             } else {
-                fmt.Printf("line %d: Type error mismatch\n", vm.pc)
+                fmt.Printf("Type error mismatch\n")
                 os.Exit(1)
             }
 
@@ -331,7 +334,7 @@ func (vm *VirtualMachine) Execute() {
                     vm.memory.MemF[s1][a1] >= vm.memory.MemF[s2][a2])
 
             } else {
-                fmt.Printf("line %d: Type error mismatch\n", vm.pc)
+                fmt.Printf("Type error mismatch\n")
                 os.Exit(1)
             }
 
@@ -369,7 +372,7 @@ func (vm *VirtualMachine) Execute() {
                     vm.memory.MemF[s1][a1] - vm.memory.MemF[s2][a2])
 
             } else {
-                fmt.Printf("line %d: Type error mismatch\n", vm.pc)
+                fmt.Printf("Type error mismatch\n")
                 os.Exit(1)
             }
 
@@ -407,7 +410,7 @@ func (vm *VirtualMachine) Execute() {
                     vm.memory.MemF[s1][a1] + vm.memory.MemF[s2][a2])
 
             } else {
-                fmt.Printf("line %d: Type error mismatch\n", vm.pc)
+                fmt.Printf("Type error mismatch\n")
                 os.Exit(1)
             }
 
@@ -445,7 +448,7 @@ func (vm *VirtualMachine) Execute() {
                     vm.memory.MemF[s1][a1] / vm.memory.MemF[s2][a2])
 
             } else {
-                fmt.Printf("line %d: Type error mismatch\n", vm.pc)
+                fmt.Printf("Type error mismatch\n")
                 os.Exit(1)
             }
 
@@ -483,22 +486,16 @@ func (vm *VirtualMachine) Execute() {
                     vm.memory.MemF[s1][a1] * vm.memory.MemF[s2][a2])
 
             } else {
-                fmt.Printf("line %d: Type error mismatch\n", vm.pc)
+                fmt.Printf("Type error mismatch\n")
                 os.Exit(1)
             }
 
         case LPAREN:
-            fmt.Printf(
-		"line %d: Unexpected operator %s\n",
-		vm.pc,
-		TypeToString[curr_code.Op])
+            fmt.Printf("Unexpected operator %s\n", TypeToString[curr_code.Op])
             os.Exit(1)
 
         case RPAREN:
-            fmt.Printf(
-		"line %d: Unexpected operator %s\n",
-		vm.pc,
-		TypeToString[curr_code.Op])
+            fmt.Printf("Unexpected operator %s\n", TypeToString[curr_code.Op])
             os.Exit(1)
 
         case JMP:
@@ -542,7 +539,7 @@ func (vm *VirtualMachine) Execute() {
                     vm.memory.MemB[Local][a] = value
 
                 default:
-                    fmt.Printf("line %d: Type error mismatch\n", vm.pc)
+                    fmt.Printf("Type error mismatch\n")
                     os.Exit(1)
                 }
             }
@@ -572,7 +569,7 @@ func (vm *VirtualMachine) Execute() {
                 vm.pvaluequeue.Push(int(vm.memory.MemF[s1][a1]))
 
             } else {
-                fmt.Printf("line %d: Type error mismatch\n", vm.pc)
+                fmt.Printf("Type error mismatch\n")
                 os.Exit(1)
             }
 
@@ -594,7 +591,7 @@ func (vm *VirtualMachine) Execute() {
                     vm.memory.MemI[s3][a3] = int(vm.memory.MemF[s1][a1])
 
                 } else {
-                    fmt.Printf("line %d: Type error mismatch\n", vm.pc)
+                    fmt.Printf("Type error mismatch\n")
                     os.Exit(1)
                 }
             }
@@ -625,7 +622,7 @@ func (vm *VirtualMachine) Execute() {
 		vm.init_ptr = true
 
 		if index < 0 || index >= limit {
-                    fmt.Printf("line %d: Index out of range\n", vm.pc)
+                    fmt.Printf("Index out of range\n")
                     os.Exit(1)
 		}
 	    }
@@ -650,7 +647,7 @@ func (vm *VirtualMachine) Execute() {
                 fmt.Print(vm.memory.Strings[a3], " ")
 
             } else {
-                fmt.Printf("line %d: Type error mismatch\n", vm.pc)
+                fmt.Printf("Type error mismatch\n")
                 os.Exit(1)
             }
 
@@ -674,15 +671,309 @@ func (vm *VirtualMachine) Execute() {
                 fmt.Println(vm.memory.Strings[a3], " ")
 
             } else {
-                fmt.Printf("line %d: Type error mismatch\n", vm.pc)
+                fmt.Printf("Type error mismatch\n")
+                os.Exit(1)
+            }
+
+        case READ:
+            text, err := reader.ReadString('\n')
+
+            if err != nil {
+                fmt.Println(err)
+                os.Exit(1)
+            }
+
+            text = text[:len(text) - 1]
+
+            switch t3 {
+            case Int_t:
+                value, _ := strconv.ParseInt(text, 10, 64)
+                vm.memory.MemI[s3][a3] = int(value)
+
+            case Float_t:
+                value, _ := strconv.ParseInt(text, 10, 64)
+                vm.memory.MemI[s3][a3] = int(value)
+
+            case Bool_t:
+                if text == "#t" {
+                    vm.memory.MemB[s3][a3] = true
+                } else {
+                    vm.memory.MemB[s3][a3] = false
+                }
+
+            default:
+                fmt.Printf(
+                    "Invalid input, expecting %s\n",
+                    TypeToString[t3])
+                os.Exit(1)
+            }
+
+        case SIN:
+            if t1 == Int_t {
+                vm.memory.MemF[s3][a3] = math.Sin(float64(
+                    vm.memory.MemI[s1][a1]))
+
+            } else if t1 == Float_t {
+                vm.memory.MemF[s3][a3] = math.Sin(
+                    vm.memory.MemF[s1][a1])
+
+            } else {
+                fmt.Printf("Type error mismatch\n")
+                os.Exit(1)
+            }
+
+        case ASIN:
+            if t1 == Int_t {
+                vm.memory.MemF[s3][a3] = math.Asin(float64(
+                    vm.memory.MemI[s1][a1]))
+
+            } else if t1 == Float_t {
+                vm.memory.MemF[s3][a3] = math.Asin(
+                    vm.memory.MemF[s1][a1])
+
+            } else {
+                fmt.Printf("Type error mismatch\n")
+                os.Exit(1)
+            }
+
+        case COS:
+            if t1 == Int_t {
+                vm.memory.MemF[s3][a3] = math.Cos(float64(
+                    vm.memory.MemI[s1][a1]))
+
+            } else if t1 == Float_t {
+                vm.memory.MemF[s3][a3] = math.Cos(
+                    vm.memory.MemF[s1][a1])
+
+            } else {
+                fmt.Printf("Type error mismatch\n")
+                os.Exit(1)
+            }
+
+        case ACOS:
+            if t1 == Int_t {
+                vm.memory.MemF[s3][a3] = math.Acos(float64(
+                    vm.memory.MemI[s1][a1]))
+
+            } else if t1 == Float_t {
+                vm.memory.MemF[s3][a3] = math.Acos(
+                    vm.memory.MemF[s1][a1])
+
+            } else {
+                fmt.Printf("Type error mismatch\n")
+                os.Exit(1)
+            }
+
+        case TAN:
+            if t1 == Int_t {
+                vm.memory.MemF[s3][a3] = math.Tan(float64(
+                    vm.memory.MemI[s1][a1]))
+
+            } else if t1 == Float_t {
+                vm.memory.MemF[s3][a3] = math.Tan(
+                    vm.memory.MemF[s1][a1])
+
+            } else {
+                fmt.Printf("Type error mismatch\n")
+                os.Exit(1)
+            }
+
+        case ATAN:
+            if t1 == Int_t {
+                vm.memory.MemF[s3][a3] = math.Atan(float64(
+                    vm.memory.MemI[s1][a1]))
+
+            } else if t1 == Float_t {
+                vm.memory.MemF[s3][a3] = math.Atan(
+                    vm.memory.MemF[s1][a1])
+
+            } else {
+                fmt.Printf("Type error mismatch\n")
+                os.Exit(1)
+            }
+
+        case ATAN2:
+            if t1 == Int_t && t2 == Int_t && t3 == Float_t {
+                vm.memory.MemF[s3][a3] = math.Atan2(
+                    float64(vm.memory.MemI[s1][a1]),
+                    float64(vm.memory.MemI[s2][a2]))
+
+            } else if t1 == Int_t && t2 == Float_t && t3 == Float_t {
+                vm.memory.MemF[s3][a3] = math.Atan2(
+                    float64(vm.memory.MemI[s1][a1]), vm.memory.MemF[s2][a2])
+
+            } else if t1 == Float_t && t2 == Int_t && t3 == Float_t {
+                vm.memory.MemF[s3][a3] = math.Atan2(
+                    vm.memory.MemF[s1][a1], float64(vm.memory.MemI[s2][a2]))
+
+            } else if t1 == Float_t && t2 == Float_t && t3 == Float_t {
+                vm.memory.MemF[s3][a3] = math.Atan2(
+                    vm.memory.MemF[s1][a1], vm.memory.MemF[s2][a2])
+
+            } else {
+                fmt.Printf("Type error mismatch\n")
+                os.Exit(1)
+            }
+
+        case EXP:
+            if t1 == Int_t {
+                vm.memory.MemF[s3][a3] = math.Exp(float64(
+                    vm.memory.MemI[s1][a1]))
+
+            } else if t1 == Float_t {
+                vm.memory.MemF[s3][a3] = math.Exp(
+                    vm.memory.MemF[s1][a1])
+
+            } else {
+                fmt.Printf("Type error mismatch\n")
+                os.Exit(1)
+            }
+
+        case LN:
+            if t1 == Int_t {
+                vm.memory.MemF[s3][a3] = math.Log(float64(
+                    vm.memory.MemI[s1][a1]))
+
+            } else if t1 == Float_t {
+                vm.memory.MemF[s3][a3] = math.Exp(
+                    vm.memory.MemF[s1][a1])
+
+            } else {
+                fmt.Printf("Type error mismatch\n")
+                os.Exit(1)
+            }
+
+        case SQRT:
+            if t1 == Int_t {
+                vm.memory.MemF[s3][a3] = math.Sqrt(float64(
+                    vm.memory.MemI[s1][a1]))
+
+            } else if t1 == Float_t {
+                vm.memory.MemF[s3][a3] = math.Sqrt(
+                    vm.memory.MemF[s1][a1])
+
+            } else {
+                fmt.Printf("Type error mismatch\n")
+                os.Exit(1)
+            }
+
+        case POW:
+            if t1 == Int_t && t2 == Int_t && t3 == Float_t {
+                vm.memory.MemF[s3][a3] = math.Pow(
+                    float64(vm.memory.MemI[s1][a1]),
+                    float64(vm.memory.MemI[s2][a2]))
+
+            } else if t1 == Int_t && t2 == Float_t && t3 == Float_t {
+                vm.memory.MemF[s3][a3] = math.Pow(
+                    float64(vm.memory.MemI[s1][a1]), vm.memory.MemF[s2][a2])
+
+            } else if t1 == Float_t && t2 == Int_t && t3 == Float_t {
+                vm.memory.MemF[s3][a3] = math.Pow(
+                    vm.memory.MemF[s1][a1], float64(vm.memory.MemI[s2][a2]))
+
+            } else if t1 == Float_t && t2 == Float_t && t3 == Float_t {
+                vm.memory.MemF[s3][a3] = math.Pow(
+                    vm.memory.MemF[s1][a1], vm.memory.MemF[s2][a2])
+
+            } else {
+                fmt.Printf("Type error mismatch\n")
+                os.Exit(1)
+            }
+
+        case LOG:
+            if t1 == Int_t && t2 == Int_t && t3 == Float_t {
+                vm.memory.MemF[s3][a3] = Log(
+                    float64(vm.memory.MemI[s1][a1]),
+                    float64(vm.memory.MemI[s2][a2]))
+
+            } else if t1 == Int_t && t2 == Float_t && t3 == Float_t {
+                vm.memory.MemF[s3][a3] = Log(
+                    float64(vm.memory.MemI[s1][a1]), vm.memory.MemF[s2][a2])
+
+            } else if t1 == Float_t && t2 == Int_t && t3 == Float_t {
+                vm.memory.MemF[s3][a3] = Log(
+                    vm.memory.MemF[s1][a1], float64(vm.memory.MemI[s2][a2]))
+
+            } else if t1 == Float_t && t2 == Float_t && t3 == Float_t {
+                vm.memory.MemF[s3][a3] = Log(
+                    vm.memory.MemF[s1][a1], vm.memory.MemF[s2][a2])
+
+            } else {
+                fmt.Printf("Type error mismatch\n")
+                os.Exit(1)
+            }
+
+        case MOD:
+            if t1 == Int_t && t2 == Int_t && t3 == Int_t {
+                vm.memory.MemI[s3][a3] = (
+                    vm.memory.MemI[s1][a1] %  vm.memory.MemI[s2][a2])
+
+            } else if t1 == Int_t && t2 == Float_t && t3 == Float_t {
+                vm.memory.MemF[s3][a3] = math.Mod(
+                    float64(vm.memory.MemI[s1][a1]), vm.memory.MemF[s2][a2])
+
+            } else if t1 == Float_t && t2 == Int_t && t3 == Float_t {
+                vm.memory.MemF[s3][a3] = math.Mod(
+                    vm.memory.MemF[s1][a1], float64(vm.memory.MemI[s2][a2]))
+
+            } else if t1 == Float_t && t2 == Float_t && t3 == Float_t {
+                vm.memory.MemF[s3][a3] = Log(
+                    vm.memory.MemF[s1][a1], vm.memory.MemF[s2][a2])
+
+            } else {
+                fmt.Printf("Type error mismatch\n")
+                os.Exit(1)
+            }
+
+        case ABS:
+            if t1 == Int_t {
+                vm.memory.MemF[s3][a3] = math.Abs(float64(
+                    vm.memory.MemI[s1][a1]))
+
+            } else if t1 == Float_t {
+                vm.memory.MemF[s3][a3] = math.Abs(
+                    vm.memory.MemF[s1][a1])
+
+            } else {
+                fmt.Printf("Type error mismatch\n")
+                os.Exit(1)
+            }
+
+        case CEIL:
+            if t1 == Int_t {
+                vm.memory.MemF[s3][a3] = math.Ceil(float64(
+                    vm.memory.MemI[s1][a1]))
+
+            } else if t1 == Float_t {
+                vm.memory.MemF[s3][a3] = math.Ceil(
+                    vm.memory.MemF[s1][a1])
+
+            } else {
+                fmt.Printf("Type error mismatch\n")
+                os.Exit(1)
+            }
+
+        case FLOOR:
+            if t1 == Int_t {
+                vm.memory.MemF[s3][a3] = math.Floor(float64(
+                    vm.memory.MemI[s1][a1]))
+
+            } else if t1 == Float_t {
+                vm.memory.MemF[s3][a3] = math.Floor(
+                    vm.memory.MemF[s1][a1])
+
+            } else {
+                fmt.Printf("Type error mismatch\n")
                 os.Exit(1)
             }
 
         default:
-            fmt.Printf(
-		"line %d: Unexpected operator at program segment\n",
-		vm.pc)
+            fmt.Printf( "Unexpected operator at program segment\n")
             os.Exit(1)
         }
     }
+}
+
+func Log(base, x float64) float64 {
+    return math.Log(x) / math.Log(base)
 }

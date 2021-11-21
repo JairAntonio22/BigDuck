@@ -13,6 +13,10 @@ syn keyword duckKeywords    or      not     var     int
 syn keyword duckKeywords    float   bool    true    false
 
 syn keyword duckBuiltin     print
+syn keyword duckBuiltin     sin     asin    cos     acos    tan     atan
+syn keyword duckBuiltin     atan2
+syn keyword duckBuiltin     exp     ln      sqrt    pow     log     mod
+syn keyword duckBuiltin     abs     ceil    floor
 
 syn match duckNumber '\<\d\+'
 syn match duckNumber '\<\d\+\.\d*\([eE][-+]\=\d\+\)\=[fl]\=' 

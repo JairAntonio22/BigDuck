@@ -1,12 +1,4 @@
 
-proc mod(k, n int) -> int {
-    loop k >= n {
-	k <- k - n;
-    }
-
-    return k;
-}
-
 proc main()
     var primes [20]int;
     var k, i, n, prime_count int;

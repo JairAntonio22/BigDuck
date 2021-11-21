@@ -22,6 +22,29 @@ FALSE   : 'false';
 
 // Built-in procedures
 PRINT_W : 'print';
+READ    : 'read';
+
+SIN     : 'sin';
+ASIN    : 'asin';
+COS     : 'cos';
+ACOS    : 'acos';
+TAN     : 'tan';
+ATAN    : 'atan';
+ATAN2   : 'atan2';
+
+EXP     : 'exp';
+LN      : 'ln';
+
+SQRT    : 'sqrt';
+POW     : 'pow';
+LOG     : 'log';
+
+MOD     : 'mod';
+
+ABS     : 'abs';
+
+CEIL    : 'ceil';
+FLOOR   : 'floor';
 
 // Literals
 fragment DIGIT  : [0-9];
@@ -111,7 +134,8 @@ factor      : '(' num_expr ')'
             | variable
             | CTE_INT
             | CTE_FLOAT
-            | proc_call;
+            | proc_call
+            | functions;
 
 variable    : ID (dim | );
 t_access    : ;
@@ -132,7 +156,7 @@ stmt        : assignment ';'
             | loop_stmt
             | ctrl_flow ';'
             | ret_stmt ';'
-            | print_r ';'
+            | built_in ';'
             | void_proc ';';
 
 void_proc   : proc_call;
@@ -161,6 +185,12 @@ ret_stmt    : RETURN (num_expr | bool_expr | proc_call | );
 
 // Built-in procedures
 
+built_in    : print_r
+            | read;
+
+functions   : u_func
+            | bin_func;
+
 print_r     : PRINT_W '(' pparam ')';
 pparam      : pparamTerm pnextParam;
 pparamTerm  : bool_expr
@@ -168,3 +198,28 @@ pparamTerm  : bool_expr
             | CTE_STRING;
 pnextParam  : ',' pparam
             | ;
+
+read        : variable '<-' READ '(' (pparam | ) ')';
+
+u_func      : u_funcs '(' num_expr ')';
+
+u_funcs     : SIN
+            | ASIN
+            | COS
+            | ACOS
+            | TAN
+            | ATAN
+            | EXP
+            | LN
+            | SQRT
+            | ABS
+            | CEIL
+            | FLOOR;
+
+bin_func    : bin_funcs '(' num_expr ',' bin_func2;
+bin_func2   : num_expr ')';
+
+bin_funcs   : ATAN2
+            | POW
+            | LOG
+            | MOD;

@@ -1,4 +1,5 @@
 
+
 ANTLR=/usr/local/lib/antlr-4.9-complete.jar
 
 TARGET=duck
@@ -8,8 +9,8 @@ all: $(TARGET)
 install: $(TARGET)
 	cp duck /usr/local/bin
 
-uninstall: $(TARGET)
-	rm /usr/local/bin/$(TARGET)
+uninstall:
+	rm -f /usr/local/bin/$(TARGET)
 
 test: $(TARGET)
 	rm -fr examples/*.quack
@@ -30,4 +31,4 @@ parser: BigDuck.g4
 	java -jar $(ANTLR) BigDuck.g4 -Dlanguage=Go -o parser
 
 clean:
-	rm -fr parser ducc examples/*.quack
+	rm -fr parser ducc examples/*.quack /usr/local/bin/$(TARGET)

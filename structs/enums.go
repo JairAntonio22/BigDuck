@@ -93,6 +93,32 @@ const (
     PRINT       // prints on stdout
     PRINTLN     // prints on stdout with newline character
 
+    READ        // reads input on stdin
+
+    SIN
+    ASIN
+
+    COS
+    ACOS
+
+    TAN
+    ATAN
+    ATAN2
+
+    EXP
+    LN
+
+    SQRT
+    POW
+    LOG
+
+    MOD
+
+    ABS
+
+    CEIL
+    FLOOR
+
     SET         // Sets value to address
     PROGRAM     // Indicates program segment
 
@@ -111,6 +137,13 @@ var OpToString [opEnumCount]string = [opEnumCount]string{
     "GOPROC", "ERA", "PARAM", "RETURN", "ENDPROC",
     "ASSERT",
     "PRINT", "PRINTLN",
+    "READ",
+    "SIN", "ASIN", "COS", "ACOS", "TAN", "ATAN", "ATAN2",
+    "EXP", "LN",
+    "POW", "LOG",
+    "MOD",
+    "ABS",
+    "CEIL", "FLOOR",
     "SET", "PROGRAM",
 }
 
@@ -132,6 +165,37 @@ var OpFromString map[string]int = map[string]int {
     "JMP"   : JMP,
     "JMT"   : JMT,
     "JMF"   : JMF,
+    "sin"   : SIN,
+    "asin"  : ASIN,
+    "cos"   : COS,
+    "acos"  : ACOS,
+    "tan"   : TAN,
+    "atan"  : ATAN,
+    "atan2" : ATAN2,
+    "exp"   : EXP,
+    "ln"    : LN,
+    "sqrt"  : SQRT,
+    "pow"   : SQRT,
+    "log"   : LOG,
+    "mod"   : MOD,
+    "abs"   : ABS,
+    "ceil"  : CEIL,
+    "floor" : FLOOR,
+}
+
+var IsUnaryOp map[int]bool = map[int]bool {
+    NOT     : true,
+    SIN     : true,
+    ASIN    : true,
+    COS     : true,
+    ACOS    : true,
+    TAN     : true,
+    ATAN    : true,
+    EXP     : true,
+    LN      : true,
+    ABS     : true,
+    CEIL    : true,
+    FLOOR   : true,
 }
 
 func ValidateOp(op int) error {

@@ -1,24 +1,29 @@
 
 proc main()
-    var array [10]int;
-    var x, i int;
+    var array [5]int;
+    var x, i, size int;
     var exists bool;
 {
+    size <- 5;
+
     print("=== Array ===");
 
-    loop i <- 0; i < 10; i <- i + 1 {
-	array[i] <- (i - 5) * (i - 5);
-	print(array[i]);
+    loop i <- 0; i < size; i <- i + 1 {
+	array[i] <- read("Type value at position", i);
     }
 
-    x <- 9;
+    print("=== Value to find ===");
 
-    loop i <- 0; i < 10; i <- i + 1 {
+    x <- read("Type value to find");
+
+    loop i <- 0; i < size; i <- i + 1 {
         if x = array[i] {
             exists <- true;
             break;
         }
     }
+
+    print("=== Result ===");
 
     if exists {
         print("Value", x, "was found in array at position", i);

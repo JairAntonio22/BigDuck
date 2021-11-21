@@ -1,0 +1,12 @@
+
+proc main()
+    var i, sum int;
+{
+    loop i <- 0; i < 1000; i <- i + 1 {
+        if mod(i, 3) = 0 or mod(i, 5) = 0 {
+            sum <- sum + i;
+        }
+    }
+
+    print(sum);
+}

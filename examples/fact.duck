@@ -36,11 +36,17 @@ proc fact_tail(n int) -> int {
 proc main() 
     var f1, f2, f3, i int;
 {
-    loop i <- 0; i < 15; i <- i + 1 {
+    loop {
+        print("=== Factorial ===");
+
+        i <- read("Type value calculate factorial");
+
         f1 <- fact_iter(i);
         f2 <- fact_rec(i);
         f3 <- fact_tail(i);
 
-        print(f1, f2, f3);
+        print("Iterative answer", f1);
+        print("Recursive answer", f2);
+        print("Tail recursive answer", f3);
     }
 }

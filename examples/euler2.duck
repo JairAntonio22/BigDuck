@@ -1,0 +1,18 @@
+
+proc main()
+    var f0, f1, tmp, sum int;
+{
+    f1 <- 1;
+
+    loop f0 < 4000000 {
+        if mod(f0, 2) = 0 {
+            sum <- sum + f0;
+        }
+
+        tmp <- f1;
+        f1 <- f0 + f1;
+        f0 <- tmp;
+    }
+
+    print(sum);
+}
