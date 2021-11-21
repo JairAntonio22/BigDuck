@@ -19,22 +19,9 @@ proc fact_rec(n int) -> int {
     }
 }
 
-#| Tail recursive factorial implementation |#
-proc aux_fact_tail(acc, n int) -> int {
-    if n <= 0 {
-        return acc;
-    } else {
-        return aux_fact_tail(n * acc, n - 1);
-    }
-}
-
-proc fact_tail(n int) -> int {
-    return aux_fact_tail(1, n);
-}
-
 #| Main procedure |#
 proc main() 
-    var f1, f2, f3, i int;
+    var f1, f2, i int;
 {
     loop {
         print("=== Factorial ===");
@@ -43,10 +30,8 @@ proc main()
 
         f1 <- fact_iter(i);
         f2 <- fact_rec(i);
-        f3 <- fact_tail(i);
 
         print("Iterative answer", f1);
         print("Recursive answer", f2);
-        print("Tail recursive answer", f3);
     }
 }

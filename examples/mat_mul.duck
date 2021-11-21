@@ -3,23 +3,39 @@ proc main()
     var a [2][2]int;
     var b [2][2]int;
     var c [2][2]int;
-    var i, j, k int;
+    var i, j, k, I, J, K int;
 {
-    a[0][0] <- 3; a[0][1] <- 7;
-    a[1][0] <- 4; a[1][1] <- 9;
+    I <- 2;
+    J <- 2;
+    K <- 2;
 
-    b[0][0] <- 6; b[0][1] <- 2;
-    b[1][0] <- 5; b[1][1] <- 8;
+    print("=== Fill matrices ===");
 
-    loop i <- 0; i < 2; i <- i + 1 {
-        loop j <- 0; j < 2; j <- j + 1 {
-            loop k <- 0; k < 2; k <- k + 1 {
+    loop i <- 0; i < I; i <- i + 1 {
+        loop k <- 0; k < K; k <- k + 1 {
+            a[i][k] <- read("Type value at a[", i, "][", k, "]");
+        }
+    }
+
+    loop k <- 0; k < K; k <- k + 1 {
+        loop j <- 0; j < J; j <- j + 1 {
+            b[k][j] <- read("Type value at b[", k, "][", j, "]");
+        }
+    }
+
+    loop i <- 0; i < I; i <- i + 1 {
+        loop j <- 0; j < J; j <- j + 1 {
+            loop k <- 0; k < K; k <- k + 1 {
                 c[i][j] <- c[i][j] + a[i][k] * b[k][j];
             }
         }
     }
 
+    print("=== Result ===");
+
     loop i <- 0; i < 2; i <- i + 1 {
-        print(c[i][0], c[i][1]);
+        loop j <- 0; j < J; j <- j + 1 {
+            print("c[", i, "][", j, "] =", c[i][j]);
+        }
     }
 }

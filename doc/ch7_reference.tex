@@ -1,7 +1,7 @@
 
 \chapter{Quick Reference}
 
-\section{Enviroment}
+\section{Enviroment Setup}
 
 \paragraph{} Welcome to the BigDuck programming language reference. Through
 this chapter it is going to be presented all the syntax and features present
@@ -26,8 +26,8 @@ command displays on screen the text inside the quotation marks.
 
 \paragraph{} Run this program with the following commands.
 \begin{verbatim}
-./duck hello.duck
-./duck run hello.quack
+duck hello.duck
+duck run hello.quack
 \end{verbatim}
 \paragraph{} The first command compiles the source code and creates a new file,
 called executable, with the same name of the source code file just with the
@@ -53,8 +53,8 @@ proc main()
 \end{verbatim}
 
 \paragraph{} As you can see you have to start with the keyword \texttt{var}
-followed by a list of names separated by comas, and a type keyword. This tells
-to the language that every name on the list will be of the same type.
+followed by a list of names separated by commas, and closed by type keyword.
+This tells to the language that every name on the list will be of the same type.
 
 \paragraph{} On the BigDuck language there are 3 primitive types; \texttt{int},
 \texttt{float}, and \texttt{bool}. Which are enough for any kind of numeric
@@ -71,16 +71,151 @@ respective zero value, for ints and floats is \texttt{0}, and for bools is
 and work with variables.
 
 \section{Statements}
+
+\paragraph{} On any computational language exists the notion of
+\emph{sequencing}, this could be for instructions, operations, functions, etc.
+This sequencing mechanism allows us to indicate the order and steps to be taken
+by an algorithm.
+
 \subsection{Assignments}
+
+\paragraph{} After the declaration of a variable, the assignment operator
+\texttt{<-} allows to indicate a value to be hold by the variable. It will
+remain this value untill another asignment is performed.
+
 \subsection{Arithmetic Expressions}
-\subsection{Operator Hierarchy}
+
+\paragraph{} In order to perform operations on values or variables, there are
+several operators that can be used for different purposes. For example take a
+look at the following program.
+
+\begin{verbatim}
+proc main()
+    var a, b float;
+{
+    a <- 1;
+    b <- 1;
+    print(a + b);   #| prints: 2 |#
+    a <- 1 + b;     #| now a holds the value: 2 |#
+    b <- 5 * b;     #| now b holds the value: 5 |#
+    print(a / b);   #| prints: 2 / 5 = 0.4 |#
+}
+\end{verbatim}
+
+\subsection{Operator Precedence and Associativity}
+
+\paragraph{} As in mathematics, the order of operations is important for certain
+operations, thus it is advice to have into consideration the following table.
+The earlier the operator appear on the table, the higher is its precedence. All
+Operator are left to right associative to provide a natural left to right
+reading.
+
+\begin{figure}[h]
+    \centering
+    \begin{tabular}{cc}
+        \toprule
+        \textbf{Operator} & \textbf{Usage} \\
+        \midrule \texttt{()} & \texttt{(expression)}\\
+        \midrule \texttt{*}, \text{/} & \texttt{a * b}, \texttt{a / b}\\
+        \midrule \texttt{+}, \text{-} & \texttt{a + b}, \texttt{a {-} b}\\
+        \midrule
+        \texttt{=}, \texttt{/=}, \texttt{<},
+        \texttt{>}, \texttt{<=}, \texttt{<=}, &
+        \texttt{a <relation> b}\\
+        \midrule \texttt{not} & \texttt{not a}\\
+        \midrule \texttt{and} & \texttt{a and b}\\
+        \midrule \texttt{or} & \texttt{a or b}\\
+        \midrule \texttt{<-} & \texttt{a <- b}\\
+        \bottomrule
+    \end{tabular}
+\end{figure}
+
+\paragraph{} As you can see multiplication and division, addition and
+substraction, or relational operators have the same precedence. The order of
+evaluation is resolved by giving priority to one that was read first.
+
+\paragraph{} Therefore the expression \texttt{a {+} b {-} c} is equal to
+\texttt{(a {+} b) {-} c}, and is \textbf{not equal} to \texttt{a {+} (b {-} c)}.
 
 \section{Conditional Statements}
+
+\paragraph{} On any computational language exists the notion of
+\emph{decisions}. The decision mechanism is use to perform certain instructions
+under certain conditions.
+
+\paragraph{} The BigDuck language allows for decisions to be taken during
+program execution. For an example take a look at the following program.
+
+\begin{verbatim}
+proc main()
+    var a, b int;
+{
+    a <- read("Type a value for a");
+    b <- read("Type a value for b");
+
+    if a = b {
+        print("a equals b");
+    } else {
+        print("a does not equals b");
+    }
+}
+\end{verbatim}
+
+\paragraph{} The first two instructions are a especial syntax to indicate that
+the user can give a value and assign it to a variable. Despite these looking
+like the value obtained by read is assigned to the variable, the whole line
+is the read + assigment, therefore no operation can be inmediately applied to a
+read value. This desicion was taken to enforce legibility.
+
+\paragraph{} Whether the given values for a and b are equal or not, the program
+will print a diffent message. The first print is performed if clause holds true,
+otherwise the else clause will be perfomed.\\
+
+\noindent
+Else clauses can be omitted like here.
+
+\begin{verbatim}
+proc main()
+    var a, b int;
+{
+    a <- read("Type a value for a");
+    b <- read("Type a value for b");
+
+    if a = b {
+        print("a equals b");
+    }
+}
+\end{verbatim}
+
+\newpage
+
+\noindent
+And you can stack if else clauses for multiple cases.
+
+\begin{verbatim}
+proc main()
+    var a, b int;
+{
+    a <- read("Type a value for a");
+    b <- read("Type a value for b");
+
+    if a < b {
+        print("a is less than b");
+
+    } else if a > b {
+        print("a is greater than b");
+
+    } else {
+        print("a equals b");
+    }
+}
+\end{verbatim}
 
 \section{Loop Statements}
 \subsection{Infinite Loop}
 \subsection{While Loop}
 \subsection{For Loop}
+\subsection{Do While Loop}
 \subsection{Control Flow Statements}
 
 \section{Procedures}

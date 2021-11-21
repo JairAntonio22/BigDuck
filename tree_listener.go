@@ -372,7 +372,7 @@ func (l *BigDuckListener) ExitProc_decl(c *parser.Proc_declContext) {
         l.ir_code[pc].Address[2] = sym.Bc
     }
 
-    if l.debug {
+    if l.debug && false {
         l.symtable.Print()
     }
 
@@ -727,7 +727,7 @@ func (l *BigDuckListener) EnterVariable(c *parser.VariableContext) {
         if len(sym.Dim) == 0 {
             l.valid = false
             fmt.Printf(
-                "line %d:%d variable %s is scalar\n",
+                "line %d:%d scalar variable %s cannot be indexed\n",
                 c.GetStart().GetLine(),
                 c.GetStart().GetColumn(),
                 c.ID().GetText())

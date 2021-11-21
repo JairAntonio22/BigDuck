@@ -29,7 +29,7 @@ which stores the frame sizes used by each context.
 \begin{figure}[h]
     \centering
     \caption{Architecture Diagram}
-    \includegraphics[trim={1.80in 0 1.80in 0},width=\textwidth]{vm_architecture}
+    \includegraphics[trim={1.80in 0 1.80in 0},width=\textwidth]{diagrams/vm_architecture}
 \end{figure}
 
 \newpage
@@ -113,53 +113,27 @@ which stores the frame sizes used by each context.
 
 \subsection{Virtual Address Translation}
 
-\paragraph{} The following enumerations were already used throughout
-compilation.
+\paragraph{} Since the memory map is really simple, the virtual address
+translation is really simple. The following functions take the information
+embedded on the virtual address to determine; scope, type, address, and
+addressing mode.
 
-\paragraph{Scope enumeration}
+\begin{verbatim}
+func GetScope(address int) int {
+    return address & (0x1 << 31) >> 31
+}
 
-\begin{align*}
-    \texttt{0} &\ \texttt{local}\\
-    \texttt{1} &\ \texttt{global}\\
-\end{align*}
+func GetType(address int) int {
+    return address & (0x7 << 28) >> 28
+}
 
-\paragraph{Type enumeration}
+func GetAddress(address int) int {
+    return address & 0x0fffffff
+}
 
-\begin{align*}
-    \texttt{2} &\ \texttt{0010}\ \texttt{int}\\
-    \texttt{3} &\ \texttt{0011}\ \texttt{float}\\
-    \texttt{4} &\ \texttt{0100}\ \texttt{bool}\\
-    \texttt{5} &\ \texttt{0101}\ \texttt{string}\\
-\end{align*}
+func IsPointer(address int) bool {
+    return address & (0x1 << 32) != 0
+}
 
-\paragraph{} Therefore it seemed natural to used it as flags on a bit mask
-in order to assign the virtual addresses.
+\end{verbatim}
 
-\paragraph{Memory map}
-
-\begin{align*}
-    \texttt{1} &\ \texttt{scope bit}\\
-    \texttt{3} &\ \texttt{type bits}\\
-    \texttt{7} &\ \texttt{address nibbles}\\
-\end{align*}
-
-\paragraph{Examples}
-\begin{align*}
-    \texttt{0010}\ \dots\ \texttt{0000 0000}
-    &\rightarrow \texttt{local int at address 0}\\
-    \texttt{1011}\ \dots\ \texttt{0000 1010}
-    &\rightarrow \texttt{global float at address 10}\\
-    \texttt{0100}\ \dots\ \texttt{0001 0110}
-    &\rightarrow \texttt{local bool at address 22}\\
-    \texttt{1101}\ \dots\ \texttt{0000 1011}
-    &\rightarrow \texttt{string at address 11}\\
-\end{align*}
-
-\paragraph{Note} All strings are global since they cannot be assigned to
-variables.
-
-\paragraph{} This virtual address translations can hold up to $2^{28} =
-268,435,456$ addresses per each data type, which means that it can hold around 
-750 MB of data on a single program. I acknowledge that this is not the most
-memory efficient mapping however might be the simplest and more eficcient to
-implement.

@@ -1,4 +1,12 @@
 
-proc main() {
-    print(exp(1));
+proc main()
+    var a, b float;
+{
+    a <- 1;
+    b <- 1;
+    print(a + b);   #| prints: 2 |#
+
+    a <- 1 + b;
+    b <- 5 * b;
+    print(a / b);   #| prints: 2 |#
 }

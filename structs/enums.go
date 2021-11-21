@@ -140,7 +140,7 @@ var OpToString [opEnumCount]string = [opEnumCount]string{
     "READ",
     "SIN", "ASIN", "COS", "ACOS", "TAN", "ATAN", "ATAN2",
     "EXP", "LN",
-    "POW", "LOG",
+    "SQRT", "POW", "LOG",
     "MOD",
     "ABS",
     "CEIL", "FLOOR",

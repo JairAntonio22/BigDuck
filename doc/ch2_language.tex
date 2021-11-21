@@ -73,11 +73,38 @@ Machine-Learning and Data Science fields.
         This occurs when the returned value does not match with the return
         type expected.\\
 
+        \midrule Tensor dimension must be constant &
+	This occurs when a tensor is declared with variable dimension.\\
+
+        \midrule Tensor dimension must be greater than 0 &
+	This occurs when a tensor is declared with a not valid dimension.\\
+
         \bottomrule
     \end{tabular}
 \end{figure}
 
 \newpage
+
+\begin{figure}[h]
+    \centering
+    \begin{tabular}{p{1.5in}p{2.5in}}
+        \toprule
+        \textbf{Error message} & \textbf{Description}\\
+
+        \midrule Index value must be of type int &
+	This occurs when the index for a tensor does not resolve into an
+	integer value.\\
+
+        \midrule Tensor access does not match with dimensions &
+	This occurs when the number of indexes for a tensor does not match
+	with the declared dimensions.\\
+
+        \midrule Scalar value cannot be indexed &
+	This occurs when it is attempted to index a scalar variable.\\
+
+        \bottomrule
+    \end{tabular}
+\end{figure}
 
 \subsection{Run-Time Errors}
 \begin{figure}[h]
@@ -97,6 +124,10 @@ Machine-Learning and Data Science fields.
         \midrule Unexpected operator \newline at data segment &
         This occurs when an operator is used on a segment it was not supposed
         to be.\\
+
+        \midrule Unexpected operator &
+	This occurs when an the virtual machine cannot recognized a given 
+	operator.\\
 
         \midrule Type error mismatch &
         This occurs when an operation can not be performed with the given

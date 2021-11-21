@@ -26,22 +26,9 @@ proc fib_rec(n int) -> int {
     }
 }
 
-#| Tail recursive fibbonaci implementation |#
-proc aux_fib_tail(f0, f1, n int) -> int {
-    if n <= 0 {
-        return f0;
-    } else {
-        return aux_fib_tail(f1, f0 + f1, n - 1);
-    }
-}
-
-proc fib_tail(n int) -> int {
-    return aux_fib_tail(0, 1, n);
-}
-
 #| Main procedure |#
 proc main() 
-    var f1, f2, f3, i int;
+    var f1, f2, i int;
 {
     loop {
         print("=== Fibonacci ===");
@@ -50,10 +37,8 @@ proc main()
 
         f1 <- fib_iter(i);
         f2 <- fib_rec(i);
-        f3 <- fib_tail(i);
 
         print("Iterative answer", f1);
         print("Recursive answer", f2);
-        print("Tail recursive answer", f3);
     }
 }
