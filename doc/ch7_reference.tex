@@ -164,12 +164,12 @@ proc main()
 \paragraph{} The first two instructions are a especial syntax to indicate that
 the user can give a value and assign it to a variable. Despite these looking
 like the value obtained by read is assigned to the variable, the whole line
-is the read + assigment, therefore no operation can be inmediately applied to a
-read value. This desicion was taken to enforce legibility.
+is the read and assigment, therefore no operation can be inmediately applied to
+a read value. This desicion was taken to enforce legibility.
 
 \paragraph{} Whether the given values for a and b are equal or not, the program
-will print a diffent message. The first print is performed if clause holds true,
-otherwise the else clause will be perfomed.\\
+will print a diffent message. The first print is performed when the if clause
+condition holds true, otherwise the else clause will be perfomed.\\
 
 \noindent
 Else clauses can be omitted like here.
@@ -212,11 +212,130 @@ proc main()
 \end{verbatim}
 
 \section{Loop Statements}
+
+\paragraph{} On any computational language exists the notion of \emph{loops}.
+The looping mechanism allow us to concisely tell the computer to perform
+some operations $n$ amount of times. Otherwise we would have to sequence $n$
+amount of times the same instruction and this would not be managable on the
+long run (also some computations explicitly require a looping mechanism).
+
 \subsection{Infinite Loop}
+\noindent
+The easiest way to loop instructions is shown by the next example.
+
+\begin{verbatim}
+proc main() {
+    loop {
+        print("Hello, World!");
+    }
+}
+\end{verbatim}
+
+\paragraph{} If you run this program you will see that it never ends and it is
+going to fill the console with \texttt{``Hello, World!''}, to stop the
+program type \texttt{ctrl} + \texttt{c}. The infinite loop is useful for
+interactive programs, where it is up to the user when to end the program.
+
+\paragraph{} There are other mechanisms to stop an infinite loops, they will be
+covered in depth on Subsection~\ref{ctrl_flow}.
+
 \subsection{While Loop}
+
+\paragraph{} Most of the times it is desired to end a loop when a condition is
+met, thus the BigDuck language provide syntax for handling this kind of loops.
+A while loop is a type of loop that continues until the loop condition is false.
+
+\begin{verbatim}
+proc main()
+    var i int;
+{
+    i <- 1;
+
+    loop i < 10 {
+        print("i value is", i);
+        i <- i + 1;
+    }
+}
+\end{verbatim}
+
+\paragraph{} The previous program prints all numbers starting from 1 up to 9,
+10 will not be printed because the condition \texttt{i < 10} is no longer true.
+
 \subsection{For Loop}
+
+\paragraph{} Many times when looping, there is going to be a control variable,
+for example on the previous program it was \texttt{i}. Since this is really
+common there is and special syntax for this kind of loop. The following program
+is equivalent to the previous one, however is using the for loop syntax.
+
+\begin{verbatim}
+proc main()
+    var i int;
+{
+    loop i <- 1; i < 10; i <- i + 1 {
+        print("i value is", i);
+    }
+}
+\end{verbatim}
+
+\paragraph{} As you can it is much more compact and explicit on how the loop
+will behave. The first statements is an assigment to initialize the control
+variable (is only performed once), the second statement is the loop condition,
+and the third statement is an assigment statement to modify the control
+variable.
+
+\paragraph{} At this point you may think that the while syntax is redundant
+against the for syntax. However this is not true, the recommendation is to
+use the while syntax when you are not sure how many iterations is going to take
+the loop. On the other side, for style syntax is best when you know beforehand
+how is the loop going to behave.
+
 \subsection{Do While Loop}
-\subsection{Control Flow Statements}
+
+\paragraph{} The next type of loop does not have a dedicated syntax, however
+it is also a common type of loop present on many programming languages. 
+Therefore here is provided an idiom to achieve the same goal.
+
+\begin{verbatim}
+proc main()
+    var i int;
+    var ok bool;
+{
+    loop ok <- false; not ok; ok <- i = 2 {
+        i <- read("Type 2 to exit the loop");
+    }
+}
+\end{verbatim}
+
+\paragraph{} Do while loops are at least run one time, by assuming that it is
+not ok to exit the loop the program will enter inside the loop. And at every
+iteration it is tested whether the condition to exit is met.
+
+\subsection{Control Flow Statements}\label{ctrl_flow}
+
+\paragraph{} Throughtout loops sometimes it is required to exit earlier or
+go to the next iteration. This could be achieve by using logic, however it can
+be messy and obfuscate the meaning of the code. Take a look at the following
+program.
+
+\begin{verbatim}
+proc main() {
+    loop #| Exit condition |# {
+        if #| Condition skip iterations|# {
+            skip;
+        }
+
+        if #| Condition to break from loop |# {
+            break;
+        }
+    }
+}
+\end{verbatim}
+
+\paragraph{} When a skip statement is reached, the following code on the loop
+will be ignored and the next iteration is going to be reached. However the
+break statement exits the loop. These are usefull to avoid unnecessary 
+operations or to make the code more readable.
 
 \section{Procedures}
 
