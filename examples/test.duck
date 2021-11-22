@@ -1,4 +1,8 @@
 
+proc square(x float) -> float {
+    return x * x;
+}
+
 proc main()
     var b [5]int;
     var i, size int;

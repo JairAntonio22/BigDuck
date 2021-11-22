@@ -769,7 +769,16 @@ func (l *BigDuckListener) EnterProc_call(c *parser.Proc_callContext) {
     }
 
     l.paramc = 0
-    l.curr_pcall = c.ID().GetText()
+
+    if l.curr_pcall == "" {
+        l.curr_pcall = c.ID().GetText()
+    } else {
+        l.valid = false
+        fmt.Printf(
+            "line %d:%d procedure call nesting is not suppported for user procedures\n",
+            c.GetStart().GetLine(), c.GetStart().GetColumn())
+        return
+    }
 
     _, sym, exists := l.symtable.Lookup(l.curr_pcall)
 
@@ -836,7 +845,10 @@ func (l *BigDuckListener) ExitProc_call(c *parser.Proc_callContext) {
             c.ID().GetText(),
             sym.Argc,
             l.paramc)
+        return
     }
+
+    l.curr_pcall = ""
 }
 
 // param 

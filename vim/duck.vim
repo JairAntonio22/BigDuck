@@ -12,11 +12,11 @@ syn keyword duckKeywords    loop    break   skip    and
 syn keyword duckKeywords    or      not     var     int
 syn keyword duckKeywords    float   bool    true    false
 
-syn keyword duckBuiltin     print
+syn keyword duckBuiltin     print   read
 syn keyword duckBuiltin     sin     asin    cos     acos    tan     atan
 syn keyword duckBuiltin     atan2
 syn keyword duckBuiltin     exp     ln      sqrt    pow     log     mod
-syn keyword duckBuiltin     abs     ceil    floor
+syn keyword duckBuiltin     abs     ceil    floor   mean    median  mode
 
 syn match duckNumber '\<\d\+'
 syn match duckNumber '\<\d\+\.\d*\([eE][-+]\=\d\+\)\=[fl]\=' 
