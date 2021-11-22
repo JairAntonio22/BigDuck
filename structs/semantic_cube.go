@@ -420,4 +420,46 @@ func InitCube() {
     Cube[FLOOR][Bool_t][Int_t]      = Error_t
     Cube[FLOOR][Bool_t][Float_t]    = Error_t
     Cube[FLOOR][Bool_t][Bool_t]     = Error_t
+
+
+
+    Cube[MEAN][Int_t][Int_t]        = Float_t
+    Cube[MEAN][Int_t][Float_t]      = Float_t
+    Cube[MEAN][Int_t][Bool_t]       = Error_t
+
+    Cube[MEAN][Float_t][Int_t]      = Float_t
+    Cube[MEAN][Float_t][Float_t]    = Float_t
+    Cube[MEAN][Float_t][Bool_t]     = Error_t
+
+    Cube[MEAN][Bool_t][Int_t]       = Error_t
+    Cube[MEAN][Bool_t][Float_t]     = Error_t
+    Cube[MEAN][Bool_t][Bool_t]      = Error_t
+
+
+
+    Cube[MEDIAN][Int_t][Int_t]     = Float_t
+    Cube[MEDIAN][Int_t][Float_t]   = Float_t
+    Cube[MEDIAN][Int_t][Bool_t]    = Error_t
+
+    Cube[MEDIAN][Float_t][Int_t]   = Float_t
+    Cube[MEDIAN][Float_t][Float_t] = Float_t
+    Cube[MEDIAN][Float_t][Bool_t]  = Error_t
+
+    Cube[MEDIAN][Bool_t][Int_t]    = Error_t
+    Cube[MEDIAN][Bool_t][Float_t]  = Error_t
+    Cube[MEDIAN][Bool_t][Bool_t]   = Error_t
+
+
+
+    Cube[MODE][Int_t][Int_t]       = Float_t
+    Cube[MODE][Int_t][Float_t]     = Float_t
+    Cube[MODE][Int_t][Bool_t]      = Error_t
+
+    Cube[MODE][Float_t][Int_t]     = Float_t
+    Cube[MODE][Float_t][Float_t]   = Float_t
+    Cube[MODE][Float_t][Bool_t]    = Error_t
+
+    Cube[MODE][Bool_t][Int_t]      = Error_t
+    Cube[MODE][Bool_t][Float_t]    = Error_t
+    Cube[MODE][Bool_t][Bool_t]     = Error_t
 }

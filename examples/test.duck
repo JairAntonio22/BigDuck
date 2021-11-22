@@ -1,5 +1,15 @@
 
-proc main() {
-    break;
-}
+proc main()
+    var b [5]int;
+    var i, size int;
+    var ans float;
+{
+    size <- 4;
 
+    loop i <- 0; i < size; i <- i + 1 {
+        b[i] <- read("type value");
+    }
+
+    ans <- mode(b);
+    print(ans);
+}

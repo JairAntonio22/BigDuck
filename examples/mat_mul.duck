@@ -32,10 +32,5 @@ proc main()
     }
 
     print("=== Result ===");
-
-    loop i <- 0; i < 2; i <- i + 1 {
-        loop j <- 0; j < J; j <- j + 1 {
-            print("c[", i, "][", j, "] =", c[i][j]);
-        }
-    }
+    print(c);
 }

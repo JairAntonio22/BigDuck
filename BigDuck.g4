@@ -46,6 +46,10 @@ ABS     : 'abs';
 CEIL    : 'ceil';
 FLOOR   : 'floor';
 
+MEAN    : 'mean';
+MEDIAN  : 'median';
+MODE    : 'mode';
+
 // Literals
 fragment DIGIT  : [0-9];
 fragment DIGITS : DIGIT+;
@@ -189,7 +193,8 @@ built_in    : print_r
             | read;
 
 functions   : u_func
-            | bin_func;
+            | bin_func
+            | vec_func;
 
 print_r     : PRINT_W '(' pparam ')';
 pparam      : pparamTerm pnextParam;
@@ -223,3 +228,9 @@ bin_funcs   : ATAN2
             | POW
             | LOG
             | MOD;
+
+vec_func    : vec_funcs '(' variable ')';
+
+vec_funcs   : MEAN
+            | MEDIAN
+            | MODE;

@@ -70,7 +70,6 @@ func (l *BigDuckListener) GenerateOpTAC(pointer int) {
     if structs.Cube[op][types[0]][types[argc]] == structs.Error_t {
         l.valid = false;
         fmt.Printf("line %d:%d type error mismatch\n", l.curr_line, l.curr_col)
-        fmt.Println(args[0], args[2])
     } else if op != structs.ASG {
         types[2] = structs.Cube[op][types[0]][types[argc]]
         l.typestack.Push(types[2])
@@ -263,7 +262,7 @@ func (l *BigDuckListener) GeneratePrintTAC() {
     item, _ = l.typestack.Pop()
     ptype, _ := item.(int)
 
-    scope, _, exists := l.symtable.Lookup(param)
+    scope, sym, exists := l.symtable.Lookup(param)
     var address int
 
     if exists {
@@ -272,12 +271,57 @@ func (l *BigDuckListener) GeneratePrintTAC() {
         address = l.memmap.GetAddress(structs.Global, param, ptype)
     }
 
-    l.ir_code = append(
-        l.ir_code, structs.Tac{
-            Op: structs.PRINT,
-            Args: [3]string{"", "", param},
-            Address: [3]int{0, 0, address}})
-    l.pc++
+    if exists {
+        if len(sym.Dim) == 1 {
+            for i := 0; i < sym.Dim[0]; i++ {
+                l.ir_code = append(
+                    l.ir_code, structs.Tac{
+                        Op: structs.PRINT,
+                        Args: [3]string{"", "", param},
+                        Address: [3]int{0, 0, address + i}})
+                l.pc++
+            }
+
+        } else if len(sym.Dim) == 2 {
+            for i := 0; i < sym.Dim[0]; i++ {
+                for j := 0; j < sym.Dim[1]; j++ {
+                    l.ir_code = append(
+                        l.ir_code, structs.Tac{
+                            Op: structs.PRINT,
+                            Args: [3]string{"", "", param},
+                            Address: [3]int{0, 0, address + i * sym.Dim[0] + j}})
+                    l.pc++
+                }
+
+                l.ir_code[l.pc - 1].Op = structs.PRINTLN
+            }
+
+        } else if len(sym.Dim) > 2 {
+            msg := "\"No available print for higher dimensional tensors\""
+            address = l.memmap.GetAddress(structs.Global, msg, structs.String_t)
+            l.ir_code = append(
+                l.ir_code, structs.Tac{
+                    Op: structs.PRINT,
+                    Args: [3]string{"", "", msg},
+                    Address: [3]int{0, 0, address}})
+            l.pc++
+        } else {
+            l.ir_code = append(
+                l.ir_code, structs.Tac{
+                    Op: structs.PRINT,
+                    Args: [3]string{"", "", param},
+                    Address: [3]int{0, 0, address}})
+            l.pc++
+        }
+
+    } else {
+	l.ir_code = append(
+	    l.ir_code, structs.Tac{
+		Op: structs.PRINT,
+		Args: [3]string{"", "", param},
+		Address: [3]int{0, 0, address}})
+	l.pc++
+    }
 }
 
 func (l *BigDuckListener) GenerateObjFile() {

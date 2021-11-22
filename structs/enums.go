@@ -7,9 +7,7 @@ package structs
 import "errors"
 
 // type enumeration to keep track of symbol types
-
-const (
-    Error_t = iota
+const ( Error_t = iota
     Void_t
     Int_t
     Float_t
@@ -115,9 +113,12 @@ const (
     MOD
 
     ABS
-
     CEIL
     FLOOR
+
+    MEAN
+    MEDIAN
+    MODE
 
     SET         // Sets value to address
     PROGRAM     // Indicates program segment
@@ -142,45 +143,48 @@ var OpToString [opEnumCount]string = [opEnumCount]string{
     "EXP", "LN",
     "SQRT", "POW", "LOG",
     "MOD",
-    "ABS",
-    "CEIL", "FLOOR",
+    "ABS", "CEIL", "FLOOR",
+    "MEAN", "MEDIAN", "MODE",
     "SET", "PROGRAM",
 }
 
 var OpFromString map[string]int = map[string]int {
-    "<-"    : ASG,
-    "or"    : OR,
-    "and"   : AND,
-    "not"   : NOT,
-    "="     : EQ,
-    "/="    : NEQ,
-    "<"     : LES,
-    ">"     : GRE,
-    "<="    : LEQ,
-    ">="    : GEQ,
-    "-"     : SUB,
-    "+"     : ADD,
-    "/"     : DIV,
-    "*"     : MUL,
-    "JMP"   : JMP,
-    "JMT"   : JMT,
-    "JMF"   : JMF,
-    "sin"   : SIN,
-    "asin"  : ASIN,
-    "cos"   : COS,
-    "acos"  : ACOS,
-    "tan"   : TAN,
-    "atan"  : ATAN,
-    "atan2" : ATAN2,
-    "exp"   : EXP,
-    "ln"    : LN,
-    "sqrt"  : SQRT,
-    "pow"   : SQRT,
-    "log"   : LOG,
-    "mod"   : MOD,
-    "abs"   : ABS,
-    "ceil"  : CEIL,
-    "floor" : FLOOR,
+    "<-"        : ASG,
+    "or"        : OR,
+    "and"       : AND,
+    "not"       : NOT,
+    "="         : EQ,
+    "/="        : NEQ,
+    "<"         : LES,
+    ">"         : GRE,
+    "<="        : LEQ,
+    ">="        : GEQ,
+    "-"         : SUB,
+    "+"         : ADD,
+    "/"         : DIV,
+    "*"         : MUL,
+    "JMP"       : JMP,
+    "JMT"       : JMT,
+    "JMF"       : JMF,
+    "sin"       : SIN,
+    "asin"      : ASIN,
+    "cos"       : COS,
+    "acos"      : ACOS,
+    "tan"       : TAN,
+    "atan"      : ATAN,
+    "atan2"     : ATAN2,
+    "exp"       : EXP,
+    "ln"        : LN,
+    "sqrt"      : SQRT,
+    "pow"       : POW,
+    "log"       : LOG,
+    "mod"       : MOD,
+    "abs"       : ABS,
+    "ceil"      : CEIL,
+    "floor"     : FLOOR,
+    "mean"      : MEAN,
+    "median"    : MEDIAN,
+    "mode"      : MODE,
 }
 
 var IsUnaryOp map[int]bool = map[int]bool {

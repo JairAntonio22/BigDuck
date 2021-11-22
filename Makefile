@@ -21,8 +21,8 @@ test: $(TARGET)
 benchmark: $(TARGET)
 	rm -fr examples/*.quack
 	clear
-	time -p ./$(TARGET) examples/test_expr.duck
-	time -p ./$(TARGET) run examples/test_expr.quack
+	time -p ./$(TARGET) examples/test.duck
+	time -p ./$(TARGET) run examples/test.quack
 
 $(TARGET): parser structs *.go
 	go build -o $(TARGET) *.go

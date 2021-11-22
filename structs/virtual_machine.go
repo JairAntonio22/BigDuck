@@ -6,6 +6,7 @@ import (
     "math"
     "os"
     "strconv"
+    "sort"
 )
 
 type VirtualMachine struct {
@@ -692,7 +693,7 @@ func (vm *VirtualMachine) Execute() {
 
             case Float_t:
                 value, _ := strconv.ParseInt(text, 10, 64)
-                vm.memory.MemI[s3][a3] = int(value)
+                vm.memory.MemF[s3][a3] = float64(value)
 
             case Bool_t:
                 if text == "#t" {
@@ -966,6 +967,189 @@ func (vm *VirtualMachine) Execute() {
                 fmt.Printf("Type error mismatch\n")
                 os.Exit(1)
             }
+
+        case MEAN:
+            if t1 == Int_t && t2 == Int_t && t3 == Float_t {
+		var begin int
+
+		if s1 == Local {
+		    begin = vm.memory.Sp[t1] + GetAddress(va1)
+		} else {
+		    begin = GetAddress(va1)
+		}
+
+		size := vm.memory.MemI[s2][a2]
+		vector := vm.memory.MemI[s1][begin: begin + size]
+
+		sum := 0
+
+		for _, elem := range vector {
+		    sum += elem
+		}
+
+                vm.memory.MemF[s3][a3] = float64(sum) / float64(size);
+
+            } else if t1 == Float_t && t2 == Int_t && t3 == Float_t {
+		var begin int
+
+		if s1 == Local {
+		    begin = vm.memory.Sp[t1] + GetAddress(va1)
+		} else {
+		    begin = GetAddress(va1)
+		}
+
+		size := vm.memory.MemI[s2][a2]
+		vector := vm.memory.MemF[s1][begin: begin + size]
+
+		sum := 0.0
+
+		for _, elem := range vector {
+		    sum += elem
+		}
+
+                vm.memory.MemF[s3][a3] = sum / float64(size);
+
+            } else {
+                fmt.Printf("Type error mismatch\n")
+                os.Exit(1)
+            }
+
+        case MEDIAN:
+            if t1 == Int_t && t2 == Int_t && t3 == Float_t {
+		var begin int
+
+		if s1 == Local {
+		    begin = vm.memory.Sp[t1] + GetAddress(va1)
+		} else {
+		    begin = GetAddress(va1)
+		}
+
+		size := vm.memory.MemI[s2][a2]
+		items := vm.memory.MemI[s1][begin: begin + size]
+		vector := make([]int, len(items))
+		_ = copy(vector, items)
+
+		sort.Slice(vector, func(i, j int) bool {
+		    return vector[i] < vector[j]
+		})
+
+		mid := len(vector) / 2
+
+		if len(vector) % 2 == 1 {
+		    vm.memory.MemF[s3][a3] = float64(vector[mid])
+		} else {
+		    vm.memory.MemF[s3][a3] = float64(
+			vector[mid / 2] + vector[mid + 1]) / 2.0
+		}
+
+            } else if t1 == Float_t && t2 == Int_t && t3 == Float_t {
+		var begin int
+
+		if s1 == Local {
+		    begin = vm.memory.Sp[t1] + GetAddress(va1)
+		} else {
+		    begin = GetAddress(va1)
+		}
+
+		size := vm.memory.MemI[s2][a2]
+		items := vm.memory.MemF[s1][begin: begin + size]
+		vector := make([]float64, len(items))
+		_ = copy(vector, items)
+
+		sort.Slice(vector, func(i, j int) bool {
+		    return vector[i] < vector[j]
+		})
+
+		if size % 2 == 1 {
+		    vm.memory.MemF[s3][a3] = float64(
+			vector[len(vector) / 2] + vector[(len(vector) / 2) + 1]) / 2.0
+		} else {
+		    vm.memory.MemF[s3][a3] = float64(vector[len(vector) / 2])
+		}
+
+            } else {
+                fmt.Printf("Type error mismatch\n")
+                os.Exit(1)
+            }
+
+        case MODE:
+            if t1 == Int_t && t2 == Int_t && t3 == Float_t {
+		var begin int
+
+		if s1 == Local {
+		    begin = vm.memory.Sp[t1] + GetAddress(va1)
+		} else {
+		    begin = GetAddress(va1)
+		}
+
+		size := vm.memory.MemI[s2][a2]
+		vector := vm.memory.MemI[s1][begin: begin + size]
+
+		count := make(map[int]int)
+
+		for _, elem := range vector {
+		    _, exists := count[elem]
+
+		    if exists {
+			count[elem]++
+		    } else {
+			count[elem] = 1
+		    }
+		}
+
+		max_key := vector[0]
+		max_value := count[vector[0]]
+
+		for key, value := range count {
+		    if value > max_value {
+			max_key = key
+			max_value = value
+		    }
+		}
+
+                vm.memory.MemF[s3][a3] = float64(max_key);
+
+            } else if t1 == Float_t && t2 == Int_t && t3 == Float_t {
+		var begin int
+
+		if s1 == Local {
+		    begin = vm.memory.Sp[t1] + GetAddress(va1)
+		} else {
+		    begin = GetAddress(va1)
+		}
+
+		size := vm.memory.MemI[s2][a2]
+		vector := vm.memory.MemF[s1][begin: begin + size]
+
+		count := make(map[float64]int)
+
+		for _, elem := range vector {
+		    _, exists := count[elem]
+
+		    if exists {
+			count[elem]++
+		    } else {
+			count[elem] = 1
+		    }
+		}
+
+		max_key := vector[0]
+		max_value := count[vector[0]]
+
+		for key, value := range count {
+		    if value > max_value {
+			max_key = key
+			max_value = value
+		    }
+		}
+
+                vm.memory.MemF[s3][a3] = max_key;
+
+            } else {
+                fmt.Printf("Type error mismatch\n")
+                os.Exit(1)
+            }
+
 
         default:
             fmt.Printf( "Unexpected operator at program segment\n")

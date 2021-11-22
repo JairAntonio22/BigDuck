@@ -373,7 +373,7 @@ func (l *BigDuckListener) ExitProc_decl(c *parser.Proc_declContext) {
         l.ir_code[pc].Address[2] = sym.Bc
     }
 
-    if l.debug && false {
+    if l.debug {
         l.symtable.Print()
     }
 
@@ -1269,3 +1269,52 @@ func (l *BigDuckListener) EnterBin_func2(c * parser.Bin_func2Context) {
 }
 
 // bin_funcs 
+
+// vec_func
+
+// vec_funcs
+func (l *BigDuckListener) ExitVec_func(c * parser.Vec_funcContext) {
+    if !l.valid {
+        return
+    }
+
+    _, sym, _ := l.symtable.Lookup(c.Variable().GetText())
+
+    switch len(sym.Dim) {
+    case 0:
+        l.valid = false
+        fmt.Printf(
+            "line %d:%d cannot perform %s operation on scalar values\n",
+            c.GetStart().GetLine(),
+            c.GetStart().GetColumn(),
+            c.Vec_funcs().GetText())
+
+    case 1:
+        if sym.Stype == structs.Bool_t {
+            l.valid = false
+            fmt.Printf(
+                "line %d:%d cannot perform %s operation on boolean array\n",
+                c.GetStart().GetLine(),
+                c.GetStart().GetColumn(),
+                c.Vec_funcs().GetText())
+            return
+        }
+
+        l.argstack.Push(strconv.Itoa(sym.Dim[0]))
+        l.typestack.Push(structs.Int_t)
+
+        l.PushOp(structs.OpFromString[c.Vec_funcs().GetText()])
+        l.curr_line = c.GetStart().GetLine()
+        l.curr_col = c.GetStart().GetColumn()
+        l.GenerateOpTAC(0)
+
+    default:
+        l.valid = false
+        fmt.Printf(
+            "line %d:%d cannot perform %s operation on higher dimensions\n",
+            c.GetStart().GetLine(),
+            c.GetStart().GetColumn(),
+            c.Vec_funcs().GetText())
+
+    }
+}
