@@ -3,8 +3,8 @@
 
 \section{General Overview}
 \subsection{Language Name}
-\paragraph{} The for the programming language was given as a small joke, one of
-the homeworks on the semester was to develop a scanner and parser for a small
+\paragraph{} The programming language was given as a small joke, one of the
+homeworks on the semester was to develop a scanner and parser for a small
 language called LittleDuck. Therefore BigDuck could be considered as the next
 step for the previous mentioned language, even though there is no similarities
 but the name between these languages.
@@ -13,23 +13,16 @@ but the name between these languages.
 scheme for my devices, thus the decision seemed natural and adecuate.
 
 \subsection{Main Features Description}
-\paragraph{} BigDuck is language aimed for the developement of mathematical
-models commonly used in Machine-Learning and Data Science. Therefore this
-language includes integer and floating point arithmetic, vector and matrix
-operations, and some basic utilities for reading and writing \texttt{.csv} 
-iles. All this to make it easier for the user to work within the
-Machine-Learning and Data Science fields.
+\paragraph{} BigDuck is language aimed for the developement mathematical and
+scientific computations, numerical methods, and some basic statistics. Therefore
+this language includes integer and floating point arithmetic, trigonometric and
+trascendental functions, other commonly used math operations, and vector
+operations to support some statistical functions.
 
 \newpage
 
 \section{Language Errors}
 \subsection{Compile-Time Errors}
-\paragraph{} BigDuck is language aimed for the developement of mathematical
-models commonly used in Machine-Learning and Data Science. Therefore this
-language includes integer and floating point arithmetic, vector and matrix
-operations, and some basic utilities for reading and writing \texttt{.csv} 
-iles. All this to make it easier for the user to work within the
-Machine-Learning and Data Science fields.
 
 \begin{figure}[h]
     \centering
@@ -105,13 +98,27 @@ Machine-Learning and Data Science fields.
         \midrule Cannot use control flow statements outside of loops &
 	This occurs when a control flow statement was used outside of a loop.\\
 
-        \midrule Procedure call nesting is not supported for user procedures&
+        \midrule Procedure call nesting is not supported for user procedures &
         This occurs when it is attempted to call a function inside a user
         procedure parameter.\\
+
+        \midrule Cannot perform \newline operation on scalar \newline values &
+        This occurs when it is attempted to use a vectorial function with an
+        scalar value as a parameter.\\
+
+        \midrule Cannot perform \newline operation on a boolean vector &
+        This occurs when it is attempted to use a vectorial function for numeric
+        types with an boolean vector as a parameter.\\
+
+        \midrule Cannot perform \newline operation on higher \newline dimensions &
+        This occurs when it is attempted to use a vectorial function over a
+        higher dimensional tensor.\\
 
         \bottomrule
     \end{tabular}
 \end{figure}
+
+\newpage
 
 \subsection{Run-Time Errors}
 \begin{figure}[h]

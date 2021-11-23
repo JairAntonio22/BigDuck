@@ -70,6 +70,7 @@ func (l *BigDuckListener) GenerateOpTAC(pointer int) {
     if structs.Cube[op][types[0]][types[argc]] == structs.Error_t {
         l.valid = false;
         fmt.Printf("line %d:%d type error mismatch\n", l.curr_line, l.curr_col)
+        fmt.Println(args[0], args[1])
     } else if op != structs.ASG {
         types[2] = structs.Cube[op][types[0]][types[argc]]
         l.typestack.Push(types[2])
@@ -99,6 +100,7 @@ func (l *BigDuckListener) GenerateOpTAC(pointer int) {
 	    }
 
 	    address[i] = l.memmap.GetAddress(scope, args[i], types[i])
+
 	} else if len(args[i]) > 0 {
 	    address[i] = l.memmap.GetAddress(structs.Global, args[i], types[i])
 	}

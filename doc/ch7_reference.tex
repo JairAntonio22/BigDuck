@@ -402,10 +402,12 @@ factorial function. In mathematics the factorial function is defined the
 following way.
 
 \[
+    f: \mathbb{N}\to\mathbb{N}
+    \Rightarrow
     f(x) =
     \begin{cases}
-        \ \text{if } n \leq 0\ \text{then } & 1\\
-        \ \text{otherwise}  & n \cdot f(n - 1)
+        1                &\text{if } n \leq 0\\
+        n \cdot f(n - 1)
     \end{cases}
 \]
 

@@ -298,10 +298,10 @@ func InitCube() {
 
 
     Cube[EXP][Int_t][Int_t]         = Float_t
-    Cube[EXP][Int_t][Float_t]       = Error_t
+    Cube[EXP][Int_t][Float_t]       = Float_t
     Cube[EXP][Int_t][Bool_t]        = Error_t
 
-    Cube[EXP][Float_t][Int_t]       = Error_t
+    Cube[EXP][Float_t][Int_t]       = Float_t
     Cube[EXP][Float_t][Float_t]     = Float_t
     Cube[EXP][Float_t][Bool_t]      = Error_t
 
@@ -326,10 +326,10 @@ func InitCube() {
 
 
     Cube[SQRT][Int_t][Int_t]        = Float_t
-    Cube[SQRT][Int_t][Float_t]      = Error_t
+    Cube[SQRT][Int_t][Float_t]      = Float_t
     Cube[SQRT][Int_t][Bool_t]       = Error_t
 
-    Cube[SQRT][Float_t][Int_t]      = Error_t
+    Cube[SQRT][Float_t][Int_t]      = Float_t
     Cube[SQRT][Float_t][Float_t]    = Float_t
     Cube[SQRT][Float_t][Bool_t]     = Error_t
 

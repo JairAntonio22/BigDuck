@@ -638,12 +638,6 @@ func (vm *VirtualMachine) Execute() {
             } else if t3 == Bool_t {
                 fmt.Print(vm.memory.MemB[s3][a3], " ")
 
-            } else if t3 == Float_t {
-                fmt.Print(vm.memory.MemI[s3][a3], " ")
-
-            } else if t3 == Int_t {
-                fmt.Print(vm.memory.MemF[s3][a3], " ")
-
             } else if t3 == String_t {
                 fmt.Print(vm.memory.Strings[a3], " ")
 
@@ -661,12 +655,6 @@ func (vm *VirtualMachine) Execute() {
 
             } else if t3 == Bool_t {
                 fmt.Println(vm.memory.MemB[s3][a3])
-
-            } else if t3 == Float_t {
-                fmt.Println(vm.memory.MemI[s3][a3])
-
-            } else if t3 == Int_t {
-                fmt.Println(vm.memory.MemF[s3][a3])
 
             } else if t3 == String_t {
                 fmt.Println(vm.memory.Strings[a3], " ")
@@ -836,7 +824,7 @@ func (vm *VirtualMachine) Execute() {
                     vm.memory.MemI[s1][a1]))
 
             } else if t1 == Float_t {
-                vm.memory.MemF[s3][a3] = math.Exp(
+                vm.memory.MemF[s3][a3] = math.Log(
                     vm.memory.MemF[s1][a1])
 
             } else {
@@ -1060,11 +1048,11 @@ func (vm *VirtualMachine) Execute() {
 		    return vector[i] < vector[j]
 		})
 
-		if size % 2 == 1 {
+		if len(vector) % 2 == 1 {
+		    vm.memory.MemF[s3][a3] = float64(vector[len(vector) / 2])
+		} else {
 		    vm.memory.MemF[s3][a3] = float64(
 			vector[len(vector) / 2] + vector[(len(vector) / 2) + 1]) / 2.0
-		} else {
-		    vm.memory.MemF[s3][a3] = float64(vector[len(vector) / 2])
 		}
 
             } else {
@@ -1158,6 +1146,6 @@ func (vm *VirtualMachine) Execute() {
     }
 }
 
-func Log(base, x float64) float64 {
+func Log(x, base float64) float64 {
     return math.Log(x) / math.Log(base)
 }

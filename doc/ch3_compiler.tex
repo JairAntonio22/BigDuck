@@ -655,11 +655,529 @@ description.
 
 \newpage
 \subsection{Semantic Consideration Table}
+
+\begin{figure}[H]
+    \centering
+    \begin{tabular}{cccc}
+        \toprule
+        \textbf{Operator} & \textbf{Type 1} & \textbf{Type2} & \textbf{Result type}\\
+        \midrule ASG & Int\_t & Int\_t      & Int\_t \\
+        \midrule ASG & Int\_t & Float\_t    & Int\_t \\
+        \midrule ASG & Int\_t & Bool\_t     & Error\_t \\
+
+        \midrule ASG & Float\_t & Int\_t    & Float\_t \\
+        \midrule ASG & Float\_t & Float\_t  & Float\_t \\
+        \midrule ASG & Float\_t & Bool\_t   & Error\_t \\
+
+        \midrule ASG & Bool\_t & Int\_t     & Error\_t \\
+        \midrule ASG & Bool\_t & Float\_t   & Error\_t \\
+        \midrule ASG & Bool\_t & Bool\_t    & Bool\_t \\
+
+        \midrule ADD & Int\_t & Int\_t      & Int\_t \\
+        \midrule ADD & Int\_t & Float\_t    & Float\_t \\
+        \midrule ADD & Int\_t & Bool\_t     & Error\_t \\
+
+        \midrule ADD & Float\_t & Int\_t    & Float\_t \\
+        \midrule ADD & Float\_t & Float\_t  & Float\_t \\
+        \midrule ADD & Float\_t & Bool\_t   & Error\_t \\
+
+        \midrule ADD & Bool\_t & Int\_t     & Error\_t \\
+        \midrule ADD & Bool\_t & Float\_t   & Error\_t \\
+        \midrule ADD & Bool\_t & Bool\_t    & Error\_t \\
+
+        \midrule SUB & Int\_t & Int\_t      & Int\_t \\
+        \midrule SUB & Int\_t & Float\_t    & Float\_t \\
+        \midrule SUB & Int\_t & Bool\_t     & Error\_t \\
+
+        \midrule SUB & Float\_t & Int\_t    & Float\_t \\
+        \midrule SUB & Float\_t & Float\_t  & Float\_t \\
+        \midrule SUB & Float\_t & Bool\_t   & Error\_t \\
+
+        \midrule SUB & Bool\_t & Int\_t     & Error\_t \\
+        \midrule SUB & Bool\_t & Float\_t   & Error\_t \\
+        \midrule SUB & Bool\_t & Bool\_t    & Error\_t \\
+
+        \bottomrule
+    \end{tabular}\\
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+    \centering
+    \begin{tabular}{cccc}
+        \toprule
+        \textbf{Operator} & \textbf{Type 1} & \textbf{Type2} & \textbf{Result type}\\
+        \midrule MUL & Int\_t & Int\_t      & Int\_t \\
+        \midrule MUL & Int\_t & Float\_t    & Float\_t \\
+        \midrule MUL & Int\_t & Bool\_t     & Error\_t \\
+
+        \midrule MUL & Float\_t & Int\_t    & Float\_t \\
+        \midrule MUL & Float\_t & Float\_t  & Float\_t \\
+        \midrule MUL & Float\_t & Bool\_t   & Error\_t \\
+
+        \midrule MUL & Bool\_t & Int\_t     & Error\_t \\
+        \midrule MUL & Bool\_t & Float\_t   & Error\_t \\
+        \midrule MUL & Bool\_t & Bool\_t    & Error\_t \\
+
+        \midrule DIV & Int\_t & Int\_t      & Int\_t \\
+        \midrule DIV & Int\_t & Float\_t    & Float\_t \\
+        \midrule DIV & Int\_t & Bool\_t     & Error\_t \\
+
+        \midrule DIV & Float\_t & Int\_t    & Float\_t \\
+        \midrule DIV & Float\_t & Float\_t  & Float\_t \\
+        \midrule DIV & Float\_t & Bool\_t   & Error\_t \\
+
+        \midrule DIV & Bool\_t & Int\_t     & Error\_t \\
+        \midrule DIV & Bool\_t & Float\_t   & Error\_t \\
+        \midrule DIV & Bool\_t & Bool\_t    & Error\_t \\
+
+        \midrule AND & Int\_t & Int\_t      & Error\_t \\
+        \midrule AND & Int\_t & Float\_t    & Error\_t \\
+        \midrule AND & Int\_t & Bool\_t     & Error\_t \\
+
+        \midrule AND & Float\_t & Int\_t    & Error\_t \\
+        \midrule AND & Float\_t & Float\_t  & Error\_t \\
+        \midrule AND & Float\_t & Bool\_t   & Error\_t \\
+
+        \midrule AND & Bool\_t & Int\_t     & Error\_t \\
+        \midrule AND & Bool\_t & Float\_t   & Error\_t \\
+        \midrule AND & Bool\_t & Bool\_t    & Bool\_t \\
+
+        \bottomrule
+    \end{tabular}\\
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+    \centering
+    \begin{tabular}{cccc}
+        \toprule
+        \textbf{Operator} & \textbf{Type 1} & \textbf{Type2} & \textbf{Result type}\\
+        \midrule OR & Int\_t & Int\_t      & Error\_t \\
+        \midrule OR & Int\_t & Float\_t    & Error\_t \\
+        \midrule OR & Int\_t & Bool\_t     & Error\_t \\
+
+        \midrule OR & Float\_t & Int\_t    & Error\_t \\
+        \midrule OR & Float\_t & Float\_t  & Error\_t \\
+        \midrule OR & Float\_t & Bool\_t   & Error\_t \\
+
+        \midrule OR & Bool\_t & Int\_t     & Error\_t \\
+        \midrule OR & Bool\_t & Float\_t   & Error\_t \\
+        \midrule OR & Bool\_t & Bool\_t    & Bool\_t \\
+
+        \midrule NOT & Int\_t & Int\_t      & Error\_t \\
+        \midrule NOT & Int\_t & Float\_t    & Error\_t \\
+        \midrule NOT & Int\_t & Bool\_t     & Error\_t \\
+
+        \midrule NOT & Float\_t & Int\_t    & Error\_t \\
+        \midrule NOT & Float\_t & Float\_t  & Error\_t \\
+        \midrule NOT & Float\_t & Bool\_t   & Error\_t \\
+
+        \midrule NOT & Bool\_t & Int\_t     & Error\_t \\
+        \midrule NOT & Bool\_t & Float\_t   & Error\_t \\
+        \midrule NOT & Bool\_t & Bool\_t    & Bool\_t \\
+
+        \midrule EQ & Int\_t & Int\_t      & Bool\_t \\
+        \midrule EQ & Int\_t & Float\_t    & Bool\_t \\
+        \midrule EQ & Int\_t & Bool\_t     & Error\_t \\
+
+        \midrule EQ & Float\_t & Int\_t    & Bool\_t \\
+        \midrule EQ & Float\_t & Float\_t  & Bool\_t \\
+        \midrule EQ & Float\_t & Bool\_t   & Error\_t \\
+
+        \midrule EQ & Bool\_t & Int\_t     & Error\_t \\
+        \midrule EQ & Bool\_t & Float\_t   & Error\_t \\
+        \midrule EQ & Bool\_t & Bool\_t    & Bool\_t \\
+
+        \bottomrule
+    \end{tabular}\\
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+    \centering
+    \begin{tabular}{cccc}
+        \toprule
+        \textbf{Operator} & \textbf{Type 1} & \textbf{Type2} & \textbf{Result type}\\
+        \midrule NEQ & Int\_t & Int\_t      & Bool\_t \\
+        \midrule NEQ & Int\_t & Float\_t    & Bool\_t \\
+        \midrule NEQ & Int\_t & Bool\_t     & Error\_t \\
+
+        \midrule NEQ & Float\_t & Int\_t    & Bool\_t \\
+        \midrule NEQ & Float\_t & Float\_t  & Bool\_t \\
+        \midrule NEQ & Float\_t & Bool\_t   & Error\_t \\
+
+        \midrule NEQ & Bool\_t & Int\_t     & Error\_t \\
+        \midrule NEQ & Bool\_t & Float\_t   & Error\_t \\
+        \midrule NEQ & Bool\_t & Bool\_t    & Bool\_t \\
+
+        \midrule LES & Int\_t & Int\_t      & Bool\_t \\
+        \midrule LES & Int\_t & Float\_t    & Bool\_t \\
+        \midrule LES & Int\_t & Bool\_t     & Error\_t \\
+
+        \midrule LES & Float\_t & Int\_t    & Bool\_t \\
+        \midrule LES & Float\_t & Float\_t  & Bool\_t \\
+        \midrule LES & Float\_t & Bool\_t   & Error\_t \\
+
+        \midrule LES & Bool\_t & Int\_t     & Error\_t \\
+        \midrule LES & Bool\_t & Float\_t   & Error\_t \\
+        \midrule LES & Bool\_t & Bool\_t    & Error\_t \\
+
+        \midrule GRE & Int\_t & Int\_t      & Bool\_t \\
+        \midrule GRE & Int\_t & Float\_t    & Bool\_t \\
+        \midrule GRE & Int\_t & Bool\_t     & Error\_t \\
+
+        \midrule GRE & Float\_t & Int\_t    & Bool\_t \\
+        \midrule GRE & Float\_t & Float\_t  & Bool\_t \\
+        \midrule GRE & Float\_t & Bool\_t   & Error\_t \\
+
+        \midrule GRE & Bool\_t & Int\_t     & Error\_t \\
+        \midrule GRE & Bool\_t & Float\_t   & Error\_t \\
+        \midrule GRE & Bool\_t & Bool\_t    & Error\_t \\
+
+        \bottomrule
+    \end{tabular}\\
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+    \centering
+    \begin{tabular}{cccc}
+        \toprule
+        \textbf{Operator} & \textbf{Type 1} & \textbf{Type2} & \textbf{Result type}\\
+        \midrule LEQ & Int\_t & Int\_t      & Bool\_t \\
+        \midrule LEQ & Int\_t & Float\_t    & Bool\_t \\
+        \midrule LEQ & Int\_t & Bool\_t     & Error\_t \\
+
+        \midrule LEQ & Float\_t & Int\_t    & Bool\_t \\
+        \midrule LEQ & Float\_t & Float\_t  & Bool\_t \\
+        \midrule LEQ & Float\_t & Bool\_t   & Error\_t \\
+
+        \midrule LEQ & Bool\_t & Int\_t     & Error\_t \\
+        \midrule LEQ & Bool\_t & Float\_t   & Error\_t \\
+        \midrule LEQ & Bool\_t & Bool\_t    & Error\_t \\
+
+        \midrule GEQ & Int\_t & Int\_t      & Bool\_t \\
+        \midrule GEQ & Int\_t & Float\_t    & Bool\_t \\
+        \midrule GEQ & Int\_t & Bool\_t     & Error\_t \\
+
+        \midrule GEQ & Float\_t & Int\_t    & Bool\_t \\
+        \midrule GEQ & Float\_t & Float\_t  & Bool\_t \\
+        \midrule GEQ & Float\_t & Bool\_t   & Error\_t \\
+
+        \midrule GEQ & Bool\_t & Int\_t     & Error\_t \\
+        \midrule GEQ & Bool\_t & Float\_t   & Error\_t \\
+        \midrule GEQ & Bool\_t & Bool\_t    & Error\_t \\
+
+        \midrule SIN & Int\_t & Int\_t      & Float\_t \\
+        \midrule SIN & Int\_t & Float\_t    & Error\_t \\
+        \midrule SIN & Int\_t & Bool\_t     & Error\_t \\
+
+        \midrule SIN & Float\_t & Int\_t    & Error\_t \\
+        \midrule SIN & Float\_t & Float\_t  & Float\_t \\
+        \midrule SIN & Float\_t & Bool\_t   & Error\_t \\
+
+        \midrule SIN & Bool\_t & Int\_t     & Error\_t \\
+        \midrule SIN & Bool\_t & Float\_t   & Error\_t \\
+        \midrule SIN & Bool\_t & Bool\_t    & Error\_t \\
+
+        \bottomrule
+    \end{tabular}\\
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+    \centering
+    \begin{tabular}{cccc}
+        \toprule
+        \textbf{Operator} & \textbf{Type 1} & \textbf{Type2} & \textbf{Result type}\\
+        \midrule ASIN & Int\_t & Int\_t      & Float\_t \\
+        \midrule ASIN & Int\_t & Float\_t    & Error\_t \\
+        \midrule ASIN & Int\_t & Bool\_t     & Error\_t \\
+
+        \midrule ASIN & Float\_t & Int\_t    & Error\_t \\
+        \midrule ASIN & Float\_t & Float\_t  & Float\_t \\
+        \midrule ASIN & Float\_t & Bool\_t   & Error\_t \\
+
+        \midrule ASIN & Bool\_t & Int\_t     & Error\_t \\
+        \midrule ASIN & Bool\_t & Float\_t   & Error\_t \\
+        \midrule ASIN & Bool\_t & Bool\_t    & Error\_t \\
+
+        \midrule COS & Int\_t & Int\_t      & Float\_t \\
+        \midrule COS & Int\_t & Float\_t    & Error\_t \\
+        \midrule COS & Int\_t & Bool\_t     & Error\_t \\
+
+        \midrule COS & Float\_t & Int\_t    & Error\_t \\
+        \midrule COS & Float\_t & Float\_t  & Float\_t \\
+        \midrule COS & Float\_t & Bool\_t   & Error\_t \\
+
+        \midrule COS & Bool\_t & Int\_t     & Error\_t \\
+        \midrule COS & Bool\_t & Float\_t   & Error\_t \\
+        \midrule COS & Bool\_t & Bool\_t    & Error\_t \\
+
+        \midrule ACOS & Int\_t & Int\_t      & Float\_t \\
+        \midrule ACOS & Int\_t & Float\_t    & Error\_t \\
+        \midrule ACOS & Int\_t & Bool\_t     & Error\_t \\
+
+        \midrule ACOS & Float\_t & Int\_t    & Error\_t \\
+        \midrule ACOS & Float\_t & Float\_t  & Float\_t \\
+        \midrule ACOS & Float\_t & Bool\_t   & Error\_t \\
+
+        \midrule ACOS & Bool\_t & Int\_t     & Error\_t \\
+        \midrule ACOS & Bool\_t & Float\_t   & Error\_t \\
+        \midrule ACOS & Bool\_t & Bool\_t    & Error\_t \\
+
+        \bottomrule
+    \end{tabular}\\
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+    \centering
+    \begin{tabular}{cccc}
+        \toprule
+        \textbf{Operator} & \textbf{Type 1} & \textbf{Type2} & \textbf{Result type}\\
+        \midrule TAN & Int\_t & Int\_t      & Float\_t \\
+        \midrule TAN & Int\_t & Float\_t    & Error\_t \\
+        \midrule TAN & Int\_t & Bool\_t     & Error\_t \\
+
+        \midrule TAN & Float\_t & Int\_t    & Error\_t \\
+        \midrule TAN & Float\_t & Float\_t  & Float\_t \\
+        \midrule TAN & Float\_t & Bool\_t   & Error\_t \\
+
+        \midrule TAN & Bool\_t & Int\_t     & Error\_t \\
+        \midrule TAN & Bool\_t & Float\_t   & Error\_t \\
+        \midrule TAN & Bool\_t & Bool\_t    & Error\_t \\
+
+        \midrule ATAN & Int\_t & Int\_t      & Float\_t \\
+        \midrule ATAN & Int\_t & Float\_t    & Error\_t \\
+        \midrule ATAN & Int\_t & Bool\_t     & Error\_t \\
+
+        \midrule ATAN & Float\_t & Int\_t    & Error\_t \\
+        \midrule ATAN & Float\_t & Float\_t  & Float\_t \\
+        \midrule ATAN & Float\_t & Bool\_t   & Error\_t \\
+
+        \midrule ATAN & Bool\_t & Int\_t     & Error\_t \\
+        \midrule ATAN & Bool\_t & Float\_t   & Error\_t \\
+        \midrule ATAN & Bool\_t & Bool\_t    & Error\_t \\
+
+        \midrule ATAN2 & Int\_t & Int\_t      & Float\_t \\
+        \midrule ATAN2 & Int\_t & Float\_t    & Error\_t \\
+        \midrule ATAN2 & Int\_t & Bool\_t     & Error\_t \\
+
+        \midrule ATAN2 & Float\_t & Int\_t    & Error\_t \\
+        \midrule ATAN2 & Float\_t & Float\_t  & Float\_t \\
+        \midrule ATAN2 & Float\_t & Bool\_t   & Error\_t \\
+
+        \midrule ATAN2 & Bool\_t & Int\_t     & Error\_t \\
+        \midrule ATAN2 & Bool\_t & Float\_t   & Error\_t \\
+        \midrule ATAN2 & Bool\_t & Bool\_t    & Error\_t \\
+
+        \bottomrule
+    \end{tabular}\\
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+    \centering
+    \begin{tabular}{cccc}
+        \toprule
+        \textbf{Operator} & \textbf{Type 1} & \textbf{Type2} & \textbf{Result type}\\
+        \midrule EXP & Int\_t & Int\_t      & Float\_t \\
+        \midrule EXP & Int\_t & Float\_t    & Float\_t \\
+        \midrule EXP & Int\_t & Bool\_t     & Error\_t \\
+
+        \midrule EXP & Float\_t & Int\_t    & Float\_t \\
+        \midrule EXP & Float\_t & Float\_t  & Float\_t \\
+        \midrule EXP & Float\_t & Bool\_t   & Error\_t \\
+
+        \midrule EXP & Bool\_t & Int\_t     & Error\_t \\
+        \midrule EXP & Bool\_t & Float\_t   & Error\_t \\
+        \midrule EXP & Bool\_t & Bool\_t    & Error\_t \\
+
+        \midrule LN & Int\_t & Int\_t      & Float\_t \\
+        \midrule LN & Int\_t & Float\_t    & Error\_t \\
+        \midrule LN & Int\_t & Bool\_t     & Error\_t \\
+
+        \midrule LN & Float\_t & Int\_t    & Error\_t \\
+        \midrule LN & Float\_t & Float\_t  & Float\_t \\
+        \midrule LN & Float\_t & Bool\_t   & Error\_t \\
+
+        \midrule LN & Bool\_t & Int\_t     & Error\_t \\
+        \midrule LN & Bool\_t & Float\_t   & Error\_t \\
+        \midrule LN & Bool\_t & Bool\_t    & Error\_t \\
+
+        \midrule SQRT & Int\_t & Int\_t      & Float\_t \\
+        \midrule SQRT & Int\_t & Float\_t    & Float\_t \\
+        \midrule SQRT & Int\_t & Bool\_t     & Error\_t \\
+
+        \midrule SQRT & Float\_t & Int\_t    & Float\_t \\
+        \midrule SQRT & Float\_t & Float\_t  & Float\_t \\
+        \midrule SQRT & Float\_t & Bool\_t   & Error\_t \\
+
+        \midrule SQRT & Bool\_t & Int\_t     & Error\_t \\
+        \midrule SQRT & Bool\_t & Float\_t   & Error\_t \\
+        \midrule SQRT & Bool\_t & Bool\_t    & Error\_t \\
+
+        \bottomrule
+    \end{tabular}\\
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+    \centering
+    \begin{tabular}{cccc}
+        \toprule
+        \textbf{Operator} & \textbf{Type 1} & \textbf{Type2} & \textbf{Result type}\\
+        \midrule POW & Int\_t & Int\_t      & Float\_t \\
+        \midrule POW & Int\_t & Float\_t    & Float\_t \\
+        \midrule POW & Int\_t & Bool\_t     & Error\_t \\
+
+        \midrule POW & Float\_t & Int\_t    & Float\_t \\
+        \midrule POW & Float\_t & Float\_t  & Float\_t \\
+        \midrule POW & Float\_t & Bool\_t   & Error\_t \\
+
+        \midrule POW & Bool\_t & Int\_t     & Error\_t \\
+        \midrule POW & Bool\_t & Float\_t   & Error\_t \\
+        \midrule POW & Bool\_t & Bool\_t    & Error\_t \\
+
+        \midrule LOG & Int\_t & Int\_t      & Float\_t \\
+        \midrule LOG & Int\_t & Float\_t    & Float\_t \\
+        \midrule LOG & Int\_t & Bool\_t     & Error\_t \\
+
+        \midrule LOG & Float\_t & Int\_t    & Float\_t \\
+        \midrule LOG & Float\_t & Float\_t  & Float\_t \\
+        \midrule LOG & Float\_t & Bool\_t   & Error\_t \\
+
+        \midrule LOG & Bool\_t & Int\_t     & Error\_t \\
+        \midrule LOG & Bool\_t & Float\_t   & Error\_t \\
+        \midrule LOG & Bool\_t & Bool\_t    & Error\_t \\
+
+        \midrule MOD & Int\_t & Int\_t      & Float\_t \\
+        \midrule MOD & Int\_t & Float\_t    & Float\_t \\
+        \midrule MOD & Int\_t & Bool\_t     & Error\_t \\
+
+        \midrule MOD & Float\_t & Int\_t    & Float\_t \\
+        \midrule MOD & Float\_t & Float\_t  & Float\_t \\
+        \midrule MOD & Float\_t & Bool\_t   & Error\_t \\
+
+        \midrule MOD & Bool\_t & Int\_t     & Error\_t \\
+        \midrule MOD & Bool\_t & Float\_t   & Error\_t \\
+        \midrule MOD & Bool\_t & Bool\_t    & Error\_t \\
+
+        \bottomrule
+    \end{tabular}\\
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+    \centering
+    \begin{tabular}{cccc}
+        \toprule
+        \textbf{Operator} & \textbf{Type 1} & \textbf{Type2} & \textbf{Result type}\\
+        \midrule ABS & Int\_t & Int\_t      & Float\_t \\
+        \midrule ABS & Int\_t & Float\_t    & Error\_t \\
+        \midrule ABS & Int\_t & Bool\_t     & Error\_t \\
+
+        \midrule ABS & Float\_t & Int\_t    & Error\_t \\
+        \midrule ABS & Float\_t & Float\_t  & Float\_t \\
+        \midrule ABS & Float\_t & Bool\_t   & Error\_t \\
+
+        \midrule ABS & Bool\_t & Int\_t     & Error\_t \\
+        \midrule ABS & Bool\_t & Float\_t   & Error\_t \\
+        \midrule ABS & Bool\_t & Bool\_t    & Error\_t \\
+
+        \midrule CEIL & Int\_t & Int\_t      & Float\_t \\
+        \midrule CEIL & Int\_t & Float\_t    & Float\_t \\
+        \midrule CEIL & Int\_t & Bool\_t     & Error\_t \\
+
+        \midrule CEIL & Float\_t & Int\_t    & Float\_t \\
+        \midrule CEIL & Float\_t & Float\_t  & Float\_t \\
+        \midrule CEIL & Float\_t & Bool\_t   & Error\_t \\
+
+        \midrule CEIL & Bool\_t & Int\_t     & Error\_t \\
+        \midrule CEIL & Bool\_t & Float\_t   & Error\_t \\
+        \midrule CEIL & Bool\_t & Bool\_t    & Error\_t \\
+
+        \midrule FLOOR & Int\_t & Int\_t      & Float\_t \\
+        \midrule FLOOR & Int\_t & Float\_t    & Error\_t \\
+        \midrule FLOOR & Int\_t & Bool\_t     & Error\_t \\
+
+        \midrule FLOOR & Float\_t & Int\_t    & Error\_t \\
+        \midrule FLOOR & Float\_t & Float\_t  & Float\_t \\
+        \midrule FLOOR & Float\_t & Bool\_t   & Error\_t \\
+
+        \midrule FLOOR & Bool\_t & Int\_t     & Error\_t \\
+        \midrule FLOOR & Bool\_t & Float\_t   & Error\_t \\
+        \midrule FLOOR & Bool\_t & Bool\_t    & Error\_t \\
+
+        \bottomrule
+    \end{tabular}\\
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+    \centering
+    \begin{tabular}{cccc}
+        \toprule
+        \textbf{Operator} & \textbf{Type 1} & \textbf{Type2} & \textbf{Result type}\\
+        \midrule MEAN & Int\_t & Int\_t      & Float\_t \\
+        \midrule MEAN & Int\_t & Float\_t    & Float\_t \\
+        \midrule MEAN & Int\_t & Bool\_t     & Error\_t \\
+
+        \midrule MEAN & Float\_t & Int\_t    & Float\_t \\
+        \midrule MEAN & Float\_t & Float\_t  & Float\_t \\
+        \midrule MEAN & Float\_t & Bool\_t   & Error\_t \\
+
+        \midrule MEAN & Bool\_t & Int\_t     & Error\_t \\
+        \midrule MEAN & Bool\_t & Float\_t   & Error\_t \\
+        \midrule MEAN & Bool\_t & Bool\_t    & Error\_t \\
+
+        \midrule MEDIAN & Int\_t & Int\_t      & Float\_t \\
+        \midrule MEDIAN & Int\_t & Float\_t    & Float\_t \\
+        \midrule MEDIAN & Int\_t & Bool\_t     & Error\_t \\
+
+        \midrule MEDIAN & Float\_t & Int\_t    & Float\_t \\
+        \midrule MEDIAN & Float\_t & Float\_t  & Float\_t \\
+        \midrule MEDIAN & Float\_t & Bool\_t   & Error\_t \\
+
+        \midrule MEDIAN & Bool\_t & Int\_t     & Error\_t \\
+        \midrule MEDIAN & Bool\_t & Float\_t   & Error\_t \\
+        \midrule MEDIAN & Bool\_t & Bool\_t    & Error\_t \\
+
+        \midrule MODE & Int\_t & Int\_t      & Float\_t \\
+        \midrule MODE & Int\_t & Float\_t    & Float\_t \\
+        \midrule MODE & Int\_t & Bool\_t     & Error\_t \\
+
+        \midrule MODE & Float\_t & Int\_t    & Float\_t \\
+        \midrule MODE & Float\_t & Float\_t  & Float\_t \\
+        \midrule MODE & Float\_t & Bool\_t   & Error\_t \\
+
+        \midrule MODE & Bool\_t & Int\_t     & Error\_t \\
+        \midrule MODE & Bool\_t & Float\_t   & Error\_t \\
+        \midrule MODE & Bool\_t & Bool\_t    & Error\_t \\
+
+        \bottomrule
+    \end{tabular}\\
+\end{figure}
+
 \newpage
 
 \section{Memory Management}
+
 \subsubsection{Tree listener}
-\begin{figure}[h]
+
+\begin{figure}[H]
     \centering
     \begin{tabular}{p{1in}p{3in}}
         \toprule

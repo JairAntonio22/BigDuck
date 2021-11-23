@@ -197,6 +197,7 @@ var IsUnaryOp map[int]bool = map[int]bool {
     ATAN    : true,
     EXP     : true,
     LN      : true,
+    SQRT    : true,
     ABS     : true,
     CEIL    : true,
     FLOOR   : true,

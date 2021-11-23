@@ -1305,7 +1305,7 @@ func (l *BigDuckListener) ExitVec_func(c * parser.Vec_funcContext) {
         if sym.Stype == structs.Bool_t {
             l.valid = false
             fmt.Printf(
-                "line %d:%d cannot perform %s operation on boolean array\n",
+                "line %d:%d cannot perform %s operation on boolean vector\n",
                 c.GetStart().GetLine(),
                 c.GetStart().GetColumn(),
                 c.Vec_funcs().GetText())
