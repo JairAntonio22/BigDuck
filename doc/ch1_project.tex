@@ -49,8 +49,6 @@ successful development of this project.
 
 \newpage
 
-\subsection{Test Cases}
-
 \section{Software Developement Process}
 
 \subsection{Developement Process Description}
@@ -284,8 +282,8 @@ them are not directly related with the project (like \texttt{README.md} or
 
         \midrule
         Nov 19 & Tensors \newline implemented &
-        However $n$-dimensional arrays, or as I call them \emph{tensors}, were
-        actually super easy to implement after the experience gained with the
+        $n$-dimensional arrays, or as I call them \emph{tensors}, were actually
+        super easy to implement after the experience gained with the
         implementation of arrays.\\
 
         \midrule
@@ -294,6 +292,19 @@ them are not directly related with the project (like \texttt{README.md} or
         experience while using the language, since commonly used functions are
         no longer needed to be implemented on every program and also they are
         more eficient, since they are just a \newline library call.\\
+
+        \midrule
+        Nov 21 & Special vectorial \newline procedures \newline implemented &
+        Similar to scalar procedures, these were fairly easy to implement. It
+        just required rebuilding the vectors inside the virtual machine and
+        perform operations.\\
+
+        \midrule
+        Nov 22 & Procedure call \newline nesting error \newline message added &
+        Throughtout testing I noticed that it was not possible currently to
+        handle procedure call nesting. The solution is relatively easy
+        (it requires stacks), however due to the remaining time, I decided to
+        leave it out of the language for the delivery.\\
 
         \bottomrule
     \end{tabular}

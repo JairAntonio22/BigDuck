@@ -13,18 +13,17 @@ BigDuck compiler however this has not been tested.
 
 \subsubsection{Reserved Keywords}
 \begin{verbatim}
-proc                return              if                  else
-loop                break               skip                and
-or                  not                 var                 int
-float               bool                true                false
+proc    return  if      else    loop    break   skip    and
+or      not     var     int     float   bool    true    false
+print   read    sin     asin    cos     acos    tan     atan
+atan2   exp     exp     ln      sqrt    pow     mod     abs
+ceil    floor   mean    median  mode
 \end{verbatim}
 
 \subsubsection{Tokens}
 \begin{align*}
-	\texttt{DIGIT}
-	&\rightarrow\texttt{[0-9]}\\
 	\texttt{DIGITS}
-	&\rightarrow\texttt{digit+}\\
+	&\rightarrow\texttt{[0-9]+}\\
 	\texttt{LETTER}
 	&\rightarrow\texttt{[A-Za-z]}\\
 	\texttt{SIGN}
@@ -34,7 +33,7 @@ float               bool                true                false
 	\texttt{CTE\_FLOAT}
 	&\rightarrow\texttt{sign? digits (\textbackslash.\ digits)?}\\
 	\texttt{ID}
-	&\rightarrow\texttt{letter (letter | digit | `` \_ '')*}\\
+	&\rightarrow\texttt{letter (letter | [0-9] | `` \_ '')*}\\
 	\texttt{COMMENT}
 	&\rightarrow\texttt{`` \#| '' \phantom{}.*? `` |\# '' *}\\
 \end{align*}
@@ -148,6 +147,7 @@ have some breakpoints on the grammar required for compilation.
             |&\ \texttt{CTE\_FLOAT}\\
             |&\ \texttt{variable}\\
             |&\ \texttt{proc\_call}\\
+            |&\ \texttt{functions}\\
 	\phantom{0}\\
 	\texttt{variable}
             |&\ \texttt{ID (dimension | } \epsilon \texttt{ )}\\
@@ -174,6 +174,7 @@ have some breakpoints on the grammar required for compilation.
             |&\ \texttt{ctrl\_flow `` ; ''}\\
             |&\ \texttt{ret\_stmt `` ; ''}\\
             |&\ \texttt{proc\_call `` ; ''}\\
+            |&\ \texttt{built\_in `` ; ''}\\
 	\phantom{0}\\
 	\texttt{assignment}
 	\rightarrow&\ \texttt{variable `` <- '' (num\_expr | bool\_expr)}\\
@@ -196,6 +197,47 @@ have some breakpoints on the grammar required for compilation.
 	\rightarrow&\ \epsilon\\
 \end{align*}
 
+\begin{align*}
+	\texttt{built\_in}
+	\rightarrow&\ \texttt{print}\\
+            |&\ \texttt{read}\\
+	\phantom{0}\\
+	\texttt{functions}
+	\rightarrow&\ \texttt{u\_func}\\
+            |&\ \texttt{bin\_func}\\
+            |&\ \texttt{vec\_func}\\
+	\phantom{0}\\
+	\texttt{print}
+	\rightarrow&\ \texttt{PRINT `` ( '' print\_param `` ) ''}\\
+	\texttt{print\_param}
+	\rightarrow&\ \texttt{print\_term print\_next\_param}\\
+	\texttt{print\_term}
+	\rightarrow&\ \texttt{bool\_expr}\\
+            |&\ \texttt{num\_expr}\\
+            |&\ \texttt{CTE\_STRING}\\
+	\texttt{print\_next\_param}
+	\rightarrow&\ \texttt{`` , '' print\_param}\\
+            |&\ \epsilon\\
+	\phantom{0}\\
+	\texttt{u\_func}
+	\rightarrow&\ \texttt{u\_funcs `` ( '' num\_expr `` ) ''}\\
+	\texttt{u\_funcs}
+	\rightarrow&\ \texttt{SIN | ASIN | COS | ACOS | TAN | ATAN}\\
+            |&\ \texttt{EXP | LN | SQRT | ABS | CEIL | FLOOR}\\
+	\phantom{0}\\
+	\texttt{bin\_func}
+	\rightarrow&\ \texttt{bin\_funcs `` ( '' num\_expr `` , '' num\_expr `` ) ''}\\
+	\texttt{bin\_funcs}
+	\rightarrow&\ \texttt{ATAN2 | POW | LOG | MOD}\\
+	\phantom{0}\\
+	\texttt{vec\_func}
+	\rightarrow&\ \texttt{vec\_funcs `` ( '' variable  `` ) ''}\\
+	\texttt{vec\_funcs}
+	\rightarrow&\ \texttt{MEAN | MEDIAN | MODE}\\
+\end{align*}
+
+\newpage
+
 \section{IR Code and Semantic Analisis}
 \subsection{Operation Code}
 \paragraph{} For this project the operation code can be considered as an
@@ -211,50 +253,24 @@ names were chosen to be like mnemonics to facilitate some developement tasks.
         \midrule NOP &
         Null operator, mainly used as null value for \newline compilation checks.\\
 
-        \midrule ASG &
-        Assignation.\\
+        \midrule ASG & Assignation.\\
 
-        \midrule OR &
-        Logical or.\\
+        \midrule OR & Logical or.\\
+        \midrule AND & Logical and.\\
+        \midrule NOT & Logical not.\\
 
-        \midrule AND &
-        Logical and.\\
+        \midrule EQ & Value equality comparison.\\
+        \midrule NEQ & Value inequality comparison.\\
 
-        \midrule NOT &
-        Logical not.\\
+        \midrule LES & Less than comparison.\\
+        \midrule GRE & Greater than comparison.\\
+        \midrule LEQ & Less than or equal comparison.\\
+        \midrule GEQ & Greater than or equal comparison.\\
 
-        \midrule EQ &
-        Value equality comparison.\\
-
-        \midrule NEQ &
-        Value inequality comparison.\\
-
-        \midrule LES &
-        Less than comparison.\\
-
-        \midrule GRE &
-        Greater than comparison.\\
-
-        \midrule LEQ &
-        Less than or equal comparison.\\
-
-        \midrule GEQ &
-        Greater than or equal comparison.\\
-
-        \midrule SUB &
-        Arithmetic substraction.\\
-
-        \midrule ADD &
-        Arithmetic addition.\\
-
-        \midrule DIV &
-        Arithmetic division.\\
-
-        \midrule MUL &
-        Arithmetic multiplication.\\
-
-        \midrule GOPROC &
-        Indicates change to a procedure.\\
+        \midrule SUB & Arithmetic substraction.\\
+        \midrule ADD & Arithmetic addition.\\
+        \midrule DIV & Arithmetic division.\\
+        \midrule MUL & Arithmetic multiplication.\\
 
         \midrule GOPROC &
         Indicates change to a procedure.\\
@@ -271,26 +287,48 @@ names were chosen to be like mnemonics to facilitate some developement tasks.
         \midrule ENDPROC &
         Clears the procedure context and restores program execution\\
 
+        \midrule ASSERT &
+        Run-time check for tensor index correctness.\\
+
         \bottomrule
     \end{tabular}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \begin{tabular}{p{1in}p{3in}}
         \toprule
         \textbf{Operator} & \textbf{Description}\\
-        \midrule ASSERT &
-        Run-time check for tensor index correctness.\\
 
-        \midrule PRINT &
-        Prints value to STDOUT.\\
+        \midrule PRINT & Prints value to STDOUT.\\
+        \midrule PRINTLN & Prints value and newline char to STDOUT.\\
 
-        \midrule PRINTLN &
-        Prints value and newline char to STDOUT.\\
+        \midrule READ & Reads value form STDIN, and assigns it to a value.\\
 
-        \midrule READ &
-	Reads value form STDIN.\\
+        \midrule SIN & Trigonometric sin function.\\
+        \midrule ASIN & Trigonometric arcsin function.\\
+        \midrule COS & Trigonometric cos function.\\
+        \midrule ACOS & Trigonometric arccos function.\\
+        \midrule TAN & Trigonometric tan function.\\
+        \midrule ATAN & Trigonometric atan function.\\
+        \midrule ATAN2 & Trigonometric atan2 function.\\
+
+        \midrule EXP & Exponential function.\\
+        \midrule LN & Natural logarithm function.\\
+
+        \midrule SQRT & Square root function.\\
+        \midrule POW & Raise number $x$ to the $y$ power.\\
+        \midrule LOG & Logarithm base $b$ of $x$.\\
+
+        \midrule MOD & Modulus base $b$ of $n$.\\
+
+        \midrule ABS & Absolute value function.\\
+        \midrule CEIL & Ceiling function.\\
+        \midrule FLOOR & Floor function.\\
+
+        \midrule MEAN & Mean of a vector.\\
+        \midrule MEDIAN & Meadian of a vector.\\
+        \midrule MODE & Mode of a vector.\\
 
         \midrule SET &
         Initializes global address with givenn values.\\
@@ -302,6 +340,8 @@ names were chosen to be like mnemonics to facilitate some developement tasks.
     \end{tabular}
 \end{figure}
 
+\newpage
+
 \subsection{Virtual Addresses}
 
 \paragraph{} The following enumerations were already used throughout
@@ -311,7 +351,7 @@ compilation.
 
 \begin{align*}
     \texttt{0} &\ \texttt{local}\\
-    \texttt{1} &\ \texttt{global}\\
+    \texttt{1} &\ \texttt{global}
 \end{align*}
 
 \paragraph{Type enumeration}
@@ -320,7 +360,7 @@ compilation.
     \texttt{2} &\ \texttt{0010}\ \texttt{int}\\
     \texttt{3} &\ \texttt{0011}\ \texttt{float}\\
     \texttt{4} &\ \texttt{0100}\ \texttt{bool}\\
-    \texttt{5} &\ \texttt{0101}\ \texttt{string}\\
+    \texttt{5} &\ \texttt{0101}\ \texttt{string}
 \end{align*}
 
 \paragraph{} Therefore it seemed natural to used it as flags on a bit mask
@@ -333,25 +373,29 @@ to have support indirection and consequently pointers.
     \texttt{1} &\ \texttt{addressing mode bit}\\
     \texttt{1} &\ \texttt{scope bit}\\
     \texttt{3} &\ \texttt{type bits}\\
-    \texttt{7} &\ \texttt{address nibbles}\\
+    \texttt{7} &\ \texttt{address nibbles}
 \end{align*}
 
 \paragraph{Examples}
 \begin{align*}
-    \texttt{0010}\ \dots\ \texttt{0000 0000}
+    \texttt{0 0010}\ \dots\ \texttt{0000 0000}
     &\rightarrow \texttt{local int at address 0}\\
-    \texttt{1011}\ \dots\ \texttt{0000 1010}
+    \texttt{0 1011}\ \dots\ \texttt{0000 1010}
     &\rightarrow \texttt{global float at address 10}\\
-    \texttt{0100}\ \dots\ \texttt{0001 0110}
+    \texttt{0 0100}\ \dots\ \texttt{0001 0110}
     &\rightarrow \texttt{local bool at address 22}\\
-    \texttt{1101}\ \dots\ \texttt{0000 1011}
+    \texttt{0 1101}\ \dots\ \texttt{0000 1011}
     &\rightarrow \texttt{string at address 11}\\
+    \texttt{1 1010}\ \dots\ \texttt{0000 0101}
+    &\rightarrow \texttt{local pointer at address 5}
 \end{align*}
 
-\paragraph{Note} All strings are global since they cannot be assigned to
+\paragraph{Note 1} All strings are global since they cannot be assigned to
 variables.
 
-\paragraph{} This virtual address map can hold up to $2^{28} = 268,435,456$
+\paragraph{Note 2} All pointers are \texttt{int} since they hold an integer values.
+
+\paragraph{} This virtual address map can hold up to $2^{28} - 1 = 268,435,455$
 addresses per each data type, which means that it can hold around 750 MB of
 data on a single program. I acknowledge that this is not the most memory
 efficient mapping however might be the simplest and most efective to
@@ -359,9 +403,259 @@ implement.
 
 \newpage
 
-\subsection{Syntax Diagrams}
-\subsection{Semantic and IR Generation Actions}
+\paragraph{This page was left empty on purpose} For easier read of the syntax
+diagrams with its actions, it is adviced to view the pdf by 2 pages. In such
+way that on left page are the diagrams and the right page are the actions
+description.
+
+\newpage
+
+\subsection{Syntax Diagrams with actions}
+\begin{figure}[H]
+    \centering
+    \includegraphics[
+        trim={1in, 1in, 1in, 1in}, clip, page=1, scale=0.75]{diagrams/syntax}
+\end{figure}
+\newpage
+
+\begin{figure}[H]
+    \centering
+    \begin{tabular}{cp{3in}}
+        \toprule
+        \textbf{No.} & \textbf{Description}\\
+        \midrule 1 & Compiler initialization\\
+        \midrule 2 & Generate era and goproc for starting procedure\\
+        \midrule 3 & If valid program the create obj file\\
+        \midrule 4 & If valid program the create obj file\\
+        \midrule 5 & Turn on in\_decl flag\\
+        \midrule 6 & Turn off in\_decl flag\\
+        \midrule 7 & Turn off in\_decl flag\\
+        \midrule 8 & Use dimqueue and symqueue to create symbols and add each
+        to symbol table, if symbol has been read then raise error\\
+        \bottomrule
+    \end{tabular}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[
+        trim={1in, 1in, 1in, 1in}, clip, page=2, scale=0.75]{diagrams/syntax}
+\end{figure}
+\newpage
+
+\begin{figure}[H]
+    \centering
+    \begin{tabular}{cp{3in}}
+        \toprule
+        \textbf{No.} & \textbf{Description}\\
+        \midrule  9 & Add id to symbol table, if symbol has been read then
+        raise error\\
+        \midrule 10 & Update procedure's parameter information, argc and
+        ret\_type\\
+        \midrule 11 & Generate endproc, update procedure's type counters,
+        resolve recursive calls, and clear scope\\
+        \midrule 12 & Turn on in\_decl and in\_args flags\\
+        \midrule 13 & Push id to symqueue\\
+        \midrule 14 & Register return type\\
+        \midrule 15 & Push or to opstack\\
+        \midrule 16 & Push and to opstack\\
+        \midrule 17 & If or at top of opstack then GenerateOpTac\\
+        \bottomrule
+    \end{tabular}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[
+        trim={1in, 1in, 1in, 1in}, clip, page=3, scale=0.75]{diagrams/syntax}
+\end{figure}
+\newpage
+
+\begin{figure}[H]
+    \centering
+    \begin{tabular}{cp{3in}}
+        \toprule
+        \textbf{No.} & \textbf{Description}\\
+        \midrule 18 & Push LPAREN to opstack\\
+        \midrule 19 & Push RPAREN to opstack\\
+        \midrule 20 & Push \#t to argstack and push bool\_t to typestack\\
+        \midrule 21 & Push \#f to argstack and push bool\_t to typestack\\
+        \midrule 22 & If and at top of opstack then GenerateOpTac\\
+        \midrule 23 & If not at top of opstack then GenerateOpTac\\
+        \midrule 24 & GenerateOpTac\\
+        \bottomrule
+    \end{tabular}
+\end{figure}
+
+\paragraph{Note} Keep in mind actions 18 and 19, since they are reused.
+
+\newpage
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[
+        trim={1in, 1in, 1in, 1in}, clip, page=4, scale=0.75]{diagrams/syntax}
+\end{figure}
+\newpage
+
+\begin{figure}[H]
+    \centering
+    \begin{tabular}{cp{3in}}
+        \toprule
+        \textbf{No.} & \textbf{Description}\\
+        \midrule 25 & Push + to opstack\\
+        \midrule 26 & Push --- to opstack\\
+        \midrule 27 & Push * to opstack\\
+        \midrule 28 & Push / to opstack\\
+        \midrule 29 & If + or --- at top of opstack then GenerateOpTac\\
+        \midrule 30 & Push int literal to argstack push int\_t to typestack\\
+        \midrule 31 & Push float literal to argstack push float\_t to typestack\\
+        \midrule 32 & If * or / at top of opstack then GenerateOpTac\\
+        \midrule 33 & Push id to argstack and its type to typestack\\
+        \midrule 34 & If id dimension is 0 then raise error else push LPAREN\\
+        \midrule 35 & Push RPAREN to opstack, if curr\_dim is different from
+        expected dimension then raise error\\
+        \bottomrule
+    \end{tabular}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[
+        trim={1in, 1in, 1in, 1in}, clip, page=5, scale=0.75]{diagrams/syntax}
+\end{figure}
+\newpage
+
+\begin{figure}[H]
+    \centering
+    \begin{tabular}{cp{3in}}
+        \toprule
+        \textbf{No.} & \textbf{Description}\\
+        \midrule 36 & Init paramc,  if curr\_pcall is empty then assign 
+        id to curr\_pcall else raise error, if exists in symtable the generate
+        era else raise error\\
+        \midrule 37 & Push RPAREN to opstack, GenerateParamTac\\
+        \midrule 38 & if has return value then GenereteReturnTac else if
+        in\_stmt Generate goproc, if paramc different from procedures argc
+        then raise error\\
+        \midrule 39 & Turn on in\_stmt flag\\
+        \midrule 40 & Turn off in\_stmt flag\\
+        \bottomrule
+    \end{tabular}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[
+        trim={1in, 1in, 1in, 1in}, clip, page=6, scale=0.75]{diagrams/syntax}
+\end{figure}
+\newpage
+
+\begin{figure}[H]
+    \centering
+    \begin{tabular}{cp{3in}}
+        \toprule
+        \textbf{No.} & \textbf{Description}\\
+        \midrule 41 & Push $\leftarrow$ to opstack\\
+        \midrule 42 & GenerateOpTac\\
+        \midrule 43 & Push pc to jmpstack and GenerateJmpTac (JMF)\\
+        \midrule 44 & Pop jmpstack and use value fo FillJmpTac\\
+        \midrule 45 & Push pc to jmpstack and FillJmpTac\\
+        \midrule 46 & Pop jmpstack and use value fo FillJmpTac\\
+        \midrule 47 & Increment loop\_nest\\
+        \midrule 48 & Fill unresolved jumps according loop style, fill skips and
+        breaks, decrement loop\_nest\\
+        \midrule 49 & Push pc to jmpstack and set loopstyle to ForStyle\\
+        \midrule 50 & Push pc to jmpstack, GenerateJmpTac (JMT), push pc to 
+        jmpstack and GenerateJmpTac (JMP)\\
+        \midrule 51 & Push pc to jmpstack\\
+        \midrule 52 & GenerateJmpTac (JMP), handle jumps for condition when
+        true, false, and return from control variable assignment\\
+        \midrule 53 & Push pc to jmpstack and set loopstyle to WhileStyle\\
+        \midrule 54 & Push pc to jmpstack and GenerateJmpTac (JMF)\\
+        \midrule 55 & Push pc to jmpstack and set loopstyle to InfLoop\\
+        \bottomrule
+    \end{tabular}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[
+        trim={1in, 1in, 1in, 1in}, clip, page=7, scale=0.75]{diagrams/syntax}
+\end{figure}
+\newpage
+
+\begin{figure}[H]
+    \centering
+    \begin{tabular}{cp{3in}}
+        \toprule
+        \textbf{No.} & \textbf{Description}\\
+        \midrule 56 & Push break or skip to its appropiate queue, GenerateJmpTac
+        (JMP)\\
+        \midrule 57 & GenerateRetTac\\
+        \midrule 58 & Change last PRINT to PRINTLN\\
+        \midrule 59 & GeneratePrintTac\\
+        \midrule 60 & Pop argstack and typestack and use values to generate
+        read TAC\\
+        \bottomrule
+    \end{tabular}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[
+        trim={1in, 1in, 1in, 1in}, clip, page=8, scale=0.75]{diagrams/syntax}
+\end{figure}
+\newpage
+
+\begin{figure}[H]
+    \centering
+    \begin{tabular}{cp{3in}}
+        \toprule
+        \textbf{No.} & \textbf{Description}\\
+        \midrule 61 & Push unary function to opstack, GenerateOpTac and push
+        RPAREN to opstack\\
+        \bottomrule
+    \end{tabular}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[
+        trim={1in, 1in, 1in, 1in}, clip, page=9, scale=0.75]{diagrams/syntax}
+\end{figure}
+\newpage
+
+\begin{figure}[H]
+    \centering
+    \begin{tabular}{cp{3in}}
+        \toprule
+        \textbf{No.} & \textbf{Description}\\
+        \midrule 62 & Push binary function to opstack, GenerateOpTac and push
+        RPAREN to opstack\\
+        \midrule 63 & If variable exists and has appropiate dimensions then
+        push vec function to opstack, GenerateOpStack\\
+        \bottomrule
+    \end{tabular}
+\end{figure}
+
+\newpage
 \subsection{Semantic Consideration Table}
+\newpage
 
 \section{Memory Management}
 \subsubsection{Tree listener}
@@ -370,18 +664,194 @@ implement.
     \begin{tabular}{p{1in}p{3in}}
         \toprule
         \textbf{Element} & \textbf{Description}\\
-        \midrule Filename &
+        \midrule filename &
         Keeps the name of the source code to produce the executable.\\
 
-        \midrule Valid &
+        \midrule valid &
         Flag to indicate whether an error has been found or not.\\
 
-        \midrule Debug &
+        \midrule debug &
         Flag to indicate whether debug mode is toggled.\\
 
-        \midrule Symbol table &
+        \midrule symtable &
         Table to keep track of the variable symbols and procedures used in
         source code.\\
+
+        \midrule symqueue &
+        Queue to keep track of which symbols are under the same declaration list.\\
+
+        \midrule typequeue &
+        Queue to keep track of which symbols are under the same declaration line.\\
+
+        \midrule paramqueue &
+        Queue to keep track of which symbols are on the procedures parameters.\\
+
+        \midrule dimmqueue &
+        Queue to keep track of which the dimensions used by a tensor.\\
+
+        \midrule in\_decl &
+        Flag to know if it is reading a variable declaration.\\
+
+        \midrule in\_args &
+        Flag to know if it is reading the arguments of a procedure.\\
+
+        \midrule in\_stmt &
+        Flag to know if it is reading a statement.\\
+
+        \midrule scope &
+        Flag to know the current scope.\\
+
+        \midrule argc &
+        Counter for arguments used in a procedure call.\\
+
+        \midrule loop\_nest &
+        Counter to keep track of loop nesting.\\
+
+        \midrule ret\_type &
+        Variable to keep track of current procedure's \newline return type.\\
+
+        \midrule curr\_proc &
+        Variable to keep track of the name of current \newline procedure.\\
+
+        \bottomrule
+    \end{tabular}\\
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{tabular}{p{1in}p{3in}}
+        \toprule
+        \textbf{Element} & \textbf{Description}\\
+        \midrule ir\_code &
+        Array of TACs (three-address code) generated by the compiler.\\
+
+        \midrule data\_seg &
+        Array of TACs used for data segment generated by the compiler.\\
+
+        \midrule op\_stack &
+        Stack of operators for expression compilation.\\
+
+        \midrule arg\_stack &
+        Stack of arguments for operators for expression compilation.\\
+
+        \midrule type\_stack &
+        Stack of type variables for expression compilation.\\
+
+        \midrule pc &
+        Program counter to keep track of generated TACs.\\
+
+        \midrule tmpc &
+        Temporal counter to keep track of generated \newline temporal variables.\\
+
+        \midrule tmpc &
+        Temporal counter to keep track of generated \newline temporal variables.\\
+
+        \midrule paramc &
+        Parameter counter to keep track of number of \newline parameters given
+        to a procedure.\\
+
+        \midrule loopstyle &
+        Variable to keep track of which kind of loop syntax is used.\\
+
+        \midrule startpoint &
+        Variable to keep track of where to start the \newline program.\\
+
+        \midrule startproc &
+        Variable to keep track of the name of initial \newline procedure.\\
+
+        \midrule curr\_line &
+        Variable to keep track of current line.\\
+
+        \midrule curr\_column &
+        Variable to keep track of current column.\\
+
+        \midrule curr\_pcall &
+        Variable to keep track of the name of current \newline procedure call.\\
+
+        \midrule curr\_tensor &
+        Variable to keep track of the name of current \newline tensor in use.\\
+
+        \midrule curr\_dim &
+        Variable to keep track of the name of current \newline dimension 
+        index used in tensor indexing.\\
+
+        \midrule memmap &
+        Memory mapper, to assign a memory address to a used variable.\\
+
+        \bottomrule
+    \end{tabular}\\
+\end{figure}
+
+\newpage
+
+\subsubsection{Symbol}
+
+\begin{figure}[H]
+    \centering
+    \begin{tabular}{p{1in}p{3in}}
+        \toprule
+        \textbf{Element} & \textbf{Description}\\
+        \midrule Stype &
+        Enumeration to indicate the type of a variable.\\
+
+        \midrule Dim &
+        Array to keep track of the dimensions of a variable.\\
+
+        \midrule Baddress &
+        Base address, to keep track of base address for tensiorial types.\\
+
+        \midrule Argc &
+        Argument count, to keep track of the arguments required for procedure.\\
+
+        \midrule TypeArgs &
+        Array to keep track of the number of arguments of a procedure.\\
+
+        \midrule RetType &
+        Variable to keep track of the return type of an argument.\\
+
+        \midrule Startpoint &
+        Variable to keep track of the starting point of a procedure.\\
+
+        \midrule Paddress &
+        Parameter address, array to keep track of the reserved addresses for
+        the parameter.\\
+
+        \midrule Type count &
+        Counters for the amount of variables of each type required.\\
+
+        \bottomrule
+    \end{tabular}\\
+\end{figure}
+
+\subsubsection{Symbol Table}
+
+\begin{figure}[H]
+    \centering
+    \begin{tabular}{p{1in}p{3in}}
+        \toprule
+        \textbf{Element} & \textbf{Description}\\
+        \midrule table &
+        An array of size 2 of hash tables that take strings as keys and Symbols
+        as values.\\
+
+        \bottomrule
+    \end{tabular}\\
+\end{figure}
+
+\subsubsection{Memory mapper}
+
+\begin{figure}[H]
+    \centering
+    \begin{tabular}{p{1in}p{3in}}
+        \toprule
+        \textbf{Element} & \textbf{Description}\\
+        \midrule memcache &
+        Hash table of strings as keys and int as value, to store every symbol
+        with a memory address.\\
+
+        \midrule Typecount &
+        An array of size 2 of hash table that takes strings as keys and ints as
+        values, to store a counter of used memory per scope and type.\\
 
         \bottomrule
     \end{tabular}\\

@@ -1,0 +1,136 @@
+\contentsline {part}{I\hspace {1em}Description and Technical Documentation}{3}{part.1}%
+\contentsline {chapter}{\numberline {1}Project}{4}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Introduction}{4}{section.1.1}%
+\contentsline {subsection}{\numberline {1.1.1}Purpose}{4}{subsection.1.1.1}%
+\contentsline {paragraph}{}{4}{section*.2}%
+\contentsline {subsection}{\numberline {1.1.2}Scope}{4}{subsection.1.1.2}%
+\contentsline {paragraph}{}{4}{section*.3}%
+\contentsline {section}{\numberline {1.2}Software Requirements}{5}{section.1.2}%
+\contentsline {subsection}{\numberline {1.2.1}Analysis}{5}{subsection.1.2.1}%
+\contentsline {paragraph}{}{5}{section*.4}%
+\contentsline {paragraph}{Functional requirements}{5}{section*.5}%
+\contentsline {paragraph}{Non-Functional requirements}{5}{section*.6}%
+\contentsline {section}{\numberline {1.3}Software Developement Process}{6}{section.1.3}%
+\contentsline {subsection}{\numberline {1.3.1}Developement Process Description}{6}{subsection.1.3.1}%
+\contentsline {paragraph}{}{6}{section*.7}%
+\contentsline {subsection}{\numberline {1.3.2}Weekly Log}{6}{subsection.1.3.2}%
+\contentsline {subsection}{\numberline {1.3.3}Git Commitments}{7}{subsection.1.3.3}%
+\contentsline {paragraph}{Note}{7}{section*.8}%
+\contentsline {chapter}{\numberline {2}Language}{11}{chapter.2}%
+\contentsline {section}{\numberline {2.1}General Overview}{11}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}Language Name}{11}{subsection.2.1.1}%
+\contentsline {paragraph}{}{11}{section*.9}%
+\contentsline {paragraph}{}{11}{section*.10}%
+\contentsline {subsection}{\numberline {2.1.2}Main Features Description}{11}{subsection.2.1.2}%
+\contentsline {paragraph}{}{11}{section*.11}%
+\contentsline {section}{\numberline {2.2}Language Errors}{12}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Compile-Time Errors}{12}{subsection.2.2.1}%
+\contentsline {paragraph}{}{12}{section*.12}%
+\contentsline {subsection}{\numberline {2.2.2}Run-Time Errors}{13}{subsection.2.2.2}%
+\contentsline {chapter}{\numberline {3}Compiler}{14}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Development Environment}{14}{section.3.1}%
+\contentsline {paragraph}{}{14}{section*.13}%
+\contentsline {section}{\numberline {3.2}Lexical Analisis}{14}{section.3.2}%
+\contentsline {subsubsection}{Reserved Keywords}{14}{section*.14}%
+\contentsline {subsubsection}{Tokens}{14}{section*.15}%
+\contentsline {section}{\numberline {3.3}Syntactical Analisis}{15}{section.3.3}%
+\contentsline {paragraph}{Note}{15}{section*.16}%
+\contentsline {section}{\numberline {3.4}IR Code and Semantic Analisis}{19}{section.3.4}%
+\contentsline {subsection}{\numberline {3.4.1}Operation Code}{19}{subsection.3.4.1}%
+\contentsline {paragraph}{}{19}{section*.17}%
+\contentsline {subsection}{\numberline {3.4.2}Virtual Addresses}{21}{subsection.3.4.2}%
+\contentsline {paragraph}{}{21}{section*.18}%
+\contentsline {paragraph}{Scope enumeration}{21}{section*.19}%
+\contentsline {paragraph}{Type enumeration}{21}{section*.20}%
+\contentsline {paragraph}{}{21}{section*.21}%
+\contentsline {paragraph}{Memory map}{21}{section*.22}%
+\contentsline {paragraph}{Examples}{21}{section*.23}%
+\contentsline {paragraph}{Note 1}{21}{section*.24}%
+\contentsline {paragraph}{Note 2}{21}{section*.25}%
+\contentsline {paragraph}{}{21}{section*.26}%
+\contentsline {paragraph}{This page was left empty on purpose}{22}{section*.27}%
+\contentsline {subsection}{\numberline {3.4.3}Syntax Diagrams with actions}{23}{subsection.3.4.3}%
+\contentsline {paragraph}{Note}{28}{section*.28}%
+\contentsline {subsection}{\numberline {3.4.4}Semantic Consideration Table}{41}{subsection.3.4.4}%
+\contentsline {section}{\numberline {3.5}Memory Management}{42}{section.3.5}%
+\contentsline {subsubsection}{Tree listener}{42}{section*.29}%
+\contentsline {subsubsection}{Symbol}{44}{section*.30}%
+\contentsline {subsubsection}{Symbol Table}{44}{section*.31}%
+\contentsline {subsubsection}{Memory mapper}{44}{section*.32}%
+\contentsline {chapter}{\numberline {4}Virtual Machine}{45}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Development Environment}{45}{section.4.1}%
+\contentsline {paragraph}{}{45}{section*.33}%
+\contentsline {section}{\numberline {4.2}Memory Management}{45}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Architecture}{45}{subsection.4.2.1}%
+\contentsline {paragraph}{}{45}{section*.34}%
+\contentsline {paragraph}{}{45}{section*.35}%
+\contentsline {subsection}{\numberline {4.2.2}Data Structures}{47}{subsection.4.2.2}%
+\contentsline {subsubsection}{Virtual machine}{47}{section*.36}%
+\contentsline {subsubsection}{Memory}{47}{section*.37}%
+\contentsline {subsubsection}{Memory Stack}{47}{section*.38}%
+\contentsline {subsection}{\numberline {4.2.3}Virtual Address Translation}{48}{subsection.4.2.3}%
+\contentsline {paragraph}{}{48}{section*.39}%
+\contentsline {chapter}{\numberline {5}Code Documentation}{49}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Modules Description}{49}{section.5.1}%
+\contentsline {part}{II\hspace {1em}User Manual}{50}{part.2}%
+\contentsline {chapter}{\numberline {6}Quick Reference}{51}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Enviroment Setup}{51}{section.6.1}%
+\contentsline {paragraph}{}{51}{section*.40}%
+\contentsline {paragraph}{}{51}{section*.41}%
+\contentsline {paragraph}{}{51}{section*.42}%
+\contentsline {paragraph}{}{51}{section*.43}%
+\contentsline {paragraph}{}{51}{section*.44}%
+\contentsline {paragraph}{}{51}{section*.45}%
+\contentsline {section}{\numberline {6.2}Variables}{52}{section.6.2}%
+\contentsline {paragraph}{}{52}{section*.46}%
+\contentsline {paragraph}{}{52}{section*.47}%
+\contentsline {paragraph}{}{52}{section*.48}%
+\contentsline {paragraph}{}{52}{section*.49}%
+\contentsline {paragraph}{}{52}{section*.50}%
+\contentsline {paragraph}{}{52}{section*.51}%
+\contentsline {section}{\numberline {6.3}Statements}{52}{section.6.3}%
+\contentsline {paragraph}{}{52}{section*.52}%
+\contentsline {subsection}{\numberline {6.3.1}Assignments}{52}{subsection.6.3.1}%
+\contentsline {paragraph}{}{52}{section*.53}%
+\contentsline {subsection}{\numberline {6.3.2}Arithmetic Expressions}{53}{subsection.6.3.2}%
+\contentsline {paragraph}{}{53}{section*.54}%
+\contentsline {subsection}{\numberline {6.3.3}Operator Precedence and Associativity}{53}{subsection.6.3.3}%
+\contentsline {paragraph}{}{53}{section*.55}%
+\contentsline {paragraph}{}{53}{section*.56}%
+\contentsline {paragraph}{}{53}{section*.57}%
+\contentsline {section}{\numberline {6.4}Conditional Statements}{54}{section.6.4}%
+\contentsline {paragraph}{}{54}{section*.58}%
+\contentsline {paragraph}{}{54}{section*.59}%
+\contentsline {paragraph}{}{54}{section*.60}%
+\contentsline {paragraph}{}{54}{section*.61}%
+\contentsline {section}{\numberline {6.5}Loop Statements}{55}{section.6.5}%
+\contentsline {paragraph}{}{55}{section*.62}%
+\contentsline {subsection}{\numberline {6.5.1}Infinite Loop}{55}{subsection.6.5.1}%
+\contentsline {paragraph}{}{55}{section*.63}%
+\contentsline {paragraph}{}{55}{section*.64}%
+\contentsline {subsection}{\numberline {6.5.2}While Loop}{56}{subsection.6.5.2}%
+\contentsline {paragraph}{}{56}{section*.65}%
+\contentsline {paragraph}{}{56}{section*.66}%
+\contentsline {subsection}{\numberline {6.5.3}For Loop}{56}{subsection.6.5.3}%
+\contentsline {paragraph}{}{56}{section*.67}%
+\contentsline {paragraph}{}{56}{section*.68}%
+\contentsline {paragraph}{}{56}{section*.69}%
+\contentsline {subsection}{\numberline {6.5.4}Do While Loop}{57}{subsection.6.5.4}%
+\contentsline {paragraph}{}{57}{section*.70}%
+\contentsline {paragraph}{}{57}{section*.71}%
+\contentsline {subsection}{\numberline {6.5.5}Control Flow Statements}{57}{subsection.6.5.5}%
+\contentsline {paragraph}{}{57}{section*.72}%
+\contentsline {paragraph}{}{57}{section*.73}%
+\contentsline {section}{\numberline {6.6}Procedures}{58}{section.6.6}%
+\contentsline {paragraph}{}{58}{section*.74}%
+\contentsline {paragraph}{}{58}{section*.75}%
+\contentsline {paragraph}{}{58}{section*.76}%
+\contentsline {paragraph}{}{58}{section*.77}%
+\contentsline {paragraph}{}{59}{section*.78}%
+\contentsline {paragraph}{}{59}{section*.79}%
+\contentsline {paragraph}{}{59}{section*.80}%
+\contentsline {section}{\numberline {6.7}Tensorial Types}{60}{section.6.7}%
+\contentsline {paragraph}{}{60}{section*.81}%
+\contentsline {paragraph}{}{60}{section*.82}%
+\contentsline {paragraph}{}{60}{section*.83}%
+\contentsline {section}{\numberline {6.8}Built-in Procedures}{61}{section.6.8}%

@@ -392,11 +392,95 @@ it allows to handle problems with more ease.
 \newpage
 
 \paragraph{} The last thing to cover about procedures is recursion. Recursion
-can be seen as a higher level form of loops, this is because it cover all the
-use cases of loops and can use less lines of code. However sometimes may be
-harder to think in a recursive solution, thus it remains at the taste of the
-user when to use recursion rather than explicit loops.
+can be seen as a higher level form of loops, this is because it covers all the
+use cases of loops and can be a cleaner solution. However sometimes may be
+harder to think in a recursive solution or viceverse, thus it remains at the
+taste of the user to decide when to use recursion or loops.
+
+\paragraph{} A classic use case for recursion is for the implementation of the
+factorial function. In mathematics the factorial function is defined the
+following way.
+
+\[
+    f(x) =
+    \begin{cases}
+        \ \text{if } n \leq 0\ \text{then } & 1\\
+        \ \text{otherwise}  & n \cdot f(n - 1)
+    \end{cases}
+\]
+
+\paragraph{} The iterative approach (the one using loops) is not as easy to
+understand and make take sometime to realize that it computes the same function.
+
+\begin{verbatim}
+proc factorial(n int) -> int
+    var prod int;
+{
+    prod <- 1;
+    
+    loop n > 0 {
+        prod <- prod * n;
+    }
+
+    return prod;
+}
+\end{verbatim}
+
+\noindent
+However the recursive definition resembles better the mathematical definition.
+
+\begin{verbatim}
+proc factorial(n int) -> int {
+    if n <= 0 {
+        return 1;
+    } else {
+        return n * factorial(n - 1);
+    }
+}
+\end{verbatim}
+
+\newpage
 
 \section{Tensorial Types}
+
+\paragraph{} As your programs get more complex, you will notice that certain
+variables are related to other variables. Many programming languages offer
+many tools for handling complex relationships for data modelling.
+
+\paragraph{} However the BigDuck language provides the simplest kind of
+structured data called tensors, commonly refered as arrays or multidimensional
+arrays. The name was picked from mathematics since it generalizes the notion of
+an ordered tuple that can be indexed (known as vectors).\\
+
+\noindent
+Look at the following program, which defines a 1-D tensor.
+
+\begin{verbatim}
+proc main()
+    var a [5]int;
+{
+    a[1] <- 12;
+    print(a[1])     #| prints: 12 |#
+}
+\end{verbatim}
+
+\paragraph{} This syntax indicates the language that the variable \texttt{a}
+can be accessed by values from 0 and less than 5, therefore indexing by 5
+produces an error. If no index was given, it will be given the first value of
+the tensor.\\
+
+\noindent
+For higher dimensional tensors just keep adding more dimensions like here.
+
+\begin{verbatim}
+proc main()
+    var a [2][5]int;
+{
+    a[0][1] <- 12;
+    print(a[0][1])     #| prints: 12 |#
+}
+\end{verbatim}
+
+\newpage
 
 \section{Built-in Procedures}

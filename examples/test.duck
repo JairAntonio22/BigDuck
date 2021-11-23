@@ -1,19 +1,7 @@
 
-proc square(x float) -> float {
-    return x * x;
-}
-
 proc main()
-    var b [5]int;
-    var i, size int;
-    var ans float;
+    var a [5]int;
 {
-    size <- 4;
-
-    loop i <- 0; i < size; i <- i + 1 {
-        b[i] <- read("type value");
-    }
-
-    ans <- mode(b);
-    print(ans);
+    a <- 12;
+    print(a);
 }
