@@ -1,12 +1,12 @@
 
 # The BigDuck programming language compiler
 
-BigDuck is language aimed for the developement of mathematical models commonly
-used in Machine-Learning and Data Science. Therefore this language will include
-integer and floating point arithmetic, vector and matrix operations, and some
-basic utilities for reading and writing `.csv` files. All this with the purpose
-to make it easier for the user to work within the Machine-Learning and Data
-Science fields.
+The BigDuck programming language is aimed for the developement mathematical and
+scientific computations, numerical methods, and some basic statistics. Therefore
+this language includes integer and floating point arithmetic, trigonometric and
+trascendental functions, other commonly used math operations, and vector
+operations to support some statistical functions.
+
 
 # Example
 
@@ -44,3 +44,18 @@ proc main()
     }
 }
 ```
+
+# Dependencies
+
+- Go
+- ANTLR
+
+# Instalation
+
+To install the compiler run the following command.
+
+```
+make install
+```
+
+This will compile the compiler and copy it into the `/usr/local/bin/` directory. 

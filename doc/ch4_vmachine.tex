@@ -137,3 +137,20 @@ func IsPointer(address int) bool {
 
 \end{verbatim}
 
+\subsection{Code execution overview}
+
+\paragraph{} The general flow of the virtual machine starts by parsing the 
+executable, the executable consiste of a series of strings separated by spaces,
+each string may represent an operation, address, or value.
+
+\paragraph{} After parsing the executable the instructions are passed to the
+virtual machine. First the global memory is initialized, and the code execution
+is performed. The program counter is a number that tells which instruction is
+to execute next. After reading the instruction, according to the operator the
+action is performed over the operators if any.
+
+\paragraph{} The memory is handle by the memory struct, this struct maintains
+the information to handle global and local memory. According to the virtual
+address the virtual machine determines which memory pool to access, and even
+for pointers the logic is done by the virtual machine. The memory struct has no
+decision and only holds values.
