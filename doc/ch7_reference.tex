@@ -1,5 +1,5 @@
 
-\chapter{Quick Reference}
+\chapter{A Quick Tour}
 
 \section{Enviroment Setup}
 
@@ -486,3 +486,55 @@ proc main()
 \newpage
 
 \section{Built-in Procedures}
+
+\paragraph{} Before ending this quick tour of the language, it will be
+presented the signatures for built-in functions. You may ask, aren't these also
+procedures? And you would be correct, the thing is that functions are a
+special subset of procedures, the property of functions is that the mapping
+between input and output is constant. In other words, functions will always
+give the same output for the same input, however with procedures this cannot
+be said.
+
+\paragraph{} Leaving terminolgy a side, the following are functions that are
+always available on the language, thus it is not possible to use these names
+for other procedures. These functions were chosen since they are the most
+commly used for any kind of mathematical or scietific computing.
+
+\paragraph{Trigonometric functions}
+
+\begin{verbatim}
+proc sin(x float) -> float
+proc asin(x float) -> float
+proc cos(x float) -> float
+proc acos(x float) -> float
+proc tan(x float) -> float
+proc atan(x float) -> float
+proc atan2(x, y float) -> float
+\end{verbatim}
+
+\paragraph{Trascendental functions}
+
+\begin{verbatim}
+proc exp(x float) -> float
+proc ln(x float) -> float
+proc log(x, b float) -> float
+\end{verbatim}
+
+\paragraph{Other functions}
+
+\begin{verbatim}
+proc pow(x, y float) -> float
+proc sqrt(x float) -> float
+proc mod(n, b float) -> float
+proc abs(x float) -> float
+proc ceil(x float) -> float
+proc floor(x float) -> float
+\end{verbatim}
+
+\paragraph{Vectorial functions}
+
+\begin{verbatim}
+proc mean(x []float) -> float
+proc median(x []float) -> float
+proc mode(x []float) -> float
+\end{verbatim}

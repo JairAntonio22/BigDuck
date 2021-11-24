@@ -217,10 +217,7 @@ proc main()
     }
     
     print("=== Sorted array ===");
-
-    loop i <- 0; i < size; i <- i + 1 {
-        print(array[i]);
-    }
+    print(array);
 }
 \end{verbatim}
 
@@ -276,12 +273,7 @@ proc main()
     }
 
     print("=== Result ===");
-
-    loop i <- 0; i < 2; i <- i + 1 {
-        loop j <- 0; j < J; j <- j + 1 {
-            print("c[", i, "][", j, "] =", c[i][j]);
-        }
-    }
+    print(c);
 }
 \end{verbatim}
 
@@ -300,3 +292,94 @@ proc main()
 \newpage
 
 \subsection{Built-in procedures}
+
+\begin{verbatim}
+proc main()
+    var data [5]float;
+    var pi, ans1, ans2, ans3 float;
+{
+    pi <- 3.14159;
+
+    print("=== Trigonometric functions ===");
+
+    ans1 <- sin(pi / 2);
+    ans2 <- asin(ans1);
+    print("sin(pi / 2) =", ans1, "asin(sin(pi / 2) =", ans2);
+
+    ans1 <- cos(0);
+    ans2 <- acos(ans1);
+    print("cos(0) =", ans1, "acos(cos(0) =", ans2);
+
+    ans1 <- tan(pi / 4);
+    ans2 <- atan(ans1);
+    ans3 <- atan2(1, 1);
+    print("tan(pi /4) =", ans1);
+    print("atan(tan(pi /4)) =", ans2, "atan2(1, 1) =", ans3);
+
+    print("");
+    print("=== Trascendental functions ===");
+
+    ans1 <- exp(1);
+    print(ans1);
+
+    ans1 <- ln(ans1);
+    print("ln(exp(1) =", ans1);
+
+    ans1 <- log(125, 5);
+    print("log(125, 5) =", ans1);
+
+    print("");
+    print("=== Other functions ===");
+
+    ans1 <- pow(3, 5);
+    print("pow(3, 5) =", ans1);
+
+    ans1 <- sqrt(2);
+    print("sqrt(2) =", ans1);
+
+    ans1 <- mod(41, 3);
+    print("mod(41, 3) =", ans1);
+
+    ans1 <- abs(-12);
+    print("abs(-12) =", ans1);
+
+    ans1 <- ceil(1.5);
+    print("ceil(1.5) =", ans1);
+
+    ans1 <- floor(1.5);
+    print("floor(1.5) =", ans1);
+
+    print("");
+    print("=== Vectorial functions ===");
+
+    data[0] <- pi;
+    data[1] <- exp(1);
+    data[2] <- sqrt(2);
+    data[3] <- (1 + sqrt(5)) / 2;
+    data[4] <- 2;
+
+    print("vector = [", data, "]");
+
+    ans1 <- mean(data);
+    ans2 <- median(data);
+    ans3 <- mode(data);
+
+    print("mean =", ans1);
+    print("median =", ans2);
+    print("mode =", ans3);
+}
+\end{verbatim}
+
+\begin{figure}[H]
+    \centering
+    \caption{Generated IR code}
+    \includegraphics[width=\textwidth]{evidences/built_in_ir}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \caption{Program output}
+    \includegraphics[width=\textwidth]{evidences/built_in_output}
+\end{figure}
+
+\newpage
