@@ -1,0 +1,13 @@
+
+proc main()
+    var table [12][12]int;
+    var i, j int;
+{
+    loop i <- 0; i < 12; i <- i + 1 {
+        loop j <- 0; j < 12; j <- j + 1 {
+            table[i][j] <- (i + 1) * (j + 1);
+        }
+    }
+
+    print(table);
+}

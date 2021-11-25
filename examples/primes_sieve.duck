@@ -25,7 +25,5 @@ proc main()
         }
     }
 
-    loop i <- 0; i < n; i <- i + 1 {
-        print(primes[i]);
-    }
+    print(primes);
 }

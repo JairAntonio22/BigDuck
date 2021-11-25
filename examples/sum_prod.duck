@@ -1,0 +1,36 @@
+
+proc main()
+    var i, n, option, result int;
+    var ok bool;
+{
+    loop {
+        print("=== Sum or multiply ===");
+
+        loop ok <- false; not ok; ok <- n > 0 {
+            n <- read("Type a positive integer");
+        }
+
+        loop ok <- false; not ok; ok <- option = 1 or option = 2 {
+            option <- read("Type 1 (sum) or 2 (multiply), from 1 to n");
+        }
+
+        if option = 1 {
+            loop i <- 1; i <= n; i <- i + 1 {
+                result <- result + i;
+            }
+
+            print("The sum result is", result);
+
+        } else if option = 2 {
+            result <- 1;
+
+            loop i <- 1; i <= n; i <- i + 1 {
+                result <- result * i;
+            }
+
+            print("The product result is", result);
+        }
+
+        print("");
+    }
+}

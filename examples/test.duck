@@ -1,6 +1,6 @@
 
 proc main()
-    var a [5]int;
+    var a [-5]int;
 {
     a <- 12;
     print(a);
